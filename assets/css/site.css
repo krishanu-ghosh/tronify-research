@@ -143,7 +143,14 @@ img, svg { max-width: 100%; }
 
 @media (max-width: 880px) {
   .site-header-inner { justify-content: flex-start; }
-  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; margin-left: 0; }
+  .nav-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    order: -1;
+    margin-left: 0;
+  }
+  .brand { flex-shrink: 1; min-width: 0; }
+  .brand-text { min-width: 0; overflow: hidden; }
+  .brand-text strong { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .site-nav {
     display: none;
     position: absolute;
