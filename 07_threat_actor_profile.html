@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost & Skill Analysis — Independent tronify.rent Report</title>
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        .skill-card {
+            background: #1a2240;
+            border: 1px solid #2a3550;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 12px 0;
+        }
+        .skill-card h4 {
+            color: #4fa3f5;
+            margin: 0 0 8px 0;
+            font-size: 14px;
+        }
+        .skill-level {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+        .level-expert {
+            background: #ff5252;
+            color: #fff;
+        }
+        .level-advanced {
+            background: #ff9100;
+            color: #fff;
+        }
+        .level-intermediate {
+            background: #ffd600;
+            color: #000;
+        }
+        .level-basic {
+            background: #4caf50;
+            color: #fff;
+        }
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .team-member {
+            background: #1a2240;
+            border: 1px solid #2a3550;
+            border-radius: 8px;
+            padding: 16px;
+        }
+        .team-member h4 {
+            color: #ff6b6b;
+            margin: 0 0 10px 0;
+            font-size: 15px;
+        }
+        .team-member ul {
+            margin: 0;
+            padding-left: 18px;
+        }
+        .team-member li {
+            font-size: 13px;
+            color: #a9b5cc;
+            margin: 6px 0;
+        }
+        .team-member strong {
+            color: #e8ecf5;
+        }
+        .cost-box {
+            background: #1a2240;
+            border-left: 4px solid #4caf50;
+            padding: 16px;
+            margin: 16px 0;
+            border-radius: 6px;
+        }
+        .cost-number {
+            font-size: 24px;
+            font-weight: 700;
+            color: #ff6b6b;
+            margin: 8px 0;
+            font-family: 'SF Mono', monospace;
+        }
+        .timeline-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+        .timeline-table th,
+        .timeline-table td {
+            padding: 10px 12px;
+            text-align: left;
+            border-bottom: 1px solid #2a3550;
+            font-size: 13px;
+        }
+        .timeline-table th {
+            background: #0f1620;
+            color: #4fa3f5;
+            font-weight: 600;
+        }
+        .timeline-table td {
+            color: #a9b5cc;
+        }
+        .indicator-check {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+        }
+        .indicator-item {
+            background: #1a2240;
+            border: 1px solid #2a3550;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+        .indicator-item strong {
+            color: #4fa3f5;
+            display: block;
+            margin-bottom: 6px;
+        }
+        .weakness-box {
+            background: #2a1515;
+            border-left: 4px solid #ff5252;
+            padding: 14px;
+            margin: 12px 0;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #a9b5cc;
+        }
+        .weakness-box strong {
+            color: #ff6b6b;
+        }
+    </style>
+</head>
+<body data-page="07">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="07_threat_actor_profile.html" data-page="07">Cost & Skills</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+    <nav class="breadcrumb"><a href="index.html">Home</a> / Cost & Skill Analysis</nav>
+
+    <div class="container">
+        <h1>💰 Cost & Skill Analysis</h1>
+        <h2>Threat Actor Development Capabilities & Build Costs</h2>
+
+        <h2>Executive Assessment</h2>
+        <div style="background: #1a3a1a; border-left: 4px solid #4caf50; padding: 16px; margin: 16px 0; border-radius: 6px;">
+            <strong style="color: #4caf50; font-size: 14px;">SKILL LEVEL: ADVANCED TO EXPERT</strong>
+            <p style="margin: 8px 0 0 0; font-size: 13.5px; color: #a9b5cc;">The threat actor(s) behind Tronify.rent demonstrate solid <strong style="color: #e8ecf5;">mid-tier cryptocurrency development capabilities</strong> combined with <strong style="color: #e8ecf5;">operational security sophistication</strong>. They are NOT elite-tier (no sophisticated obfuscation or cutting-edge exploits), but competent enough to operate a sustained, profitable campaign.</p>
+        </div>
+
+        <h2>Core Technical Competencies</h2>
+
+        <h3>1. Blockchain/Cryptocurrency Development</h3>
+
+        <div class="skill-card">
+            <h4>TRON Protocol Knowledge <span class="skill-level level-expert">EXPERT</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Understanding of TRON RPC API calls (accounts, transactions, TRC-20 contracts)</li>
+                <li>TRC-20 token approval mechanism and <code>approve()</code> function semantics</li>
+                <li>Interaction with TronWeb.js library (signature generation, transaction broadcasting)</li>
+                <li>Gas fee calculation (100 TRX per transaction, 2 TRX gas reserve logic)</li>
+                <li style="color: #4caf50;">✓ Evidence: Correctly uses BigInt for large token amounts, properly handles TRX in sun units (10^-6)</li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h4>Multi-Wallet Support Implementation <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Supports 7 different wallet providers: Trust Wallet, TronLink, OKX, TokenPocket, Bitget, SafePal, WalletConnect</li>
+                <li>Understands wallet injection patterns (window.tronLink, window.ethereum, wallet-specific properties)</li>
+                <li>Implements dynamic wallet detection and fallback logic</li>
+                <li style="color: #4caf50;">✓ Evidence: Each wallet detected via its actual injected provider object, not guessed</li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h4>Token Enumeration & Balance Queries <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Fetches TRC-20 token lists from public TRON APIs</li>
+                <li>Queries token balances and USD conversion rates</li>
+                <li>Filters tokens by minimum USD threshold ($1+) to target valuable assets only</li>
+                <li style="color: #4caf50;">✓ Evidence: Proper BigInt handling for balances, accurate USD calculations</li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h4>Smart Contract Interaction <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Constructs and signs TRC-20 contract calls (approve, transfer)</li>
+                <li>Handles contract ABIs correctly</li>
+                <li>Uses unlimited approval (maxUint256) to sidestep repeated user confirmations</li>
+                <li style="color: #4caf50;">✓ Evidence: Proper contract encoding for TronWeb, correct method signatures</li>
+            </ul>
+        </div>
+
+        <h3>2. JavaScript/Frontend Development</h3>
+
+        <div class="skill-card">
+            <h4>JavaScript Language Mastery <span class="skill-level level-expert">EXPERT</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>150KB minified JavaScript payload with zero syntax errors</li>
+                <li>Async/await patterns, Promise handling, error catching</li>
+                <li>Event-driven architecture (wallet detection → enumeration → approval loop)</li>
+                <li>Use of closures, higher-order functions, IIFE pattern</li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h4>Code Obfuscation <span class="skill-level level-intermediate">INTERMEDIATE</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Minification using standard tools (likely UglifyJS or Webpack)</li>
+                <li>Single-letter variable names (z, o, l, n, g, t, A, r)</li>
+                <li><strong style="color: #ff9100;">BUT: Limited sophistication</strong> — no base64 string encoding, no anti-analysis checks</li>
+                <li style="color: #4caf50;">✓ Plain strings remain readable; QR code library used as filler</li>
+            </ul>
+        </div>
+
+        <h3>3. Backend/Infrastructure Development</h3>
+
+        <div class="skill-card">
+            <h4>API Backend Architecture <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">12 distinct REST endpoints for C&C communication:</strong></p>
+            <ul style="margin: 0; padding-left: 18px; font-size: 12.5px; color: #a9b5cc;">
+                <li>/tron/config (GET) — Dynamic attacker configuration</li>
+                <li>/tron/notify/wallet-connected (POST)</li>
+                <li>/tron/approve/notify (POST)</li>
+                <li>/tron/funding/initiate (POST) — Gas priming mechanism</li>
+                <li>/tron/funding/status/{address} (GET) — Polls every 2.5s</li>
+                <li>/tron/balances/{address} (GET) — Proxy endpoint</li>
+                <li>+ 6 more specialized logging endpoints</li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h4>Blockchain Integration <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Directly queries TRON blockchain (TronGrid API)</li>
+                <li>Pulls token metadata (symbol, decimals, USD values)</li>
+                <li>Monitors victim wallet balances in real-time</li>
+                <li style="color: #4caf50;">✓ Evidence: Gas-funding endpoint sends ~15 TRX when balances are low</li>
+            </ul>
+        </div>
+
+        <h3>4. DevOps & Infrastructure Operations</h3>
+
+        <div class="skill-card">
+            <h4>Domain & Hosting Management <span class="skill-level level-intermediate">INTERMEDIATE</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Registered multiple domains: tronify.rent, tronified.com, tronify.app, tronify.llc, tronify.pro</li>
+                <li>C&C hosted at lending.fhogu.pw (Cloudflare-fronted payload, DDoS-Guard for main site)</li>
+                <li>Separates payload delivery from main site — different providers</li>
+                <li style="color: #4caf50;">✓ Evidence: Response headers show "server: ddos-guard" (abuse-tolerant hosting)</li>
+            </ul>
+        </div>
+
+        <h3>5. Social Engineering & Operational Security</h3>
+
+        <div class="skill-card">
+            <h4>Pretexting & Brand Spoofing <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>Created fictitious "Tronify Energy Solutions LLC" company</li>
+                <li>Registered physical address: 2875 S Orange Ave, Suite 500, Orlando, FL 32806</li>
+                <li>Fake phone: +1 (407) 438-7621 | Email: hello@tronify.rent</li>
+                <li>Detailed Terms of Service & Privacy Policy (appears legitimate)</li>
+                <li>Service pitch: "Save Up To 97% on TRON Transaction Costs"</li>
+            </ul>
+        </div>
+
+        <div class="skill-card">
+            <h4>Victim Manipulation <span class="skill-level level-advanced">ADVANCED</span></h4>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li><strong style="color: #ff9100;">Gas-priming attack:</strong> Sends victim ~15 TRX to lower friction</li>
+                <li>User sees "action required in your wallet" status message — feels natural</li>
+                <li>Approval requests look identical to legitimate DeFi interactions</li>
+                <li>Retry logic ensures multiple attempts to get user consent</li>
+            </ul>
+        </div>
+
+        <h2>Estimated Team Composition</h2>
+        <div class="team-grid">
+            <div class="team-member">
+                <h4>1️⃣ JavaScript Developer</h4>
+                <ul>
+                    <li><strong>Role:</strong> Frontend payload (greenbid.js)</li>
+                    <li><strong>Skills:</strong> JavaScript, async/await, Wallet APIs, TronWeb.js</li>
+                    <li><strong>Experience:</strong> 3–5 years crypto/blockchain JS</li>
+                    <li><strong>Effort:</strong> 40–60 hours</li>
+                </ul>
+            </div>
+            <div class="team-member">
+                <h4>2️⃣ Backend Developer</h4>
+                <ul>
+                    <li><strong>Role:</strong> C&C infrastructure & REST endpoints</li>
+                    <li><strong>Skills:</strong> Node.js/Python/Go, database, blockchain RPC</li>
+                    <li><strong>Experience:</strong> 3–4 years backend development</li>
+                    <li><strong>Effort:</strong> 50–80 hours</li>
+                </ul>
+            </div>
+            <div class="team-member">
+                <h4>3️⃣ DevOps/Infrastructure</h4>
+                <ul>
+                    <li><strong>Role:</strong> Hosting, domains, bulletproof infrastructure</li>
+                    <li><strong>Skills:</strong> Domain registration, DDoS protection, Cloudflare</li>
+                    <li><strong>Experience:</strong> 2–3 years (or outsourced)</li>
+                    <li><strong>Effort:</strong> 20–30 hours</li>
+                </ul>
+            </div>
+            <div class="team-member">
+                <h4>4️⃣ Operations/Social Eng</h4>
+                <ul>
+                    <li><strong>Role:</strong> Website content, branding, distribution</li>
+                    <li><strong>Skills:</strong> Copywriting, brand psychology, traffic analysis</li>
+                    <li><strong>Experience:</strong> 1–2 years fraud operations</li>
+                    <li><strong>Effort:</strong> 30–50 hours</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Development Cost Analysis</h2>
+        <div class="cost-box">
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 12px 0;"><strong style="color: #e8ecf5;">One-Time Development Cost (Professional Market Rates):</strong></p>
+            <table class="timeline-table">
+                <tr>
+                    <th>Role</th>
+                    <th>Hourly Rate</th>
+                    <th>Hours</th>
+                    <th>Subtotal</th>
+                </tr>
+                <tr>
+                    <td>Blockchain JavaScript Dev</td>
+                    <td>$80–120/hr</td>
+                    <td>60</td>
+                    <td>$4,800–$7,200</td>
+                </tr>
+                <tr>
+                    <td>Backend Developer</td>
+                    <td>$70–110/hr</td>
+                    <td>80</td>
+                    <td>$5,600–$8,800</td>
+                </tr>
+                <tr>
+                    <td>DevOps/Infrastructure</td>
+                    <td>$75–130/hr</td>
+                    <td>30</td>
+                    <td>$2,250–$3,900</td>
+                </tr>
+                <tr>
+                    <td>UI/Frontend Developer</td>
+                    <td>$65–100/hr</td>
+                    <td>50</td>
+                    <td>$3,250–$5,000</td>
+                </tr>
+                <tr>
+                    <td>Operations/Social Eng</td>
+                    <td>$50–80/hr</td>
+                    <td>40</td>
+                    <td>$2,000–$3,200</td>
+                </tr>
+            </table>
+        </div>
+
+        <h2>Total Development Cost</h2>
+        <div style="background: #1a3a1a; border-left: 4px solid #4caf50; padding: 20px; margin: 20px 0; border-radius: 6px; text-align: center;">
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 12px 0;">Professional Market Rate (USD)</p>
+            <div class="cost-number">$17,900 – $28,100</div>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 16px 0;"><strong style="color: #e8ecf5;">Total Effort:</strong> 210–320 hours | <strong style="color: #e8ecf5;">Timeline:</strong> ~6 weeks</p>
+
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 12px 0; border-top: 1px solid #2a3550; padding-top: 12px;">In Indian Rupees (1 USD = ₹95.94)</p>
+            <div style="font-size: 24px; font-weight: 700; color: #ff6b6b; margin: 8px 0; font-family: 'SF Mono', monospace;">₹17,17,326 – ₹26,96,934</div>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0;"><strong style="color: #e8ecf5;">₹17.17 lakhs – ₹26.97 lakhs</strong></p>
+        </div>
+
+        <h2>What They DON'T Know</h2>
+        <div class="weakness-box">
+            <strong>Limited Obfuscation:</strong> No anti-analysis, no string encoding, no anti-debugging. A junior security engineer can reverse in minutes.
+        </div>
+        <div class="weakness-box">
+            <strong>No Private Key Extraction:</strong> Relies on approval mechanism instead of stealing private keys (safer for them, but victim-centric attack).
+        </div>
+        <div class="weakness-box">
+            <strong>No Zero-Knowledge Proofs:</strong> No fancy cryptography — straightforward approval + transfer.
+        </div>
+        <div class="weakness-box">
+            <strong>Limited OPSEC:</strong> All C&C communication logged, not encrypted with per-victim keys.
+        </div>
+        <div class="weakness-box">
+            <strong>No Blockchain Privacy:</strong> Transfers fully on-chain, visible via TronScan (though to attacker addresses).
+        </div>
+        <div class="weakness-box">
+            <strong>No Self-Destruct:</strong> Payload doesn't delete itself or C&C records — forensic trails remain.
+        </div>
+
+        <h2>Key Skill Indicators</h2>
+        <div class="indicator-check">
+            <div class="indicator-item">
+                <strong>Multi-wallet support (7 wallets)</strong>
+                NOT a first-time attacker — shows deep understanding of wallet ecosystem
+            </div>
+            <div class="indicator-item">
+                <strong>Gas-priming attack</strong>
+                Sophisticated thinking about user friction — rare in amateur drainers
+            </div>
+            <div class="indicator-item">
+                <strong>Separated C&C from payload host</strong>
+                Operational security thinking — not a rush job or POC
+            </div>
+            <div class="indicator-item">
+                <strong>12 logging endpoints</strong>
+                Analytics-first approach — tracking every step for optimization
+            </div>
+            <div class="indicator-item">
+                <strong>Retry logic & error handling</strong>
+                Production-grade code — tested and battle-hardened
+            </div>
+            <div class="indicator-item">
+                <strong>TRC-20 ABI knowledge</strong>
+                Not a lucky copy-paste — understands contract mechanics deeply
+            </div>
+        </div>
+
+        <h2>Development Timeline (Estimated)</h2>
+        <table class="timeline-table">
+            <tr>
+                <th>Phase</th>
+                <th>Work</th>
+                <th>Effort</th>
+                <th>Timeline</th>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Research</strong></td>
+                <td>Study TRON, TronWeb.js, wallet patterns, approval mechanism</td>
+                <td>20–30 hrs</td>
+                <td>Week 1</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Prototype</strong></td>
+                <td>Build wallet detection + approval signing on testnet</td>
+                <td>30–40 hrs</td>
+                <td>Week 2</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Payload Dev</strong></td>
+                <td>Full greenbid.js with error handling, retry logic, minification</td>
+                <td>40–60 hrs</td>
+                <td>Week 3–4</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Backend</strong></td>
+                <td>REST API (12 endpoints), database, victim logging</td>
+                <td>50–80 hrs</td>
+                <td>Week 3–5</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Infrastructure</strong></td>
+                <td>Domains, bulletproof hosting, Cloudflare CDN, DDoS protection</td>
+                <td>20–30 hrs</td>
+                <td>Week 5</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Frontend/UI</strong></td>
+                <td>tronify.rent website, branding, terms/privacy, forms</td>
+                <td>30–50 hrs</td>
+                <td>Week 4–5</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Integration & Testing</strong></td>
+                <td>End-to-end testing, victim simulation, payload deployment</td>
+                <td>20–30 hrs</td>
+                <td>Week 6</td>
+            </tr>
+        </table>
+
+        <h2>Infrastructure Cost Analysis</h2>
+        <p style="font-size: 13.5px; color: #a9b5cc; margin-bottom: 16px;"><strong style="color: #e8ecf5;">Tronify.rent's infrastructure spans multiple providers and jurisdictions to resist takedown and maintain operational resilience. Below is a detailed cost breakdown based on market rates for each component.</strong></p>
+
+        <h3>One-Time Setup Costs</h3>
+        <table class="timeline-table">
+            <tr>
+                <th>Component</th>
+                <th>Provider/Type</th>
+                <th>USD Cost</th>
+                <th>INR Cost</th>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Domain Registration (5 domains)</strong></td>
+                <td>tronify.rent, tronified.com, tronify.app, tronify.llc, tronify.pro</td>
+                <td>$150–$250</td>
+                <td>₹14,391–₹23,985</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">SSL/TLS Certificates (5 domains)</strong></td>
+                <td>Auto-renewal via Cloudflare/LetsEncrypt</td>
+                <td>$0–$100</td>
+                <td>₹0–₹9,594</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">C&C Server Initial Setup</strong></td>
+                <td>VPS provisioning, database init, API deployment</td>
+                <td>$200–$500</td>
+                <td>₹19,188–₹47,970</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">DDoS-Guard Registration & Setup</strong></td>
+                <td>Account creation, DNS migration, firewall rules</td>
+                <td>$100–$300</td>
+                <td>₹9,594–₹28,782</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Cloudflare Setup (CDN for payload)</strong></td>
+                <td>Account, zone setup, cache config, WAF rules</td>
+                <td>$50–$150</td>
+                <td>₹4,797–₹14,391</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Backend Database Setup</strong></td>
+                <td>PostgreSQL/MongoDB instance, initial data schema</td>
+                <td>$100–$300</td>
+                <td>₹9,594–₹28,782</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Operational Email/Comms</strong></td>
+                <td>ProtonMail / Tor-based email setup, privacy tools</td>
+                <td>$50–$150</td>
+                <td>₹4,797–₹14,391</td>
+            </tr>
+            <tr style="background: #0f1620; font-weight: 600;">
+                <td colspan="2"><strong style="color: #4fa3f5;">TOTAL ONE-TIME SETUP</strong></td>
+                <td><strong style="color: #ff6b6b;">$650–$1,750</strong></td>
+                <td><strong style="color: #ff6b6b;">₹62,361–₹1,67,895</strong></td>
+            </tr>
+        </table>
+
+        <h3>Monthly Operational Costs</h3>
+        <table class="timeline-table">
+            <tr>
+                <th>Component</th>
+                <th>Provider/Details</th>
+                <th>Monthly USD</th>
+                <th>Monthly INR</th>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">C&C Server Hosting (Main)</strong></td>
+                <td>Bulletproof VPS (abuse-tolerant), 2 vCPU, 4GB RAM, unmetered bandwidth</td>
+                <td>$50–$150</td>
+                <td>₹4,797–₹14,391</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Backup/Redundant C&C Server</strong></td>
+                <td>Secondary bulletproof hoster (different jurisdiction), failover capability</td>
+                <td>$50–$100</td>
+                <td>₹4,797–₹9,594</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">DDoS-Guard Protection</strong></td>
+                <td>Premium tier (DDoS mitigation, advanced firewall, WAF)</td>
+                <td>$100–$300</td>
+                <td>₹9,594–₹28,782</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Cloudflare Paid Plan</strong></td>
+                <td>Pro/Business tier (cache, bot management, advanced analytics)</td>
+                <td>$20–$200</td>
+                <td>₹1,919–₹19,188</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Database Hosting</strong></td>
+                <td>Managed database service (MongoDB Atlas/AWS RDS), backups, replication</td>
+                <td>$50–$150</td>
+                <td>₹4,797–₹14,391</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Domain Renewals (5 domains)</strong></td>
+                <td>Annual cost / 12 months (tronify.rent premium renewal)</td>
+                <td>$10–$20</td>
+                <td>₹959–₹1,919</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Email/Communications</strong></td>
+                <td>ProtonMail Premium, VPN, privacy infrastructure</td>
+                <td>$5–$20</td>
+                <td>₹480–₹1,919</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Monitoring & Analytics</strong></td>
+                <td>Uptime monitoring, log aggregation, alerting systems</td>
+                <td>$20–$50</td>
+                <td>₹1,919–₹4,797</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">API/Bot Detection Evasion</strong></td>
+                <td>Proxy rotation service, API rate-limiting bypass, signature spoofing</td>
+                <td>$30–$100</td>
+                <td>₹2,878–₹9,594</td>
+            </tr>
+            <tr style="background: #0f1620; font-weight: 600;">
+                <td colspan="2"><strong style="color: #4fa3f5;">TOTAL MONTHLY OPERATIONAL (Infrastructure)</strong></td>
+                <td><strong style="color: #ff6b6b;">$335–$1,090</strong></td>
+                <td><strong style="color: #ff6b6b;">₹32,140–₹1,04,575</strong></td>
+            </tr>
+        </table>
+
+        <h3>Money Laundering & Financial Infrastructure</h3>
+        <p style="font-size: 13px; color: #a9b5cc; margin: 12px 0;"><strong style="color: #e8ecf5;">Critical operational cost often overlooked — converting stolen crypto to usable currency requires infrastructure.</strong></p>
+        <table class="timeline-table">
+            <tr>
+                <th>Component</th>
+                <th>Method/Provider</th>
+                <th>Monthly USD</th>
+                <th>Monthly INR</th>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Cryptocurrency Mixing/Laundering</strong></td>
+                <td>Tornado Cash alternative, Zcash tumbler, DEX aggregators (slippage)</td>
+                <td>0% (fees built into slippage) to $200</td>
+                <td>₹0–₹19,188</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Exchange Account Fees</strong></td>
+                <td>Binance, Huobi, OKEx (withdrawal fees, trading spreads)</td>
+                <td>$500–$2,000</td>
+                <td>₹47,970–₹1,91,880</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Bank Account Mules</strong></td>
+                <td>Payment to recruited mules (per account), SIM swaps, identity theft services</td>
+                <td>$200–$1,000</td>
+                <td>₹19,188–₹95,940</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Wire Transfer / SWIFT Fees</strong></td>
+                <td>International money transfer (Russia, China, UAE banking corridors)</td>
+                <td>$100–$500</td>
+                <td>₹9,594–₹47,970</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Legal Liability / Bail Contingency</strong></td>
+                <td>Reserved for potential law enforcement contact, bail funds, legal retainers</td>
+                <td>$500–$2,000</td>
+                <td>₹47,970–₹1,91,880</td>
+            </tr>
+            <tr style="background: #0f1620; font-weight: 600;">
+                <td colspan="2"><strong style="color: #4fa3f5;">TOTAL MONTHLY FINANCIAL (Money Laundering)</strong></td>
+                <td><strong style="color: #ff6b6b;">$1,300–$5,700</strong></td>
+                <td><strong style="color: #ff6b6b;">₹1,24,722–₹5,47,278</strong></td>
+            </tr>
+        </table>
+
+        <h3>Talent & Operational Maintenance</h3>
+        <p style="font-size: 13px; color: #a9b5cc; margin: 12px 0;"><strong style="color: #e8ecf5;">Ongoing developer hours, content updates, and victim support (social engineering).</strong></p>
+        <table class="timeline-table">
+            <tr>
+                <th>Component</th>
+                <th>Details</th>
+                <th>Monthly USD</th>
+                <th>Monthly INR</th>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Payload Maintenance & Updates</strong></td>
+                <td>Bug fixes, obfuscation updates, wallet API compatibility (10–20 hrs/month)</td>
+                <td>$500–$1,000</td>
+                <td>₹47,970–₹95,940</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Backend Bug Fixes & Scaling</strong></td>
+                <td>API debugging, performance optimization, scaling for victim influx</td>
+                <td>$400–$800</td>
+                <td>₹38,376–₹76,752</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Content Updates (Website)</strong></td>
+                <td>Refreshing website copy, legal docs, customer support emails</td>
+                <td>$200–$500</td>
+                <td>₹19,188–₹47,970</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Social Engineering / Campaign Mgmt</strong></td>
+                <td>Traffic generation, Telegram/Discord community ops, victim interaction</td>
+                <td>$300–$800</td>
+                <td>₹28,782–₹76,752</td>
+            </tr>
+            <tr>
+                <td><strong style="color: #4fa3f5;">Security/OPSEC Maintenance</strong></td>
+                <td>Log cleanup, infrastructure auditing, anti-forensics, VPN/proxy rotation</td>
+                <td>$200–$500</td>
+                <td>₹19,188–₹47,970</td>
+            </tr>
+            <tr style="background: #0f1620; font-weight: 600;">
+                <td colspan="2"><strong style="color: #4fa3f5;">TOTAL MONTHLY OPERATIONAL (Talent & Maintenance)</strong></td>
+                <td><strong style="color: #ff6b6b;">$1,600–$3,600</strong></td>
+                <td><strong style="color: #ff6b6b;">₹1,53,504–₹3,45,384</strong></td>
+            </tr>
+        </table>
+
+        <h2 style="margin-top: 30px;">Complete Cost Summary</h2>
+
+        <div style="background: #1a3a1a; border-left: 4px solid #4caf50; padding: 20px; margin: 16px 0; border-radius: 6px;">
+            <h3 style="color: #4caf50; margin-top: 0;">💰 Initial Build (One-Time)</h3>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">Development & Engineering</strong></p>
+                    <div style="font-size: 20px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$17,900–$28,100</div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0;">₹17,17,326–₹26,96,934</p>
+                </div>
+                <div>
+                    <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">Infrastructure Setup</strong></p>
+                    <div style="font-size: 20px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$650–$1,750</div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0;">₹62,361–₹1,67,895</p>
+                </div>
+            </div>
+            <p style="border-top: 1px solid #2a3550; padding-top: 12px; margin: 12px 0 0 0; font-size: 13px; color: #a9b5cc;"><strong style="color: #4caf50;">TOTAL INITIAL INVESTMENT:</strong> <strong style="color: #ff6b6b;">$18,550–$29,850</strong> | <strong style="color: #ff6b6b;">₹17,79,687–₹28,64,829</strong></p>
+        </div>
+
+        <div style="background: #2a1a1a; border-left: 4px solid #ff9100; padding: 20px; margin: 16px 0; border-radius: 6px;">
+            <h3 style="color: #ff9100; margin-top: 0;">🔄 Monthly Operating Costs (Ongoing)</h3>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+                <div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 6px 0;"><strong style="color: #e8ecf5;">Infrastructure</strong></p>
+                    <div style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$335–$1,090</div>
+                    <p style="font-size: 11px; color: #a9b5cc; margin: 0;">₹32,140–₹1,04,575</p>
+                </div>
+                <div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 6px 0;"><strong style="color: #e8ecf5;">Money Laundering</strong></p>
+                    <div style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$1,300–$5,700</div>
+                    <p style="font-size: 11px; color: #a9b5cc; margin: 0;">₹1,24,722–₹5,47,278</p>
+                </div>
+                <div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 6px 0;"><strong style="color: #e8ecf5;">Talent & Ops</strong></p>
+                    <div style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$1,600–$3,600</div>
+                    <p style="font-size: 11px; color: #a9b5cc; margin: 0;">₹1,53,504–₹3,45,384</p>
+                </div>
+            </div>
+            <p style="border-top: 1px solid #3a2a2a; padding-top: 12px; margin: 0; font-size: 13px; color: #a9b5cc;"><strong style="color: #ff9100;">TOTAL MONTHLY OPERATIONAL:</strong> <strong style="color: #ff6b6b;">$3,235–$10,390</strong> | <strong style="color: #ff6b6b;">₹3,10,366–₹9,96,238</strong></p>
+        </div>
+
+        <div style="background: #1a3a3a; border-left: 4px solid #4dd0e1; padding: 20px; margin: 16px 0; border-radius: 6px;">
+            <h3 style="color: #4dd0e1; margin-top: 0;">📊 Annual Operating Cost (12 Months)</h3>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 12px 0;"><strong style="color: #e8ecf5;">Infrastructure + Money Laundering + Talent & Maintenance:</strong></p>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">USD (Annual)</strong></p>
+                    <div style="font-size: 24px; font-weight: 700; color: #4dd0e1; font-family: 'SF Mono', monospace;">$38,820–$124,680</div>
+                </div>
+                <div>
+                    <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">INR (Annual)</strong></p>
+                    <div style="font-size: 24px; font-weight: 700; color: #4dd0e1; font-family: 'SF Mono', monospace;">₹37,24,388–₹1,19,54,851</div>
+                </div>
+            </div>
+        </div>
+
+        <div style="background: #1a1a3a; border-left: 4px solid #7c3aed; padding: 20px; margin: 16px 0; border-radius: 6px;">
+            <h3 style="color: #7c3aed; margin-top: 0;">💹 Break-Even & Profitability Analysis</h3>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 8px 0;"><strong style="color: #e8ecf5;">Break-even threshold:</strong> With average victim loss of $500–$3,000 USD per wallet, the drainer needs <strong style="color: #ff6b6b;">13–80 victims/month</strong> to break even on infrastructure + operational costs.</p>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 8px 0;"><strong style="color: #e8ecf5;">Current observed profit rate:</strong> On-chain data shows ~25 distinct victims in a 30-day window (2026-08-20 to 2026-09-20), averaging ~₹1.3L per victim = <strong style="color: #4caf50;">₹32.5L+ monthly theft</strong>.</p>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 8px 0;"><strong style="color: #e8ecf5;">Net monthly profit (estimated):</strong> ₹32.5L revenue − ₹9.96L operational costs = <strong style="color: #4caf50;">₹22.54L+ net/month</strong> (before law enforcement disruption).</p>
+            <p style="font-size: 13px; color: #a9b5cc; margin: 0;"><strong style="color: #7c3aed;">ROI Timeline:</strong> Initial build cost (₹17.8–28.6L) recovered in <strong style="color: #ff6b6b;">1 month</strong> at current victim acquisition rate. <strong style="color: #4caf50;">Highly profitable operation.</strong></p>
+        </div>
+
+        <h2>Conclusion</h2>
+        <div style="background: #1a2240; border: 1px solid #2a3550; padding: 18px; margin: 20px 0; border-radius: 8px;">
+            <p style="margin: 0 0 10px 0; font-size: 13.5px; color: #a9b5cc;">The Tronify.rent wallet drainer was built by <strong style="color: #e8ecf5;">a competent, mid-tier cryptocurrency development team</strong> with:</p>
+            <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #a9b5cc;">
+                <li>3–5 years of blockchain/cryptocurrency experience</li>
+                <li>Strong JavaScript and backend API skills</li>
+                <li>Understanding of social engineering and OPSEC (though not perfect)</li>
+                <li>Access to bulletproof hosting infrastructure</li>
+            </ul>
+            <p style="margin: 16px 0 0 0; padding-top: 12px; border-top: 1px solid #2a3550;"><strong style="color: #4caf50;">Development cost (one-time):</strong> <strong style="color: #ff6b6b;">₹15–23.5 lakhs</strong></p>
+            <p style="margin: 8px 0 0 0;"><strong style="color: #4caf50;">Operating cost (monthly):</strong> <strong style="color: #ff6b6b;">₹2–5 lakhs</strong> (hosting, money laundering, maintenance)</p>
+            <p style="margin: 8px 0 0 0;"><strong style="color: #4caf50;">Revenue potential:</strong> <strong style="color: #ff6b6b;">₹50+ lakhs/month</strong> (varies by campaign success rate)</p>
+        </div>
+    </div>
+
+    <div class="site-pager">
+        <a href="06_defense_remediation.html"><div class="pager-label">← Previous</div><div class="pager-title">Defense & Remediation</div></a>
+        <a href="evidence/index.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Evidence</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense & Remediation</a><br>
+                <a href="07_threat_actor_profile.html">Threat Actor Profile</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                </p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational & Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>
