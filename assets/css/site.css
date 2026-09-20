@@ -142,7 +142,8 @@ img, svg { max-width: 100%; }
 }
 
 @media (max-width: 880px) {
-  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; }
+  .site-header-inner { justify-content: flex-start; }
+  .nav-toggle { display: inline-flex; align-items: center; justify-content: center; margin-left: 0; }
   .site-nav {
     display: none;
     position: absolute;
