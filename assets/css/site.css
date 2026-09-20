@@ -153,6 +153,7 @@ img, svg { max-width: 100%; }
     padding: 8px 16px 16px;
     border-top: 1px solid rgba(255,255,255,0.08);
     box-shadow: var(--shadow-md);
+    margin-left: 0;
   }
   .site-nav.open { display: flex; }
   .site-nav a { padding: 12px 14px; }
