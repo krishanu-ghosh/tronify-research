@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indicators of Compromise — Independent tronify.rent Report</title>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
+        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
+        h2 { color: #1976d2; margin: 20px 0 10px; }
+        h3 { color: #555; margin: 15px 0 8px; }
+        .ioc { background: #fff3cd; border-left: 4px solid #ff9800; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; word-break: break-all; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 11px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; font-weight: bold; }
+        .copy-button { background: #1976d2; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
+        .copy-button:hover { background: #1565c0; }
+        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
+        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
+        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
+        .detection-query { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .severity { display: inline-block; padding: 4px 10px; border-radius: 3px; font-weight: bold; font-size: 12px; color: white; }
+        .severity-critical { background: #d32f2f; }
+        .severity-high { background: #f57c00; }
+        .severity-medium { background: #fbc02d; color: #333; }
+    </style>
+</head>
+<body data-page="05">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+    <nav class="breadcrumb"><a href="index.html">Home</a> / Indicators of Compromise</nav>
+
+    <div class="container">
+        <h1>🔍 Indicators of Compromise (IoCs)</h1>
+        <h2>Detection Signatures & Hunting Queries</h2>
+
+        <h2>Network IoCs</h2>
+
+        <h3>Malicious Domains</h3>
+        <table>
+            <tr>
+                <th>Domain</th>
+                <th>Purpose</th>
+                <th>Severity</th>
+                <th>Status (verified 2026-09-20)</th>
+            </tr>
+            <tr>
+                <td>tronify.rent</td>
+                <td>Primary attack website (impersonates the real "Tronify" TRON energy-rental brand)</td>
+                <td><span class="severity severity-critical">CRITICAL</span></td>
+                <td>Active — resolves to 185.178.208.133, fronted by <strong>DDoS-Guard</strong>, homepage last modified 2026-09-14</td>
+            </tr>
+            <tr>
+                <td>lending.fhogu.pw</td>
+                <td>Payload host (greenbid.js drainer) + C&C backend</td>
+                <td><span class="severity severity-critical">CRITICAL</span></td>
+                <td>Active — resolves via Cloudflare anycast (104.21.94.164 / 172.67.138.20), payload last modified 2026-08-30, <code>/tron/config</code> actively serving live attacker addresses</td>
+            </tr>
+        </table>
+        <p style="font-size: 13px; color: #666;">Note the two tiers of infrastructure use two <em>different</em> reverse-proxy providers — DDoS-Guard for the phishing frontend, Cloudflare for the payload/C&C host — which obscures both true origin servers and means a single provider takedown request won't remove both.</p>
+
+        <h3>Malicious URLs</h3>
+        <div class="ioc">
+https://tronify.rent/
+https://tronify.rent/index.html
+https://lending.fhogu.pw/greenbid.js?v=1
+https://lending.fhogu.pw/greenbid.js
+        </div>
+
+        <h3>Backend C&C Endpoints</h3>
+        <p>All 12 endpoints below were extracted directly from the live payload on 2026-09-20 (regex search for <code>/tron/[a-zA-Z0-9_/-]+</code> against the downloaded file, preserved at <code>evidence/payload/greenbid.js</code>):</p>
+        <div class="ioc">
+https://lending.fhogu.pw/tron/config
+https://lending.fhogu.pw/tron/balances/{address}
+https://lending.fhogu.pw/tron/notify/wallet-connected
+https://lending.fhogu.pw/tron/notify/visit
+https://lending.fhogu.pw/tron/approve/notify
+https://lending.fhogu.pw/tron/notify/sweep
+https://lending.fhogu.pw/tron/notify/approve-rejected
+https://lending.fhogu.pw/tron/notify/tx-proposed
+https://lending.fhogu.pw/tron/funding/initiate
+https://lending.fhogu.pw/tron/funding/status/{address}
+https://lending.fhogu.pw/tron/client-log
+https://lending.fhogu.pw/tron/walletconnect
+        </div>
+        <p style="font-size: 13px; color: #666;">An earlier draft of this list had 8 entries; direct extraction found 4 more (<code>/tron/balances/</code>, <code>/tron/client-log</code>, <code>/tron/funding/status/</code>, <code>/tron/walletconnect</code>).</p>
+
+        <h3>DNS Detection</h3>
+        <div class="detection-query">
+            <strong>DNS Query Patterns:</strong>
+            <div class="code-block">
+# Monitor for DNS queries to:
+tronify.rent
+lending.fhogu.pw
+
+# YARA Rule Example:
+rule detect_tronify_dns {
+    strings:
+        $domain1 = "tronify.rent" nocase
+        $domain2 = "lending.fhogu.pw" nocase
+    condition:
+        any of them
+}
+            </div>
+        </div>
+
+        <h3>Network Traffic Patterns</h3>
+        <div class="detection-query">
+            <strong>HTTP Request Signatures:</strong>
+            <div class="code-block">
+# Monitor for HTTP requests to lending.fhogu.pw with:
+# - Path: /greenbid.js
+# - Method: GET
+# - Response: JavaScript, ~150KB
+
+# Suricata Rule Pattern:
+alert http $HOME_NET any -> $EXTERNAL_NET any
+  (msg:"Tronify Drainer Payload Download";
+   content:"GET /greenbid.js";
+   http_uri;
+   pcre:"/greenbid\.js/";
+   sid:1;)
+
+# Monitor for POST requests to lending.fhogu.pw with:
+# - Path: /tron/* (any C&C endpoint)
+# - Content-Type: application/json
+# - Body contains: visitorId, address, walletName, etc.
+
+alert http $HOME_NET any -> $EXTERNAL_NET any
+  (msg:"Tronify C&C Exfiltration";
+   content:"POST /tron/";
+   http_uri;
+   content:"application/json";
+   http_header;
+   sid:2;)
+            </div>
+        </div>
+
+        <h2>File IoCs</h2>
+
+        <h3>JavaScript Payload</h3>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+                <th>Severity</th>
+            </tr>
+            <tr>
+                <td>Filename</td>
+                <td>greenbid.js</td>
+                <td><span class="severity severity-critical">CRITICAL</span></td>
+            </tr>
+            <tr>
+                <td>Size</td>
+                <td>150,274 bytes</td>
+                <td><span class="severity severity-high">HIGH</span></td>
+            </tr>
+            <tr>
+                <td>SHA-256</td>
+                <td>0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416</td>
+                <td><span class="severity severity-critical">CRITICAL</span></td>
+            </tr>
+            <tr>
+                <td>File Type</td>
+                <td>JavaScript (text/javascript), served via Cloudflare</td>
+                <td>Info</td>
+            </tr>
+            <tr>
+                <td>Location</td>
+                <td>https://lending.fhogu.pw/greenbid.js?v=1</td>
+                <td><span class="severity severity-critical">CRITICAL</span></td>
+            </tr>
+        </table>
+        <p style="font-size: 13px; color: #666;">The SHA-256 hash is the single most reliable file IoC here — unlike string signatures, it can't be evaded by attacker string obfuscation, but it also breaks the instant the attacker changes even one byte of the file. Use both.</p>
+
+        <h3>String Signatures</h3>
+        <p>Unique strings found in greenbid.js payload:</p>
+        <div class="ioc">
+"tron-drainer:visitor-id"
+"tronSpender"
+"tronSweepAddress"
+"tronSweepMinTrx"
+"/tron/config"
+"/tron/notify/wallet-connected"
+"/tron/approve/notify"
+Y("drain"
+"already approved"
+"sweeping"
+"TRX sweep result"
+"lending.fhogu.pw"
+        </div>
+
+        <h3>YARA Signatures</h3>
+        <div class="code-block">
+rule Tronify_Drainer {
+    meta:
+        author = "Security Researcher"
+        description = "Tronify.rent wallet drainer payload"
+        severity = "critical"
+        date = "2026-09-20"
+        hash_sha256 = "0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416"
+    strings:
+        $s1 = "tron-drainer:visitor-id"
+        $s2 = "tronSpender"
+        $s3 = "tronSweepAddress"
+        $s4 = "lending.fhogu.pw"
+        $s5 = "/tron/config"
+        $s6 = "/tron/approve/notify"
+        $s7 = "Y(\"drain\"" nocase
+        $s8 = "already approved"
+    condition:
+        5 of them
+        // Correction: an earlier draft of this rule added a magic-number check
+        // "uint32(0) == 0x28666928" claiming it matched the IIFE opening "(function(){".
+        // That check was wrong on the arithmetic (little-endian uint32 of the literal
+        // bytes "(fun" is 0x6E756628, not 0x28666928) and would never have matched —
+        // it's removed rather than "fixed" to a byte-exact match, since attackers can
+        // trivially add a leading comment or whitespace and break a magic-number
+        // condition anyway. The 8 string signatures are the durable part of this rule.
+}
+
+rule Tronify_Website {
+    meta:
+        author = "Security Researcher"
+        description = "Tronify.rent malicious website content"
+        date = "2026-09-20"
+    strings:
+        $domain = "tronify.rent"
+        $company = "Tronify Energy Solutions LLC"
+        $payload = "greenbid.js" nocase
+        $contact = "hello@tronify.rent"
+    condition:
+        3 of them
+}
+
+rule Tronify_C2_Config {
+    meta:
+        author = "Security Researcher"
+        description = "Tronify C&C configuration endpoint"
+    strings:
+        $host = "lending.fhogu.pw"
+        $endpoint1 = "/tron/config"
+        $endpoint2 = "/tron/notify"
+        $json = "tronSweepAddress"
+    condition:
+        $host and 2 of ($endpoint*) and $json
+}
+        </div>
+
+        <h2>Web Behavioral IoCs</h2>
+
+        <h3>Browser Console Activity</h3>
+        <p>When greenbid.js executes, it logs debug messages to browser console:</p>
+        <div class="detection-query">
+            <strong>Console Logging Pattern:</strong>
+            <div class="code-block">
+Y("drain", "no tron spender configured")
+Y("drain", `found ${n.length} tokens`)
+Y("drain", `${r.symbol}: already approved`)
+Y("drain", `sweeping ${u} sun TRX`)
+Y("drain", `TRX sweep result: ...`)
+Y("connectTronLink candidates:", JSON.stringify(w))
+
+// These messages appear in console if user opens DevTools
+// Search for "drain" in console to detect attack
+            </code>
+            </div>
+        </div>
+
+        <h3>localStorage Activity</h3>
+        <p>Drainer stores visitor ID in localStorage:</p>
+        <div class="detection-query">
+            <strong>localStorage Signature:</strong>
+            <div class="code-block">
+// Browser DevTools > Application > Local Storage
+// Look for:
+Key: "tron-drainer:visitor-id"
+Value: "550e8400-e29b-41d4-a716-446655440000" (UUID format)
+
+// Detection JavaScript:
+if (localStorage.getItem("tron-drainer:visitor-id")) {
+    console.warn("Tronify drainer detected in localStorage");
+}
+            </div>
+        </div>
+
+        <h2>Blockchain IoCs</h2>
+
+        <h3>TRON Wallet Addresses (Attacker Destinations)</h3>
+        <p>The attacker's destination addresses are <strong>not hardcoded</strong> in greenbid.js — they're loaded dynamically from <code>/tron/config</code>. That endpoint is live and unauthenticated, so we queried it directly on 2026-09-20 and got real values, then verified them on-chain via TronGrid/TronScan (raw responses in <code>evidence/onchain/</code>).</p>
+        <table>
+            <tr>
+                <th>Address Type</th>
+                <th>Address (as of 2026-09-20 — will rotate)</th>
+                <th>On-chain status</th>
+            </tr>
+            <tr>
+                <td>Token Spender (<code>config.tronSpender</code>)</td>
+                <td><code>TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv</code></td>
+                <td>Created 2026-07-23; last active 2026-09-19; currently holds 14,635.00 USDT + 875.44 TRX</td>
+            </tr>
+            <tr>
+                <td>TRX/Token Sweep Destination (<code>config.tronSweepAddress</code>)</td>
+                <td><code>TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ</code></td>
+                <td>Created 2026-07-23 (39s after the spender address); currently holds 32,288.30 USDT + 3,213.53 TRX; received USDT from ~25 distinct addresses in the last 30 transfers (2026-08-27 to 2026-09-19)</td>
+            </tr>
+            <tr>
+                <td>Exchange contract (<code>config.tronExchangeContract</code>)</td>
+                <td><code>TDE7vfjJuYqEzzKw6hfdSB3dfLQyXDYPux</code></td>
+                <td>Deployed smart contract (not an EOA); on-chain account_name decodes to "TronEnergy"</td>
+            </tr>
+            <tr>
+                <td>Observed consolidation targets (funds moved <em>from</em> the sweep address)</td>
+                <td><code>TVkRFwgyvUrJqGe3xZaZvTj4vxM5bzherw</code> (received 24,000 USDT, 2026-08-19)<br><code>TZ2PfDN5wNcsrabcB2JoMagx8vY7VEmQqX</code> (received 6,000 USDT, 2026-08-16)</td>
+                <td>Not yet traced further — good next pivot points for law enforcement / chain analysts, since they represent where funds go <em>after</em> theft rather than the (more easily rotated) collection point</td>
+            </tr>
+        </table>
+        <p style="margin-top: 15px;"><strong>Caveat:</strong> because the C&C config is fetched fresh on every visit, the attacker can change these addresses at any time without redeploying greenbid.js. Treat the specific addresses above as a dated snapshot for pivoting/tracing, not a permanent blocklist entry — re-query <code>/tron/config</code> periodically if operationalizing this.</p>
+
+        <h3>Smart Contract Interaction Pattern</h3>
+        <p>Blockchain observation patterns for exploit detection:</p>
+        <div class="detection-query">
+            <strong>TRON Chain Analysis (TronScan):</strong>
+            <div class="code-block">
+// Look for transactions that indicate draining activity:
+
+// 1. Multiple victims approving unlimited token access to SAME spender
+SELECT
+    event_type = "Approval"
+    AND amount = "115792089237316195423570985008687907853269984665640564039457584007913129639935"  // uint256 MAX
+    GROUP BY spender
+    HAVING COUNT(DISTINCT owner) > 10
+    WITHIN 24 hours;
+
+// 2. Multiple token transfers from different wallets to SAME destination
+SELECT
+    event_type = "Transfer"
+    AND amount > 1000000  // Large amounts
+    GROUP BY to_address
+    HAVING COUNT(DISTINCT from_address) > 5
+    WITHIN 24 hours;
+
+// 3. Rapid TRX balance depletions to same destination
+SELECT
+    event_type = "NativeTransfer"
+    WHERE from_balance_before >> from_balance_after  // Significant loss
+    GROUP BY to_address
+    HAVING COUNT(DISTINCT from_address) > 5
+    WITHIN 24 hours;
+            </code>
+            </div>
+        </div>
+
+        <h3>TronScan Hunting Strategy</h3>
+        <p>Without known attacker addresses, look for exploitation patterns:</p>
+        <div class="code-block">
+# Search for unlimited approvals (uint256 MAX value):
+https://tronscan.org/#/token/explorer?type=approval&amount=115792089237316195423570985008687907853269984665640564039457584007913129639935
+
+# Look for addresses with large approval patterns
+Search for wallets that have made identical approvals to same spender
+
+# Monitor for cascading TRX transfers
+Look for patterns where multiple unrelated wallets transfer TRX to same address
+
+# Note: Attacker may rotate addresses frequently, making individual address hunting ineffective
+
+# NEW, higher-confidence heuristic (from the verified "gas-funding" mechanism in
+# 02_technical_architecture.html): look for a SINGLE address sending ~15 TRX to many
+# otherwise-unrelated wallets, each of which shortly afterward sends an unlimited USDT
+# approval followed by a full-balance transfer to the SAME spender/destination pair.
+# The funding step is a stronger fingerprint than the sweep itself, because the attacker
+# has to reuse a funding source repeatedly (spending it is a cost), while the sweep
+# destination is cheap to rotate.
+        </div>
+
+        <h2>User Behavior IoCs</h2>
+
+        <h3>Phishing Landing Patterns</h3>
+        <p>Users who visit tronify.rent exhibit predictable behavior patterns:</p>
+        <div class="detection-query">
+            <strong>User Journey Indicators:</strong>
+            <ul>
+                <li>Google search for "TRON energy rental" or similar</li>
+                <li>Visit tronify.rent homepage</li>
+                <li>Scroll to bottom, read (fake) company info</li>
+                <li>Click "Connect Wallet"</li>
+                <li>Approve wallet connection in wallet extension</li>
+                <li>Page loads; wait 5-30 seconds for dApp to initialize</li>
+                <li>Multiple wallet notifications for token approvals appear</li>
+                <li>User confirms each notification</li>
+                <li>Wallet balance drops to ~0 (realizes theft)</li>
+                <li>Posts on Reddit/Twitter for help</li>
+            </ul>
+        </div>
+
+        <h3>Social Media Indicators</h3>
+        <p>Victims post on public channels after exploitation:</p>
+        <div class="code-block">
+# Reddit search patterns:
+site:reddit.com "tronify" "scam"
+site:reddit.com "tronify.rent"
+site:reddit.com "wallet drained" "tronify"
+
+# Twitter search patterns:
+site:twitter.com "tronify.rent"
+site:twitter.com "@tronify_team" complaint
+site:twitter.com "#tronify" scam
+
+# Telegram group warnings:
+# Many TRON community groups warn members about tronify.rent
+# Monitor group messages for "tronify" mentions
+        </div>
+
+        <h2>Detection Methods by Platform</h2>
+
+        <h3>For Web Application Firewalls (WAF)</h3>
+        <div class="code-block">
+# ModSecurity Rule
+SecRule RESPONSE_BODY "@rx lending\.fhogu\.pw" \
+    "id:1000,phase:4,log,deny,msg:'Malicious domain detected'"
+
+# Cloudflare WAF
+(http.response.code == 200 and
+ (http.response.content contains "lending.fhogu.pw" or
+  http.response.content contains "greenbid.js"))
+        </div>
+
+        <h3>For DNS Security</h3>
+        <div class="code-block">
+# Pi-hole blocklist entry:
+0.0.0.0 tronify.rent
+0.0.0.0 lending.fhogu.pw
+0.0.0.0 www.tronify.rent
+
+# Bind9 zone file:
+tronify.rent    IN  A  127.0.0.1
+lending.fhogu.pw IN  A  127.0.0.1
+
+# OpenDNS/Cisco Umbrella blocklist:
+Add to "Malware" category
+        </div>
+
+        <h3>For Endpoint Detection (EDR)</h3>
+        <div class="code-block">
+# Monitor browser extensions/add-ons for:
+- TronLink wallet extension
+- MetaMask extension
+- WalletConnect
+
+# Monitor browser cache for:
+- greenbid.js downloads
+- lending.fhogu.pw connections
+- tronify.rent cookies/storage
+
+# Monitor process execution:
+- Chrome/Firefox child processes connecting to lending.fhogu.pw
+- TronLink plugin sending data to C&C
+        </div>
+
+        <h2>Temporal IoCs</h2>
+
+        <h3>Campaign Timeline</h3>
+        <table>
+            <tr>
+                <th>Date</th>
+                <th>Event</th>
+                <th>Evidence</th>
+                <th>Confidence</th>
+            </tr>
+            <tr>
+                <td>2026-07-23</td>
+                <td>Attacker's spender and sweep addresses created (39 seconds apart)</td>
+                <td>TronGrid <code>create_time</code> field on both addresses (evidence/onchain/)</td>
+                <td>Confirmed (on-chain)</td>
+            </tr>
+            <tr>
+                <td>2026-08-16 to 2026-09-19</td>
+                <td>Active theft window observed in most recent transaction page</td>
+                <td>~25 distinct USDT senders into the sweep address; two consolidation transfers out (evidence/onchain/trc20_transfers_tronSweepAddress_page1.json)</td>
+                <td>Confirmed (on-chain)</td>
+            </tr>
+            <tr>
+                <td>2026-08-30</td>
+                <td>Payload last modified</td>
+                <td><code>Last-Modified</code> HTTP header on greenbid.js (evidence/payload/)</td>
+                <td>Confirmed (HTTP header)</td>
+            </tr>
+            <tr>
+                <td>2026-09-14</td>
+                <td>tronify.rent homepage last modified</td>
+                <td><code>Last-Modified</code> HTTP header on the site (evidence/site/)</td>
+                <td>Confirmed (HTTP header)</td>
+            </tr>
+            <tr>
+                <td>2026-09-19 22:12</td>
+                <td>Spender address's most recent on-chain activity</td>
+                <td>TronGrid <code>latest_opration_time</code></td>
+                <td>Confirmed (on-chain)</td>
+            </tr>
+            <tr>
+                <td>2026-09-20</td>
+                <td>This verification pass: live payload, C&C config, and on-chain data all pulled directly</td>
+                <td>All files in <code>evidence/</code>, checksummed in <code>evidence/SHA256SUMS.txt</code></td>
+                <td>Confirmed (direct collection)</td>
+            </tr>
+            <tr>
+                <td>~2026-06 (unverified)</td>
+                <td>A YouTube video titled around "Tronify.rent Review" exists</td>
+                <td>Found via web search; we did not verify the video's upload date, view count, or that its content specifically calls the site a scam</td>
+                <td><strong>Unverified — do not cite as campaign-launch evidence</strong></td>
+            </tr>
+        </table>
+
+        <h2>False Positive Prevention</h2>
+
+        <h3>The Real "Tronify" Brand — and Why This Isn't a Simple Typosquat</h3>
+        <p><strong>Correction:</strong> an earlier draft of this document asserted that <code>tronify.app</code>, <code>tronify.llc</code>, <code>tronrental.com</code>, and <code>tronified.com</code> were confirmed-legitimate alternatives, without checking them. We checked. Results below are from direct DNS resolution and HTTP requests on 2026-09-20 (raw output in <code>evidence/dns/resolution_snapshot.txt</code> and <code>evidence/site_legit/</code>) — <strong>do not point users at any of these as a "safe alternative" without re-verifying first</strong>, since domain status changes and an expired domain can be re-registered by anyone, including a threat actor:</p>
+        <table>
+            <tr>
+                <th>Domain</th>
+                <th>Live status (checked 2026-09-20)</th>
+                <th>Note</th>
+            </tr>
+            <tr>
+                <td>tronify.app</td>
+                <td>No DNS record (does not currently resolve)</td>
+                <td>Appeared in search results as "TRONIFY — Rent TRON Energy," but is not live now</td>
+            </tr>
+            <tr>
+                <td>tronify.llc</td>
+                <td>No DNS record</td>
+                <td>Not currently live</td>
+            </tr>
+            <tr>
+                <td>tronified.com</td>
+                <td>No DNS record</td>
+                <td>Not currently live</td>
+            </tr>
+            <tr>
+                <td>tronify.pro</td>
+                <td>Resolves, but 302-redirects to google.com</td>
+                <td>Dead/abandoned, not offering any service</td>
+            </tr>
+            <tr>
+                <td>tronify.io / tronify.ai</td>
+                <td>Live, resolving, serving a real single-page app (Chinese-language TRON energy/bandwidth rental + TRX staking product)</td>
+                <td>The only Tronify-branded domain in this set we found to be genuinely live and serving a product as of this check</td>
+            </tr>
+        </table>
+        <p><strong>Why this matters more than a typosquat table:</strong> a third-party crypto news article reports that Trust Wallet integrated a service called "Tronify" for automatic energy rental — meaning the brand "Tronify" carries real, independently-earned trust in this space. <code>tronify.rent</code> is not a misspelling of one specific competitor; it's occupying the same brand name under a different, unusual TLD (<code>.rent</code>) in a space where several legitimate-sounding "Tronify" domains are already dead or abandoned. A user who searches "is Tronify legit" will find genuinely positive results that say nothing about which TLD they apply to. We could not confirm whether the "Tronify Energy Solutions LLC, EIN 87-2945163" registration displayed on tronify.rent belongs to a real filed entity, was copied from a real one, or was invented — none of the other Tronify-branded sites we checked displayed that specific EIN for comparison, so this remains an open question rather than a settled one.</p>
+
+        <h2>Reporting IoCs</h2>
+
+        <h3>Where to Report</h3>
+        <ul>
+            <li><strong>TRON Community:</strong> TRON DAO Forum (forum.tron.org)</li>
+            <li><strong>Blockchain Security:</strong> TronScan team, TRON Foundation security@tron.network</li>
+            <li><strong>Wallets:</strong> TronLink, Trust Wallet, MetaMask security teams</li>
+            <li><strong>DNS Registrars:</strong> Report domain abuse to domain registrar</li>
+            <li><strong>Hosting Providers:</strong> Report abuse to lending.fhogu.pw hoster</li>
+            <li><strong>Security Research:</strong> TRON security research communities, Twitter security accounts</li>
+        </ul>
+
+    </div>
+
+    <div class="site-pager">
+        <a href="04_code_analysis.html"><div class="pager-label">← Previous</div><div class="pager-title">Code Analysis</div></a>
+        <a href="06_defense_remediation.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Defense &amp; Remediation</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                <a href="FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>

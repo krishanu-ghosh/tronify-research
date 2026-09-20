@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Summary — Independent tronify.rent Report</title>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
+        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
+        h2 { color: #1976d2; margin: 20px 0 10px; }
+        h3 { color: #555; margin: 15px 0 8px; }
+        .alert { background: #ffebee; border-left: 4px solid #d32f2f; padding: 15px; margin: 20px 0; border-radius: 4px; }
+        .alert strong { color: #d32f2f; }
+        .evidence { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; overflow-x: auto; }
+        .flow { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .risk-level { display: inline-block; padding: 5px 12px; border-radius: 20px; font-weight: bold; color: white; background: #d32f2f; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; font-weight: bold; }
+        tr:hover { background: #f9f9f9; }
+        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
+        .file-link:hover { text-decoration: underline; }
+        code { background: #f5f5f5; padding: 2px 6px; border-radius: 3px; font-family: 'Courier New', monospace; }
+        ul, ol { margin-left: 20px; margin-top: 10px; }
+        li { margin: 8px 0; }
+        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
+        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
+        .nav a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body data-page="01">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+    <nav class="breadcrumb"><a href="index.html">Home</a> / Executive Summary</nav>
+
+    <div class="container">
+        <h1>🚨 TRONIFY.RENT - WALLET DRAINER ANALYSIS</h1>
+        <h2>Executive Summary Report</h2>
+
+        <div class="alert">
+            <strong>THREAT LEVEL: CRITICAL</strong> <span class="risk-level">MALICIOUS</span>
+            <p style="margin-top: 10px;"><strong>tronify.rent</strong> is a <strong>wallet draining service</strong> disguised as a legitimate TRON energy rental platform. It systematically extracts cryptocurrency assets from connected wallets through token approval exploitation and TRX sweeping.</p>
+        </div>
+
+        <h2>Quick Facts</h2>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td><strong>Domain</strong></td>
+                <td>tronify.rent</td>
+            </tr>
+            <tr>
+                <td><strong>Registered Company</strong></td>
+                <td>Tronify Energy Solutions LLC (Florida, EIN: 87-2945163)</td>
+            </tr>
+            <tr>
+                <td><strong>Malicious Payload</strong></td>
+                <td>greenbid.js (150KB minified JavaScript)</td>
+                </tr>
+            <tr>
+                <td><strong>Payload Host</strong></td>
+                <td>https://lending.fhogu.pw/greenbid.js?v=1</td>
+            </tr>
+            <tr>
+                <td><strong>Attack Method</strong></td>
+                <td>Token approval + TRX sweep + backend exfiltration</td>
+            </tr>
+            <tr>
+                <td><strong>Targeted Wallets</strong></td>
+                <td>Trust Wallet, TronLink, OKX Wallet, TokenPocket, Bitget, SafePal, WalletConnect (verified from the live payload's wallet array — not MetaMask, contrary to an earlier draft of this report)</td>
+            </tr>
+            <tr>
+                <td><strong>Blockchain</strong></td>
+                <td>TRON Network (TRC-20 tokens, TRX native)</td>
+            </tr>
+            <tr>
+                <td><strong>Current attacker addresses</strong></td>
+                <td>tronSpender: <code>TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv</code> · tronSweepAddress: <code>TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ</code> (fetched live from C&C on 2026-09-20; attacker can rotate these — see IoCs doc)</td>
+            </tr>
+            <tr>
+                <td><strong>Status</strong></td>
+                <td>Verified active and currently exploiting victims as of 2026-09-20 — confirmed by pulling the live payload, live C&C config, and on-chain transaction history for the attacker's own addresses (see "On-Chain Confirmation" below)</td>
+            </tr>
+        </table>
+
+        <h2>What Happened?</h2>
+        <div class="flow">
+            <h3>The Attack in 3 Steps:</h3>
+            <ol>
+                <li><strong>Social Engineering:</strong> Users visit tronify.rent believing it's a legitimate energy rental service. The site claims to save 97% on transaction fees.</li>
+                <li><strong>Wallet Connection:</strong> Users click "Connect Wallet" and approve connection through TronLink, WalletConnect, or other TRON wallets.</li>
+                <li><strong>Automated Draining:</strong> The greenbid.js payload runs in the browser, automatically:
+                    <ul>
+                        <li>Analyzes all TRC-20 tokens in the wallet</li>
+                        <li>Requests approval (token spending permission) from the user</li>
+                        <li>Transfers all approved tokens to attacker-controlled addresses</li>
+                        <li>Sweeps remaining TRX balance to attacker address</li>
+                        <li>Logs all activity to backend servers for attacker tracking</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <h2>Key Evidence</h2>
+
+        <h3>1. Explicit Draining Code References</h3>
+        <p>The greenbid.js payload contains 8 explicit logging statements for "drain" functionality. These are the exact strings, byte-for-byte, extracted from the live payload we downloaded and hashed (SHA-256 <code>0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416</code>):</p>
+        <div class="evidence">
+Y("drain","no tron spender configured")
+Y("drain",`found ${n.length} tokens`)
+Y("drain",`${r.symbol}: already approved`)
+Y("drain",`TRX balance: ${B} sun, min: ${h} sun`)
+Y("drain",`sweeping ${u} sun TRX`)
+Y("drain",`TRX sweep result: ${JSON.stringify(v)`)
+Y("drain",`TRX sweep error: ${E==null?void 0:E.message}`)
+Y("drain","TRX sweep timed out — skipping")
+        </div>
+        <p style="font-size: 13px; color: #666;">Note the approval mechanism specifically calls the TRC-20 <code>increaseApproval(spender, amount)</code> method (not the more commonly documented <code>approve()</code>) — confirmed directly in the payload as <code>B.increaseApproval(e.tronSpender,"11579208923...639935")</code>.</p>
+
+        <h3>2. Backend Command & Control Infrastructure</h3>
+        <p>The script communicates with attacker-controlled servers via <strong>12 distinct endpoints</strong> (all extracted directly from the live payload — 4 more than an earlier draft of this report found):</p>
+        <div class="evidence">
+/tron/config                     // Fetch spender address & sweep config
+/tron/balances/{address}         // Fetch victim's token balances (attacker's own backend, not TronGrid directly)
+/tron/notify/wallet-connected    // Log victim wallet connection
+/tron/notify/visit                // Log page visit (even before wallet connect)
+/tron/approve/notify             // Log token approvals
+/tron/notify/sweep               // Log TRX sweep transaction
+/tron/notify/approve-rejected    // Track failed approvals
+/tron/notify/tx-proposed         // Log a proposed transaction before signing
+/tron/funding/initiate           // Attacker sends victim TRX for gas — see "Gas-Funding" below
+/tron/funding/status/{address}   // Poll whether that gas funding has landed
+/tron/client-log                 // General-purpose telemetry: ships every console-style log, not just "drain"-tagged ones
+/tron/walletconnect              // Proxies WalletConnect session handling through the attacker's backend
+        </div>
+        <div class="alert">
+            <strong>New finding — attacker-funded gas ("priming"):</strong> If a victim's wallet holds valuable USDT but has less than 30 TRX (not enough to pay approval/transfer fees), the payload calls <code>/tron/funding/initiate</code> and the attacker's backend sends the victim ~15 TRX directly, then polls <code>/tron/funding/status</code> until it lands, before continuing the drain. The attacker is willing to front real money to unlock a high-value wallet that would otherwise be stuck. This is a stronger and more specific on-chain signal than a generic "cascading transfer" pattern — see the IoCs document.
+        </div>
+
+        <h3>3. Multi-Wallet Support</h3>
+        <p>The drainer's wallet-detection array, extracted verbatim from the live payload, lists these 7 providers in this exact order:</p>
+        <table>
+            <tr>
+                <th>Wallet Provider</th>
+                <th>Detection Method</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Trust Wallet</td>
+                <td>window.trustwallet OR window.ethereum.isTrust</td>
+                <td>First in array</td>
+            </tr>
+            <tr>
+                <td>TronLink</td>
+                <td>window.tronLink object</td>
+                <td>Primary target (16 references in payload)</td>
+            </tr>
+            <tr>
+                <td>OKX Wallet</td>
+                <td>window.okxwallet</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>TokenPocket</td>
+                <td>window.tokenpocket OR window.ethereum.isTokenPocket</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>Bitget (formerly BitKeep)</td>
+                <td>window.ethereum.isBitKeep</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>SafePal</td>
+                <td>window.safepalProvider OR window.ethereum.isSafePal</td>
+                <td>Supported</td>
+            </tr>
+            <tr>
+                <td>WalletConnect</td>
+                <td>WalletConnect protocol (proxied via /tron/walletconnect)</td>
+                <td>Supported</td>
+            </tr>
+        </table>
+        <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this report listed "MetaMask (TRON chain)" as a target, attributing the <code>window.ethereum.isTrust</code> check to it. That check is actually part of Trust Wallet's detection (Trust Wallet's injected provider sets <code>isTrust=true</code>). MetaMask does not appear anywhere in the live payload (0 matches).</p>
+
+        <h2>Attack Timeline</h2>
+        <ol>
+            <li><strong>User visits tronify.rent</strong> → Legitimate-looking energy rental interface loads</li>
+            <li><strong>Clicks "Connect Wallet"</strong> → TronLink/WalletConnect dialog appears</li>
+            <li><strong>Approves wallet connection</strong> → Site gains access to wallet address & signing capabilities</li>
+            <li><strong>greenbid.js executes in browser</strong> → Payload initialized with attacker config</li>
+            <li><strong>Wallet analysis</strong> → Script enumerates all TRC-20 tokens & TRX balance</li>
+            <li><strong>Token approvals</strong> → User sees wallet notifications requesting token spending approvals</li>
+            <li><strong>User confirms</strong> → Each confirmation grants spender contract unlimited access</li>
+            <li><strong>Automated transfer</strong> → Tokens transferred to attacker address (tronSweepAddress)</li>
+            <li><strong>TRX sweep</strong> → Remaining native TRX sent to attacker (with 2 TRX fee kept for next victim)</li>
+            <li><strong>Logging & tracking</strong> → All activity reported to C&C servers via /tron/* endpoints</li>
+        </ol>
+
+        <h2>Why This Works</h2>
+        <ul>
+            <li><strong>Social Engineering:</strong> Legitimate-looking interface with real company name, address, phone number</li>
+            <li><strong>User Expectations:</strong> Token approval requests appear normal for DeFi operations</li>
+            <li><strong>Browser Execution:</strong> JavaScript runs with full access to connected wallet APIs</li>
+            <li><strong>Non-Custodial Claim:</strong> Users believe they "control their keys" - the site never asks for seed phrase</li>
+            <li><strong>Automation:</strong> Once wallet connected, script runs autonomously without further user interaction</li>
+            <li><strong>Reversibility Problem:</strong> Once approved, token transfers cannot be blocked (no on-chain way to prevent)</li>
+        </ul>
+
+        <h2>Confirmed Indicators</h2>
+        <ul>
+            <li>✓ 150KB JavaScript payload with 8 explicit "drain" logging statements</li>
+            <li>✓ Command & Control endpoints for victim tracking (/tron/config, /tron/notify/*, etc.)</li>
+            <li>✓ Multi-wallet provider compatibility code (TronLink, WalletConnect, Trust, SafePal)</li>
+            <li>✓ Automated token enumeration & unlimited approval requests</li>
+            <li>✓ TRX balance sweeping to attacker-configured address</li>
+            <li>✓ Visitor ID generation for campaign tracking</li>
+            <li>✓ Retry logic for approval requests with exponential backoff</li>
+        </ul>
+
+        <h2>Impact Assessment</h2>
+        <table>
+            <tr>
+                <th>Impact Category</th>
+                <th>Severity</th>
+                <th>Details</th>
+            </tr>
+            <tr>
+                <td>Asset Theft</td>
+                <td>CRITICAL</td>
+                <td>100% of approved token value + all TRX balance transferred</td>
+            </tr>
+            <tr>
+                <td>Wallet Compromise</td>
+                <td>CRITICAL</td>
+                <td>Attacker gains spender permissions on all TRC-20 tokens</td>
+            </tr>
+            <tr>
+                <td>User Data Exfiltration</td>
+                <td>HIGH</td>
+                <td>Wallet addresses, IP, user-agent, transaction history logged</td>
+            </tr>
+            <tr>
+                <td>Account Takeover</td>
+                <td>MEDIUM</td>
+                <td>If wallet is connected to centralized exchanges, downstream risk</td>
+            </tr>
+            <tr>
+                <td>Financial Loss Scale</td>
+                <td>CONFIRMED (lower bound), true total unknown</td>
+                <td>On 2026-09-20 we found the current sweep address's 30 most recent USDT inflows alone total ~$32,560, from ~25 distinct sender wallets, spanning 2026-08-27 to 2026-09-19. That address and the spender address together currently hold ~46,900 USDT + ~4,089 TRX unspent. This is a floor, not a ceiling — older transfers exist beyond this page of history, and the spender/sweep addresses have already sent ~30,500 USDT onward (two transfers of 24,000 and 6,000 USDT) to other addresses we did not trace further.</td>
+            </tr>
+        </table>
+        <h3>On-Chain Confirmation (New — 2026-09-20)</h3>
+        <p>Because the C&C's <code>/tron/config</code> endpoint is live and unauthenticated, we retrieved the attacker's actual current addresses and checked them directly on TronGrid/TronScan. Raw API responses are preserved in <code>evidence/onchain/</code> and <code>evidence/cnc/</code> with checksums in <code>evidence/SHA256SUMS.txt</code>. Key findings:</p>
+        <ul>
+            <li>Both the spender (<code>TV6n8c...Ys5rv</code>) and sweep (<code>TLv3iS...g7tpJ</code>) addresses were created within 39 seconds of each other on 2026-07-23 — clearly provisioned together as one attacker toolkit.</li>
+            <li>The spender address's last on-chain activity was 2026-09-19 22:12 — the day before this report.</li>
+            <li>The sweep address shows a clear victim-in / consolidation-out pattern: ~25 distinct wallets sent USDT in over ~3 weeks, and the attacker periodically moves large batches out (24,000 USDT and 6,000 USDT observed) to separate consolidation addresses.</li>
+            <li>The "tronExchangeContract" address is a deployed smart contract (not a wallet) whose on-chain name decodes to "TronEnergy" — likely the mechanism used to make the site's energy-rental claim appear at least partially functional.</li>
+        </ul>
+
+        <h2>Next Steps for Users</h2>
+        <div class="alert">
+            <strong>If you connected your wallet to tronify.rent:</strong>
+            <ol>
+                <li>Check your wallet's "token approvals" and revoke any suspicious contracts</li>
+                <li>Review your TRON transaction history (tronscan.org) for any unauthorized transfers</li>
+                <li>If unauthorized transfers are found, move remaining assets to a new wallet</li>
+                <li>Report the incident to your wallet provider</li>
+                <li>See <a class="file-link" href="06_defense_remediation.html">Defense & Remediation guide</a> for detailed steps</li>
+            </ol>
+        </div>
+
+        <h2>For Security Researchers</h2>
+        <p>Continue to:</p>
+        <ul>
+            <li><a class="file-link" href="02_technical_architecture.html">Technical Architecture</a> - Deep dive into how the drainer works</li>
+            <li><a class="file-link" href="03_attack_chain.html">Attack Chain</a> - Step-by-step exploitation process</li>
+            <li><a class="file-link" href="04_code_analysis.html">Code Analysis</a> - Detailed breakdown of greenbid.js</li>
+            <li><a class="file-link" href="05_indicators_of_compromise.html">IoCs</a> - Detection signatures and hunting techniques</li>
+        </ul>
+
+        <h2>Attribution Notes</h2>
+        <p>As of September 2026, the attacker identity is unknown. The registered company "Tronify Energy Solutions LLC" (EIN 87-2945163, Orlando FL) shown on tronify.rent could not be confirmed or refuted against Florida's Sunbiz registry in this pass — that specific claim remains unverified, not proven stolen or proven genuine.</p>
+        <p><strong>Brand-squatting angle (new finding):</strong> "Tronify" is a real, actively-used brand name in the TRON energy-rental space — a service by that name is reported (via a third-party crypto news article) to be integrated with Trust Wallet, and live product/documentation sites exist at <code>tronify.io</code>/<code>tronify.ai</code> and a GitBook. Several other tronify-named domains we checked (<code>tronify.app</code>, <code>tronify.llc</code>, <code>tronified.com</code>) currently return no DNS record at all, and <code>tronify.pro</code> resolves but 302-redirects to google.com — i.e. dead/abandoned. <code>tronify.rent</code> is not impersonating one specific still-live competitor; it's squatting on a busy, partly-abandoned brand namespace where "is Tronify legit" searches surface genuinely positive signals that don't distinguish between TLDs. This materially increases the effectiveness of the social-engineering angle beyond "professional-sounding fake name."</p>
+        <p>Infrastructure: the frontend (tronify.rent) is fronted by <strong>DDoS-Guard</strong>; the payload host (lending.fhogu.pw) is fronted by <strong>Cloudflare</strong> — two different reverse-proxy providers for the two tiers of infrastructure, both of which obscure the true origin server IP.</p>
+
+    </div>
+
+    <div class="site-pager">
+        <a href="index.html"><div class="pager-label">← Previous</div><div class="pager-title">Home</div></a>
+        <a href="02_technical_architecture.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Technical Architecture</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                <a href="FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>

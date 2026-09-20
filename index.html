@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>tronify.rent Wallet Drainer — Independent Threat Intel Report by Krishanu</title>
+    <meta name="description" content="Independent technical analysis by Krishanu of a live TRON wallet-drainer campaign impersonating the Tronify energy-rental brand, with raw evidence and on-chain verification. Not affiliated with tronify.rent.">
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a2033; }
+        code { background: #eef0f6; padding: 2px 6px; border-radius: 3px; font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.92em; }
+        .card { background: #fff; padding: 26px; border-radius: 10px; box-shadow: 0 1px 2px rgba(15,23,41,0.06); }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+        .alert-box { border-left: 4px solid #dc2626; background: #fdecec; padding: 16px 18px; border-radius: 6px; margin-bottom: 18px; }
+        .alert-box strong { color: #b91c1c; }
+        table.ix-table { width: 100%; border-collapse: collapse; }
+        table.ix-table th, table.ix-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e5ed; font-size: 13.5px; }
+        table.ix-table th { background: #f4f6fb; font-weight: 700; }
+        .timeline-item { padding: 14px 0; border-bottom: 1px solid #eee; font-size: 14.5px; }
+        .timeline-item:last-child { border-bottom: none; }
+        .timeline-item strong { color: #b91c1c; }
+        .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+        .audience-card { background: #fff; border: 1px solid #e2e5ed; border-radius: 10px; padding: 16px 18px; }
+        .audience-card strong { display: block; margin-bottom: 6px; }
+        .audience-card p, .audience-card a { font-size: 13.5px; }
+    </style>
+</head>
+<body data-page="home">
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <span class="kicker">🚨 Critical — Actively Exploited</span>
+            <h1>tronify.rent is a live TRON wallet drainer impersonating a real energy-rental brand</h1>
+            <p style="font-size:13.5px; color:#93a1c2; margin-bottom:14px;">Independent research by <strong style="color:#fff;">Krishanu</strong> · Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service</p>
+            <p class="lede">Independent technical analysis of greenbid.js, a 150KB drainer payload that requests unlimited TRC-20 approvals and sweeps TRX to attacker-controlled addresses. Every claim below is backed by a live payload download, a live C&amp;C query, and on-chain blockchain data — not assumptions. Raw files and checksums are published alongside the reports.</p>
+            <div class="hero-stats">
+                <div class="hero-stat"><div class="num">150,274B</div><div class="lbl">Payload size, SHA-256 verified</div></div>
+                <div class="hero-stat"><div class="num">12</div><div class="lbl">C&amp;C endpoints extracted from live payload</div></div>
+                <div class="hero-stat"><div class="num">7</div><div class="lbl">Wallet providers targeted (verified array)</div></div>
+                <div class="hero-stat"><div class="num">$32.5K+</div><div class="lbl">Confirmed on-chain USDT theft, last 30 transfers</div></div>
+                <div class="hero-stat"><div class="num">~25</div><div class="lbl">Distinct victim wallets in that window</div></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="site-shell" style="padding-top:32px;">
+        <div class="alert-box">
+            <strong>CRITICAL — ACTIVELY EXPLOITED:</strong> On 2026-09-20 we retrieved the live payload, the live C&C configuration, and on-chain blockchain records for the attacker's own addresses. Those addresses currently hold real, unspent stolen USDT/TRX, and received USDT from roughly two dozen distinct wallets in the preceding ~3 weeks alone — the most recent inbound theft dated the day before this report. This is confirmed, ongoing exploitation with on-chain financial proof, not just capability. See <a href="05_indicators_of_compromise.html">Indicators of Compromise</a> and the <a href="evidence/index.html">Evidence</a> section for raw artifacts and checksums.
+        </div>
+    </div>
+
+    <section class="home-section" style="padding-top:8px;">
+        <h2>📚 The Reports</h2>
+        <p class="section-lede">Six reports, written for different audiences, plus the raw evidence behind every claim.</p>
+        <div class="report-grid">
+            <a class="report-card" href="01_executive_summary.html">
+                <div class="rc-num">01 · 5–10 MIN READ</div>
+                <h3>📋 Executive Summary</h3>
+                <p>What happened, why it's dangerous, and what to do — start here.</p>
+                <div class="rc-meta"><span>Everyone</span></div>
+            </a>
+            <a class="report-card" href="02_technical_architecture.html">
+                <div class="rc-num">02 · 15–20 MIN READ</div>
+                <h3>🔧 Technical Architecture</h3>
+                <p>How the drainer is built: components, wallet detection, gas-funding, C&amp;C protocol.</p>
+                <div class="rc-meta"><span>Researchers, developers</span></div>
+            </a>
+            <a class="report-card" href="03_attack_chain.html">
+                <div class="rc-num">03 · 10–15 MIN READ</div>
+                <h3>⛓️ Attack Chain</h3>
+                <p>Step-by-step exploitation timeline, plus a real, on-chain-verified example.</p>
+                <div class="rc-meta"><span>Full attack flow</span></div>
+            </a>
+            <a class="report-card" href="04_code_analysis.html">
+                <div class="rc-num">04 · 20–30 MIN READ</div>
+                <h3>🔬 Code Analysis</h3>
+                <p>Function-by-function breakdown of greenbid.js, verified against the live file.</p>
+                <div class="rc-meta"><span>Malware analysts</span></div>
+            </a>
+            <a class="report-card" href="05_indicators_of_compromise.html">
+                <div class="rc-num">05 · 10–15 MIN READ</div>
+                <h3>🔍 Indicators of Compromise</h3>
+                <p>Domains, hashes, YARA rules, live attacker addresses, and hunting queries.</p>
+                <div class="rc-meta"><span>SOC / threat hunters</span></div>
+            </a>
+            <a class="report-card" href="06_defense_remediation.html">
+                <div class="rc-num">06 · 15–25 MIN READ</div>
+                <h3>🛡️ Defense &amp; Remediation</h3>
+                <p>Emergency recovery steps for victims, plus long-term prevention guidance.</p>
+                <div class="rc-meta"><span>Victims, security teams</span></div>
+            </a>
+            <a class="report-card evidence-card" href="evidence/index.html">
+                <div class="rc-num" style="color:#b91c1c;">RAW EVIDENCE</div>
+                <h3>🗂️ Evidence Locker</h3>
+                <p>The actual payload, live C&amp;C responses, and on-chain data this analysis is built on — with SHA-256 checksums for every file.</p>
+                <div class="rc-meta"><span>Verify it yourself</span></div>
+            </a>
+        </div>
+    </section>
+
+    <section class="home-section" style="padding-top:0;">
+        <div class="card">
+            <h3 style="color:#1976d2; margin-bottom:16px;">📊 Key Findings Summary</h3>
+            <div class="timeline-item"><strong>1. Brand squatting, not a typo-squat:</strong> "Tronify" is a real TRON energy-rental brand reportedly integrated with Trust Wallet. tronify.rent borrows that brand's trust via an unusual <code>.rent</code> TLD rather than misspelling anything.</div>
+            <div class="timeline-item"><strong>2. Malicious payload:</strong> tronify.rent injects greenbid.js (150,274 bytes) from lending.fhogu.pw, which automatically drains connected wallets.</div>
+            <div class="timeline-item"><strong>3. Token approval exploitation:</strong> Calls TRC-20 <code>increaseApproval()</code> for an unlimited amount, then transfers 100% of approved balances to an attacker address loaded live from C&amp;C.</div>
+            <div class="timeline-item"><strong>4. Attacker-funded gas ("priming") — new finding:</strong> if a victim holds USDT but too little TRX for fees, the attacker's backend sends ~15 TRX to unlock the wallet before draining it.</div>
+            <div class="timeline-item"><strong>5. On-chain proof of theft:</strong> the live C&amp;C's current attacker addresses hold real stolen USDT/TRX and received funds from ~25 distinct wallets in the last three weeks of visible history.</div>
+            <div class="timeline-item"><strong>6. Multi-wallet targeting:</strong> Trust Wallet, TronLink, OKX Wallet, TokenPocket, Bitget, SafePal, and WalletConnect — verified from the live payload's wallet array.</div>
+            <div class="timeline-item"><strong>7. 12 C&amp;C endpoints</strong>, including full client-side telemetry logging (<code>/tron/client-log</code>) beyond just "drain" events.</div>
+            <div class="timeline-item"><strong>8. Irreversible theft:</strong> blockchain transactions are permanent; funds are effectively unrecoverable once transferred.</div>
+        </div>
+    </section>
+
+    <section class="home-section" style="padding-top:0;">
+        <h2>🎯 Quick Links by Audience</h2>
+        <div class="audience-grid">
+            <div class="audience-card">
+                <strong>For Victims</strong>
+                <p>Start with <a href="06_defense_remediation.html">Defense &amp; Remediation</a> for emergency steps, then <a href="01_executive_summary.html">Executive Summary</a> for context.</p>
+            </div>
+            <div class="audience-card">
+                <strong>For Security Researchers</strong>
+                <p><a href="02_technical_architecture.html">Technical Architecture</a> → <a href="04_code_analysis.html">Code Analysis</a> → <a href="05_indicators_of_compromise.html">IoCs</a> → <a href="evidence/index.html">Raw Evidence</a>.</p>
+            </div>
+            <div class="audience-card">
+                <strong>For Wallet Providers</strong>
+                <p><a href="05_indicators_of_compromise.html">IoCs</a> for detection, <a href="06_defense_remediation.html">Defense</a> for UX recommendations.</p>
+            </div>
+            <div class="audience-card">
+                <strong>For Law Enforcement / Chain Analysts</strong>
+                <p><a href="05_indicators_of_compromise.html">IoCs</a> for live attacker addresses and consolidation targets, <a href="evidence/index.html">Evidence</a> for raw on-chain data.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="home-section" style="padding-top:0;">
+        <div class="card">
+            <h3 style="color:#b91c1c; margin-bottom:16px;">⚠️ Critical Indicators (copy into your security tools)</h3>
+            <div class="grid-2">
+                <div>
+                    <strong style="font-size:13px;">Domains to block</strong>
+                    <div class="copyable" style="font-family:'SF Mono',Menlo,Consolas,monospace; margin-top:8px; background:#fdecec; color:#b91c1c; padding:12px 14px; border-radius:6px; font-size:13px;">tronify.rent<br>lending.fhogu.pw</div>
+                </div>
+                <div>
+                    <strong style="font-size:13px;">Payload signature</strong>
+                    <div class="copyable" style="font-family:'SF Mono',Menlo,Consolas,monospace; margin-top:8px; background:#fdecec; color:#b91c1c; padding:12px 14px; border-radius:6px; font-size:12.5px;">greenbid.js — 150,274 bytes<br>SHA-256: 0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416</div>
+                </div>
+            </div>
+            <p style="margin-top:14px; font-size:13px; color:#4a5268;"><strong>Live attacker addresses (dated 2026-09-20 — will rotate, see <a href="05_indicators_of_compromise.html">IoCs</a> for the durable on-chain pattern):</strong> tronSpender <code>TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv</code> · tronSweepAddress <code>TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ</code></p>
+        </div>
+    </section>
+
+    <section class="home-section" style="padding-top:0;">
+        <div class="card">
+            <h3 style="color:#1976d2; margin-bottom:16px;">📚 Documentation Stats</h3>
+            <table class="ix-table">
+                <tr><th>Report</th><th>Read Time</th><th>Status</th></tr>
+                <tr><td>Executive Summary</td><td>5–10 min</td><td><span class="badge badge-verified">Updated w/ live data</span></td></tr>
+                <tr><td>Technical Architecture</td><td>15–20 min</td><td><span class="badge badge-verified">Updated w/ live data</span></td></tr>
+                <tr><td>Attack Chain</td><td>10–15 min</td><td><span class="badge badge-verified">Updated w/ live data</span></td></tr>
+                <tr><td>Code Analysis</td><td>20–30 min</td><td><span class="badge badge-verified">Updated w/ live data</span></td></tr>
+                <tr><td>Indicators of Compromise</td><td>10–15 min</td><td><span class="badge badge-verified">Updated w/ live data</span></td></tr>
+                <tr><td>Defense &amp; Remediation</td><td>15–25 min</td><td><span class="badge badge-verified">Updated w/ live data</span></td></tr>
+                <tr><td>Evidence Locker</td><td>Browse as needed</td><td><span class="badge badge-live">New — raw artifacts</span></td></tr>
+            </table>
+        </div>
+    </section>
+
+    <div class="site-pager">
+        <span class="pager-spacer"></span>
+        <a href="01_executive_summary.html" class="pager-next"><div class="pager-label">Start reading →</div><div class="pager-title">Executive Summary</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                <a href="FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>

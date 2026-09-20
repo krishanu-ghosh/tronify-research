@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evidence Locker — Independent tronify.rent Threat Intel Report by Krishanu</title>
+    <meta name="description" content="Raw artifacts behind an independent analysis of the tronify.rent wallet-drainer campaign: the live payload, C&C responses, site HTML, and on-chain blockchain data, with SHA-256 checksums. Not affiliated with tronify.rent.">
+    <link rel="stylesheet" href="../assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a2033; }
+        code { background: #eef0f6; padding: 2px 6px; border-radius: 3px; font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.9em; }
+        .page-head { padding: 36px 0 8px; }
+        .page-head h1 { font-size: 28px; margin-bottom: 8px; }
+        .page-head p { color: #4a5268; max-width: 700px; font-size: 15px; }
+        .danger-note {
+            border-left: 4px solid #dc2626; background: #fdecec; padding: 16px 18px;
+            border-radius: 6px; margin: 20px 0; font-size: 13.5px; color: #7a1414;
+        }
+        .danger-note strong { color: #b91c1c; }
+        .method-note {
+            border-left: 4px solid #2563eb; background: #eef3ff; padding: 16px 18px;
+            border-radius: 6px; margin: 20px 0; font-size: 13.5px; color: #1e3a8a;
+        }
+        .chain-list { font-size: 13.5px; color: #4a5268; margin: 8px 0 0 18px; }
+        .chain-list li { margin: 4px 0; }
+    </style>
+</head>
+<body data-page="evidence">
+
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="../index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="../index.html" data-page="home">Home</a>
+                <a href="../01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="../02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="../03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="../04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="../05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="../06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · collected 2026-09-20 via plain HTTP GET requests + public blockchain APIs, no wallet connected, no transaction signed</div>
+    <nav class="breadcrumb"><a href="../index.html">Home</a> / Evidence Locker</nav>
+
+    <div class="site-shell">
+        <div class="page-head">
+            <h1>🗂️ Evidence Locker</h1>
+            <p>Every non-obvious claim in the six reports traces back to one of the files below. Nothing here was rewritten or summarized before hashing — each artifact is exactly what the server returned, with a SHA-256 checksum recorded at collection time so you can verify it hasn't changed since.</p>
+        </div>
+
+        <div class="danger-note">
+            <strong>⚠️ Handling note:</strong> <code>site/tronify.rent_index.html</code> and the <code>site_legit/</code> HTML files are raw captures of live web pages. <code>tronify.rent</code>'s capture contains a real <code>&lt;script src="https://lending.fhogu.pw/greenbid.js"&gt;</code> tag — <strong>opening it directly in a browser will fetch and execute the live drainer payload in that tab.</strong> The links below for HTML files force a <strong>download</strong> instead of rendering, specifically to prevent that. If you want to inspect the markup, open the downloaded file in a text editor, not a browser tab — or use "View Page Source" after disabling JavaScript.
+        </div>
+
+        <div class="method-note">
+            <strong>Collection method:</strong> plain <code>curl</code> GET requests with a standard browser User-Agent, plus unauthenticated public blockchain API calls (TronGrid, TronScan). No wallet was ever connected to tronify.rent and no transaction was ever signed or broadcast — this is passive OSINT only. Full methodology in <a href="README.md">README.md</a>.
+        </div>
+
+        <!-- PAYLOAD -->
+        <div class="ev-section">
+            <h2>🧬 The Drainer Payload <span class="badge badge-critical">Malware sample</span></h2>
+            <p class="ev-desc">The actual greenbid.js file served by the attacker's C&amp;C at fetch time. This is the file analyzed in <a href="../04_code_analysis.html">Code Analysis</a>.</p>
+            <div class="ev-files">
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">payload/greenbid.js</div>
+                        <div class="ev-file-meta">150,274 bytes · text/javascript · served via Cloudflare</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: 0f6d6447...bf4416</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="payload/greenbid.js" download>Download</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">payload/greenbid.js.response-headers.txt</div>
+                        <div class="ev-file-meta">HTTP response headers — Last-Modified: 2026-08-30, ETag hex suffix matches content-length</div>
+                    </div>
+                    <div class="ev-file-meta">734 bytes</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn" href="payload/greenbid.js.response-headers.txt" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- C&C -->
+        <div class="ev-section">
+            <h2>📡 Live C&amp;C Configuration <span class="badge badge-live">Rotates — dated snapshot</span></h2>
+            <p class="ev-desc">The response from the C&amp;C's unauthenticated <code>/tron/config</code> endpoint — the source of the real attacker addresses used throughout this report. The attacker can change these values at any time; re-fetch to check current state.</p>
+            <div class="ev-files">
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">cnc/tron_config.json</div>
+                        <div class="ev-file-meta">tronSpender, tronSweepAddress, tronSweepMinTrx, tronExchangeContract</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: 68370f8b...4010</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="cnc/tron_config.json" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">cnc/tron_config.response-headers.txt</div>
+                        <div class="ev-file-meta">Fetch timestamp: 2026-09-20 04:30:40 GMT</div>
+                    </div>
+                    <div class="ev-file-meta">690 bytes</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn" href="cnc/tron_config.response-headers.txt" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SITE -->
+        <div class="ev-section">
+            <h2>🌐 tronify.rent Homepage <span class="badge badge-critical">Contains live malicious script tag</span></h2>
+            <p class="ev-desc">Raw capture of the phishing frontend, including the company registration text (EIN 87-2945163, Orlando FL address) and the injected drainer script tag. See the handling warning above before opening.</p>
+            <div class="ev-files">
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">site/tronify.rent_index.html</div>
+                        <div class="ev-file-meta">34,168 bytes · fronted by DDoS-Guard · last modified 2026-09-14</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: 871e721f...3b5b1</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="site/tronify.rent_index.html" download>Download (safe)</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">site/tronify.rent_index.response-headers.txt</div>
+                        <div class="ev-file-meta">server: ddos-guard · content-security-policy present</div>
+                    </div>
+                    <div class="ev-file-meta">699 bytes</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn" href="site/tronify.rent_index.response-headers.txt" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ON-CHAIN -->
+        <div class="ev-section">
+            <h2>⛓️ On-Chain Verification <span class="badge badge-verified">Confirmed real theft</span></h2>
+            <p class="ev-desc">TronGrid API responses for the three addresses from the live C&amp;C config, plus the sweep address's recent TRC-20 transfer history — the primary evidence that this is active, not just capable, exploitation.</p>
+            <div class="ev-files">
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">onchain/account_tronSpender_TV6n8c...Ys5rv.json</div>
+                        <div class="ev-file-meta">Created 2026-07-23 · holds 14,635.00 USDT + 875.44 TRX · last active 2026-09-19</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: 51a32eec...9219d</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="onchain/account_tronSpender_TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv.json" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">onchain/account_tronSweepAddress_TLv3iS...g7tpJ.json</div>
+                        <div class="ev-file-meta">Created 2026-07-23 (39s after spender) · holds 32,288.30 USDT + 3,213.53 TRX</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: 12273499...2087b</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="onchain/account_tronSweepAddress_TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ.json" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">onchain/account_tronExchangeContract_TDE7vf...DYPux.json</div>
+                        <div class="ev-file-meta">Deployed contract (type: "Contract"), on-chain name decodes to "TronEnergy"</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: 4129b40a...64154</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="onchain/account_tronExchangeContract_TDE7vfjJuYqEzzKw6hfdSB3dfLQyXDYPux.json" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">onchain/trc20_transfers_tronSweepAddress_page1.json</div>
+                        <div class="ev-file-meta">Most recent 30 USDT transfers · ~25 distinct senders, 2026-08-27 to 2026-09-19 · two consolidation transfers out (24,000 &amp; 6,000 USDT)</div>
+                    </div>
+                    <div class="ev-file-meta"><code>sha256: c15e8e0b...73c8b</code></div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="onchain/trc20_transfers_tronSweepAddress_page1.json" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+            </div>
+            <p style="margin-top:14px; font-size:13px; color:#6b7385;">This is a single page of the most recent 30 transfers (not the full history) — see <a href="../FACT_CHECK_CORRECTIONS.md">the fact-check log</a> for what remains untraced beyond this page.</p>
+        </div>
+
+        <!-- DNS / brand comparison -->
+        <div class="ev-section">
+            <h2>🔎 Brand &amp; DNS Comparison <span class="badge badge-info">Brand-squat finding</span></h2>
+            <p class="ev-desc">Live DNS resolution for tronify.rent, the payload host, and every Tronify-branded domain we could find — the basis for the "this is brand-squatting on a real service, not a typo-squat" finding in the IoCs report.</p>
+            <div class="ev-files">
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">dns/resolution_snapshot.txt</div>
+                        <div class="ev-file-meta">tronify.rent, lending.fhogu.pw, tronify.app/.llc/.pro/.io/.com, tronified.com</div>
+                    </div>
+                    <div class="ev-file-meta">255 bytes</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn primary" href="dns/resolution_snapshot.txt" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">site_legit/tronify.io.html</div>
+                        <div class="ev-file-meta">The one Tronify-branded domain found genuinely live and serving a product (og:url points to tronify.ai)</div>
+                    </div>
+                    <div class="ev-file-meta">11,321 bytes</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn" href="site_legit/tronify.io.html" download>Download (safe)</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">site_legit/tronify.pro.headers.txt</div>
+                        <div class="ev-file-meta">302 redirect to google.com — confirms this domain is dead/abandoned, not a live competitor</div>
+                    </div>
+                    <div class="ev-file-meta">815 bytes</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn" href="site_legit/tronify.pro.headers.txt" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+                <div class="ev-file">
+                    <div>
+                        <div class="ev-file-name">site_legit/tronify.app.headers.txt, tronify.llc.headers.txt, tronified.com.headers.txt</div>
+                        <div class="ev-file-meta">Empty (0 bytes) — curl could not resolve these hosts at all on 2026-09-20</div>
+                    </div>
+                    <div class="ev-file-meta">0 bytes each</div>
+                    <div class="ev-file-actions">
+                        <a class="ev-btn" href="site_legit/tronify.app.headers.txt" target="_blank" rel="noopener">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CHECKSUMS -->
+        <div class="ev-section">
+            <h2>🔐 Checksums</h2>
+            <p class="ev-desc">SHA-256 for every hashed artifact above, generated at collection time. If you re-download any of these from their live source and the hash differs, the attacker has changed something — that's expected for the C&amp;C config and payload over time, but worth noting the date if you're citing this report.</p>
+            <div class="hash-line copyable">0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416  payload/greenbid.js
+871e721feaf25ffe062d114b62338de54a551e406d0fff36c79ccee52413b5b1  site/tronify.rent_index.html
+68370f8b1aea516a8812ea8086a65b8883b0d63faeb6417b6c2f80a623e4d010  cnc/tron_config.json
+51a32eec1367085c8d25291013f734fad460dc373240096cb07e90b45849219d  onchain/account_tronSpender_TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv.json
+122734998dd37701079998dcc861b1ce4fc5fcc1edc5210f9e1135741632087b  onchain/account_tronSweepAddress_TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ.json
+4129b40a6279889e60585178002fc56398b2100171c318dac0b3d894fc064154  onchain/account_tronExchangeContract_TDE7vfjJuYqEzzKw6hfdSB3dfLQyXDYPux.json
+c15e8e0bd915a6f0be039dc90ffa040e6ad4523e2c6d2ad2e2117223c7673c8b  onchain/trc20_transfers_tronSweepAddress_page1.json</div>
+            <p style="margin-top:14px;"><a class="ev-btn" href="SHA256SUMS.txt" target="_blank" rel="noopener">View raw SHA256SUMS.txt</a> &nbsp; <a class="ev-btn" href="README.md" target="_blank" rel="noopener">View collection README</a></p>
+        </div>
+
+        <div class="ev-section" style="background:#fbfcfe;">
+            <h2>🧾 Chain of Custody</h2>
+            <ul class="chain-list">
+                <li>All fetches performed 2026-09-20 via plain <code>curl</code> HTTP GET / public API calls — no browser automation, no wallet interaction.</li>
+                <li>Files copied verbatim into this folder immediately after collection; SHA-256 computed at copy time.</li>
+                <li>No file below has been edited after collection — corrections and interpretation live in the six reports, not in these artifacts.</li>
+                <li>Anyone can independently re-run the same requests (see <a href="README.md">README.md</a> for exact endpoints) to check whether attacker-controlled values have since changed.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="site-pager">
+        <a href="../06_defense_remediation.html"><div class="pager-label">← Previous</div><div class="pager-title">Defense &amp; Remediation</div></a>
+        <a href="../index.html" class="pager-next"><div class="pager-label">Back to →</div><div class="pager-title">Home</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="../01_executive_summary.html">Executive Summary</a><br>
+                <a href="../02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="../03_attack_chain.html">Attack Chain</a><br>
+                <a href="../04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="../05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="../06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="index.html">Raw Evidence</a><br>
+                <a href="../FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+
+    <script src="../assets/js/site.js" defer></script>
+</body>
+</html>

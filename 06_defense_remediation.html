@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defense & Remediation — Independent tronify.rent Report</title>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
+        h1 { color: #4caf50; margin: 20px 0 10px; border-bottom: 3px solid #4caf50; padding-bottom: 10px; }
+        h2 { color: #1976d2; margin: 20px 0 10px; }
+        h3 { color: #555; margin: 15px 0 8px; }
+        .success { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .warning { background: #fff3cd; border-left: 4px solid #ff9800; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .danger { background: #ffebee; border-left: 4px solid #d32f2f; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .step-box { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .code-block { background: #f5f5f5; border: 1px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; font-size: 12px; overflow-x: auto; }
+        .checklist { list-style: none; }
+        .checklist li { padding: 8px 0; padding-left: 30px; position: relative; }
+        .checklist li:before { content: "☐"; position: absolute; left: 0; }
+        .checklist li.done:before { content: "☑"; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; font-weight: bold; }
+        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
+        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
+        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
+        .timeline-item { background: #f9f9f9; border-left: 4px solid #1976d2; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .timeline-item.critical { border-left-color: #d32f2f; }
+        .timeline-item.warning { border-left-color: #ff9800; }
+    </style>
+</head>
+<body data-page="06">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+    <nav class="breadcrumb"><a href="index.html">Home</a> / Defense &amp; Remediation</nav>
+
+    <div class="container">
+        <h1>🛡️ Defense & Remediation Guide</h1>
+        <h2>Protection Strategies & Recovery Steps</h2>
+
+        <div class="danger">
+            <strong>⚠️ CRITICAL: If you visited tronify.rent and connected your wallet, STOP. Follow the emergency steps below immediately.</strong>
+        </div>
+
+        <h2>EMERGENCY RESPONSE (If Compromised)</h2>
+
+        <h3>Immediate Actions (First 5 Minutes)</h3>
+        <div class="timeline-item critical">
+            <h4>Step 1: Disconnect & Stop Using Affected Wallet</h4>
+            <ul>
+                <li>Immediately close the browser tab (tronify.rent)</li>
+                <li>Do NOT click any buttons or interact further with the site</li>
+                <li>Do NOT reload or revisit the page</li>
+            </ul>
+        </div>
+
+        <div class="timeline-item critical">
+            <h4>Step 2: Check Your Wallet Balance</h4>
+            <p>Open your wallet extension and look for:</p>
+            <ul>
+                <li><strong>Token balances:</strong> Are they still there or 0?</li>
+                <li><strong>TRX balance:</strong> Is it significantly lower?</li>
+                <li><strong>Recent transactions:</strong> Do you see unauthorized transfers?</li>
+            </ul>
+            <p style="margin-top: 10px;"><strong>If you see transactions you didn't authorize:</strong> You've been drained. Skip to "Recovery Steps" below.</p>
+        </div>
+
+        <div class="timeline-item critical">
+            <h4>Step 3: Create a New Wallet Immediately</h4>
+            <p>If you were drained:</p>
+            <ul>
+                <li>Create a NEW wallet with a new seed phrase (do not reuse old recovery words)</li>
+                <li>Use a different device if possible</li>
+                <li>Do NOT import the old wallet address</li>
+                <li>Generate new private keys</li>
+            </ul>
+            <p><strong>Why:</strong> Even though your wallet was drained, the old one may still have approvals active. Attackers could drain it again if you receive more tokens.</p>
+        </div>
+
+        <div class="timeline-item critical">
+            <h4>Step 4: Move Any Remaining Assets</h4>
+            <p>If you have any remaining funds in other wallets:</p>
+            <ul>
+                <li>Transfer them to your NEW secure wallet immediately</li>
+                <li>Verify each transaction on TronScan before completing</li>
+                <li>Do NOT leave funds on the compromised wallet</li>
+            </ul>
+        </div>
+
+        <h2>Detailed Recovery Steps</h2>
+
+        <h3>Step A: Verify the Theft on Blockchain</h3>
+        <p>Confirm what was stolen by checking the public blockchain record:</p>
+        <div class="step-box">
+            <ol>
+                <li>Go to <strong>TronScan.org</strong> (official TRON blockchain explorer)</li>
+                <li>Paste your wallet address in the search box</li>
+                <li>Click on the <strong>"Transfers"</strong> tab</li>
+                <li>Look for transactions <strong>to unknown addresses</strong> with large amounts</li>
+                <li>Note down all unauthorized transfers (you'll need this for reporting)</li>
+            </ol>
+        </div>
+
+        <p><strong>What you're looking for:</strong></p>
+        <table>
+            <tr>
+                <th>Transaction Type</th>
+                <th>Indicator</th>
+                <th>Status</th>
+            </tr>
+            <tr>
+                <td>Token Transfers</td>
+                <td>Large amounts of USDT/USDC/etc sent to T-address you don't recognize</td>
+                <td>Stolen</td>
+            </tr>
+            <tr>
+                <td>TRX Transfers</td>
+                <td>Your TRX balance dropped significantly</td>
+                <td>Stolen</td>
+            </tr>
+            <tr>
+                <td>Approvals</td>
+                <td>Check "Token Approvals" - you may see unlimited approvals to unknown spender</td>
+                <td>Dangerous</td>
+            </tr>
+        </table>
+
+        <h3>Step B: Document Everything for Law Enforcement</h3>
+        <div class="step-box">
+            <p><strong>Collect evidence:</strong></p>
+            <ul class="checklist">
+                <li>Wallet address that was compromised</li>
+                <li>Approximate value lost (in USD)</li>
+                <li>List of tokens stolen</li>
+                <li>Transaction hashes (txid) of unauthorized transfers</li>
+                <li>Screenshot of TronScan showing the transactions</li>
+                <li>Timestamp when you realized funds were missing</li>
+                <li>Screenshot of tronify.rent website (if still accessible)</li>
+                <li>URLs you visited (browser history)</li>
+                <li>Email/contact information from the fake company</li>
+            </ul>
+        </div>
+
+        <h3>Step C: Revoke Dangerous Token Approvals</h3>
+        <p><strong>Before the drainer can strike again, revoke all permissions:</strong></p>
+        <div class="step-box">
+            <h4>For TronLink Users:</h4>
+            <ol>
+                <li>Open TronLink wallet extension</li>
+                <li>Go to <strong>Settings → Security → Token Approvals</strong> (or similar)</li>
+                <li>Look for approvals to unknown spender addresses</li>
+                <li>For each suspicious approval, click <strong>Revoke</strong></li>
+                <li>Confirm the revocation transaction</li>
+            </ol>
+        </div>
+
+        <div class="step-box">
+            <h4>Alternative: Using DeBank or TokenPocket</h4>
+            <ol>
+                <li>Go to <strong>debank.com</strong> or <strong>tokenpocket.pro</strong></li>
+                <li>Connect your wallet (READ-ONLY - very safe)</li>
+                <li>Go to <strong>Approvals</strong> or <strong>Token Approvals</strong> section</li>
+                <li>Identify approvals to <strong>unknown spender addresses</strong> (look for unlimited approvals to unfamiliar contracts)</li>
+                <li>Click <strong>Revoke</strong> on each suspicious approval</li>
+            </ol>
+        </div>
+
+        <p><strong>⚠️ Warning:</strong> Revoking approvals costs gas (TRX). Budget 1-5 TRX per revocation. However, this is essential to prevent further theft.</p>
+
+        <h3>Step D: Report the Theft</h3>
+        <p>While most cryptocurrency theft cannot be recovered, reporting helps law enforcement and protects others:</p>
+        <div class="step-box">
+            <h4>Immediate Reports:</h4>
+            <ul>
+                <li><strong>Your Wallet Provider:</strong> Report to TronLink, Trust Wallet, MetaMask security teams
+                    <ul>
+                        <li>TronLink: support@tronlink.org</li>
+                        <li>Trust Wallet: support@trustwallet.com</li>
+                        <li>MetaMask: security@metamask.io</li>
+                    </ul>
+                </li>
+                <li><strong>TRON Foundation:</strong> security@tron.network (include IoCs from our <a class="file-link" href="05_indicators_of_compromise.html">IoC guide</a>)</li>
+                <li><strong>Your Country's Cybercrime Division:</strong>
+                    <ul>
+                        <li>USA: FBI IC3 (ic3.gov)</li>
+                        <li>UK: Action Fraud (actionfraud.police.uk)</li>
+                        <li>Other: Search "[Country] cybercrime reporting"</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h4>Public Warnings:</h4>
+            <ul>
+                <li>Post on <strong>Reddit</strong> r/Tronix or r/Tron about your experience (help others avoid this)</li>
+                <li><strong>Share this analysis</strong> (document link) on community channels</li>
+            </ul>
+            <p style="font-size: 13px; color: #666;">An earlier draft of this section suggested tagging specific social media handles (e.g. "@TronIssue") and replying to a specific YouTube video. We could not verify those accounts/handles exist or are the right point of contact, so they've been removed rather than pointing you at possibly-wrong or unverified accounts. Use the official channels listed under "Immediate Reports" above instead.</p>
+        </div>
+
+        <h3>Step E: Check for Related Compromises</h3>
+        <p>If you used the same password elsewhere, change it:</p>
+        <div class="step-box">
+            <ul class="checklist">
+                <li>Change password on centralized exchange accounts (Binance, Huobi, etc)</li>
+                <li>Change email password (critical for account recovery)</li>
+                <li>Enable 2FA on all important accounts</li>
+                <li>Check for unauthorized API keys in exchange settings</li>
+                <li>Review recent login activity on all accounts</li>
+            </ul>
+        </div>
+
+        <h2>Long-Term Defense Strategy</h2>
+
+        <h3>Prevention Before You Get Targeted</h3>
+
+        <h4>1. Wallet Security Best Practices</h4>
+        <div class="success">
+            <ul>
+                <li><strong>Never approve "unlimited" tokens:</strong> Request specific amounts instead
+                    <ul>
+                        <li>Instead of infinite approval, approve only what you need (e.g., 1000 USDT)</li>
+                        <li>Most legitimate DeFi protocols allow you to specify amounts</li>
+                    </ul>
+                </li>
+                <li><strong>Use a hardware wallet for large holdings:</strong> Ledger, Trezor
+                    <ul>
+                        <li>Hardware wallets prevent private key theft</li>
+                        <li>Drainers can't access keys even if website is compromised</li>
+                    </ul>
+                </li>
+                <li><strong>Separate wallets for different purposes:</strong>
+                    <ul>
+                        <li>Trading wallet (small amount for active trading)</li>
+                        <li>Holding wallet (large amount, used rarely)</li>
+                        <li>Testing wallet (for new DeFi protocols)</li>
+                    </ul>
+                </li>
+                <li><strong>Regularly revoke old approvals:</strong> Once a month, clean up approvals you no longer use</li>
+                <li><strong>Check before connecting:</strong> Verify domain/URL before connecting wallet to ANY site</li>
+            </ul>
+        </div>
+
+        <h4>2. Domain Verification Checklist</h4>
+        <p><strong>Before you click "Connect Wallet" on any site, ask yourself:</strong></p>
+        <div class="code-block">
+Security Verification Checklist:
+
+☐ Is the domain EXACTLY correct — and is it even the right BRAND, not just spelling?
+  - tronify.rent ❌ (the attacker's domain — confirmed malicious)
+  - This is not a simple typo-squat: "Tronify" is a real brand in this space (reportedly
+    integrated with Trust Wallet), so a scam can borrow real brand trust just by using
+    a different, unusual TLD (.rent) rather than misspelling the name at all.
+  - A domain "looking related to a brand you've heard good things about" is NOT enough —
+    verify the exact domain independently (e.g. from the wallet's own official partner
+    list) every time, rather than trusting name similarity.
+  - Be equally suspicious of unfamiliar TLDs in general (.rent, .pw, .top, etc.) for any
+    financial service — legitimate services overwhelmingly use standard TLDs (.com, .io, .app).
+
+☐ Is the SSL certificate valid?
+  - Click the lock icon in browser address bar
+  - Check that certificate matches domain exactly
+
+☐ Does the company have a real social media presence?
+  - Twitter account with verification checkmark?
+  - Active community on Discord/Telegram with history?
+  - Multiple years of posts (not new account)?
+
+☐ Can you find the site through official channels?
+  - Search for "TRON energy rental" on Google
+  - Does it appear in top results (good SEO)?
+  - Is it listed on official TRON ecosystem pages?
+
+☐ Does the website have professional design?
+  - Legitimate sites have polished UI
+  - Check for grammar/spelling errors
+  - Look for professional imagery, not stock photos
+
+☐ Can you find user reviews?
+  - Search "[company name] reviews" on Google
+  - Check Reddit for discussions
+  - Look for reviews on Trustpilot or similar
+
+If ANY of these fail, DO NOT CONNECT YOUR WALLET.
+        </div>
+
+        <h4>3. Wallet Connection Best Practices</h4>
+        <div class="success">
+            <ul>
+                <li><strong>Review wallet notifications carefully:</strong> Don't just hit "Approve" automatically
+                    <ul>
+                        <li>Read what you're approving</li>
+                        <li>Check the contract address (compare with official contract)</li>
+                        <li>Look at the amount (is it limited or unlimited?)</li>
+                    </ul>
+                </li>
+                <li><strong>Use "Read-Only" mode first:</strong> Many dApps let you view without signing anything
+                    <ul>
+                        <li>Many analysis tools (DeBank, etc.) are read-only safe</li>
+                        <li>If a site forces you to approve before seeing it, it's suspicious</li>
+                    </ul>
+                </li>
+                <li><strong>Test with small amounts first:</strong> Before approving large tokens, test the service
+                    <ul>
+                        <li>Send 10 USDT to test (only lose 10 if it's a scam)</li>
+                        <li>Verify the service works as expected</li>
+                        <li>Then use larger amounts</li>
+                    </ul>
+                </li>
+                <li><strong>Revoke approvals after use:</strong> Don't let old approvals accumulate
+                    <ul>
+                        <li>After using a service, revoke the approval</li>
+                        <li>This prevents future exploitation if the service gets compromised</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h4>4. Monitoring & Early Detection</h4>
+        <div class="success">
+            <ul>
+                <li><strong>Enable wallet notifications:</strong> Get alerts when large transfers happen
+                    <ul>
+                        <li>TronLink notifications: Settings → Notifications → Enable all</li>
+                        <li>You'll see wallet activity in real-time</li>
+                    </ul>
+                </li>
+                <li><strong>Set balance alerts:</strong> Use services like DeFi alert tools
+                    <ul>
+                        <li>Services like Zapper.fi or DeBank can email you balance changes</li>
+                        <li>Catch theft in minutes instead of hours</li>
+                    </ul>
+                </li>
+                <li><strong>Regularly check approvals:</strong> Monthly audit of token approvals
+                    <ul>
+                        <li>Use <a href="https://debank.com">DeBank.com</a> to see all approvals at once</li>
+                        <li>Remove approvals you don't recognize</li>
+                    </ul>
+                </li>
+                <li><strong>Monitor public blockchain:</strong> Watch your wallet on TronScan
+                    <ul>
+                        <li>Add TronScan to bookmarks</li>
+                        <li>Check it weekly for unauthorized transactions</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h4>5. Technical Hardening</h4>
+        <div class="success">
+            <ul>
+                <li><strong>Use browser security extensions:</strong>
+                    <ul>
+                        <li>MetaMask Secure (wallet protection)</li>
+                        <li>WalletGuard (malicious dApp detection)</li>
+                        <li>uBlock Origin (blocks malicious scripts)</li>
+                    </ul>
+                </li>
+                <li><strong>Disable suspicious browser extensions:</strong>
+                    <ul>
+                        <li>Chrome → Settings → Extensions → Review all extensions</li>
+                        <li>Remove anything you don't recognize</li>
+                        <li>Check which ones have access to TRON wallet</li>
+                    </ul>
+                </li>
+                <li><strong>Use a separate browser for wallets:</strong>
+                    <ul>
+                        <li>One browser (Chrome) for regular browsing</li>
+                        <li>Another browser (Firefox) ONLY for wallet connections</li>
+                        <li>Prevents malicious scripts from one browser affecting your wallet</li>
+                    </ul>
+                </li>
+                <li><strong>Keep software updated:</strong>
+                    <ul>
+                        <li>Update browser (critical for security patches)</li>
+                        <li>Update wallet extension to latest version</li>
+                        <li>Update OS security patches</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h2>Organizational & Community Response</h2>
+
+        <h3>For Wallet Providers (TronLink, Trust Wallet, MetaMask)</h3>
+        <p>Recommended responses to wallet drainer threats:</p>
+        <div class="step-box">
+            <ul>
+                <li><strong>Add warning system:</strong> Detect and warn about known drainer domains
+                    <ul>
+                        <li>Warn users before connecting to tronify.rent</li>
+                        <li>Maintain blocklist of known malicious domains</li>
+                    </ul>
+                </li>
+                <li><strong>Approval UI improvements:</strong> Make approvals less confusing
+                    <ul>
+                        <li>Highlight "unlimited" approvals in red</li>
+                        <li>Require explicit confirmation for unlimited amounts</li>
+                        <li>Show what contracts will have access</li>
+                    </ul>
+                </li>
+                <li><strong>Automatic approval limits:</strong> Default to specific amounts instead of unlimited
+                    <ul>
+                        <li>Request specific amount from user</li>
+                        <li>Default to "custom amount" instead of "unlimited"</li>
+                    </ul>
+                </li>
+                <li><strong>Security scorecard for dApps:</strong> Rate dApps by security
+                    <ul>
+                        <li>Show "Verified" badge for known good sites</li>
+                        <li>Show "Unverified" warning for unknown sites</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h3>For TRON Foundation & Exchanges</h3>
+        <p>System-level protections:</p>
+        <div class="step-box">
+            <ul>
+                <li><strong>Monitor for exploitation patterns:</strong> Track suspicious approval patterns on-chain
+                    <ul>
+                        <li>Watch for multiple wallets approving unlimited amounts to same spender</li>
+                        <li>Monitor for cascading TRX transfers from unrelated wallets to same address</li>
+                        <li>Implement transaction pattern analysis (attacker rotates addresses frequently)</li>
+                    </ul>
+                </li>
+                <li><strong>Blocklist drainer infrastructure:</strong> Flag known C&C domains
+                    <ul>
+                        <li>lending.fhogu.pw (C&C server)</li>
+                        <li>Block connections from victim wallets to C&C endpoints</li>
+                    </ul>
+                </li>
+                <li><strong>Exchange-level protection:</strong> Monitor deposits from known drainers
+                    <ul>
+                        <li>If stolen funds enter exchange, freeze account</li>
+                        <li>Coordinate with law enforcement for investigation</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <h2>Recovery Options (Unrealistic But Mentioned)</h2>
+
+        <h3>Why Cryptocurrency Theft is Hard to Recover</h3>
+        <p><strong>Unfortunately, once tokens are transferred on-chain, recovery is nearly impossible because:</strong></p>
+        <div class="danger">
+            <ul>
+                <li><strong>Blockchain is immutable:</strong> Transactions cannot be reversed or cancelled</li>
+                <li><strong>No chargebacks:</strong> Unlike credit cards, no payment reversal mechanism</li>
+                <li><strong>Attacker uses mixing services:</strong> Stolen tokens are laundered through exchanges/mixers</li>
+                <li><strong>Assets leave TRON chain:</strong> Tokens are converted to other cryptocurrencies, making them untraceable</li>
+                <li><strong>Anonymous address:</strong> Attacker likely uses non-custodial wallets (no identity tied)</li>
+            </ul>
+        </div>
+
+        <p><strong>Small Possibility Options (Very Unlikely):</strong></p>
+        <ul>
+            <li><strong>Frozen wallet address:</strong> If attacker's address somehow gets KYC'd and frozen by exchanges (1% chance)</li>
+            <li><strong>Law enforcement recovery:</strong> In rare cases, law enforcement seizes attacker infrastructure (less than 1% of cases)</li>
+            <li><strong>Class action lawsuit:</strong> If attacker is identified and has recoverable assets, potential civil recovery (extremely rare)</li>
+        </ul>
+
+        <p><strong>Reality:</strong> In 99%+ of wallet draining cases, stolen funds are lost forever. The focus must be on prevention, not recovery.</p>
+
+        <h2>Mental Health Support</h2>
+
+        <p>Being a victim of financial crime can be traumatic. Support resources:</p>
+        <div class="success">
+            <ul>
+                <li><strong>Financial trauma counseling:</strong> Many therapists specialize in financial trauma</li>
+                <li><strong>Community support:</strong> Join victim communities on Reddit (r/scamvictims) to process</li>
+                <li><strong>Legal consultation:</strong> Speak with attorney about tax deductions for losses (if applicable in your jurisdiction)</li>
+                <li><strong>Crypto community:</strong> Many experienced users have similar stories - you're not alone</li>
+            </ul>
+        </div>
+
+        <h2>Summary: Action Checklist</h2>
+
+        <div class="step-box">
+            <h3>If NOT Compromised Yet:</h3>
+            <ul class="checklist">
+                <li>Avoid tronify.rent and lending.fhogu.pw</li>
+                <li>Revoke approvals you don't recognize</li>
+                <li>Set up wallet notifications</li>
+                <li>Create separate trading/holding wallets</li>
+                <li>Review this guide monthly</li>
+            </ul>
+        </div>
+
+        <div class="step-box">
+            <h3>If Already Compromised:</h3>
+            <ul class="checklist">
+                <li>Stop using the affected wallet</li>
+                <li>Create new wallet with new seed phrase</li>
+                <li>Document all stolen transactions</li>
+                <li>Revoke dangerous approvals immediately</li>
+                <li>Report to wallet providers and law enforcement</li>
+                <li>Move any remaining funds to new wallet</li>
+                <li>Warn your community on social media</li>
+                <li>Consider the loss a (expensive) lesson learned</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <div class="site-pager">
+        <a href="05_indicators_of_compromise.html"><div class="pager-label">← Previous</div><div class="pager-title">Indicators of Compromise</div></a>
+        <a href="evidence/index.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Evidence Locker</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                <a href="FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>

