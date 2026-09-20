@@ -25,9 +25,71 @@
         .audience-card { background: #1a2240; border: 1px solid #2a3550; border-radius: 10px; padding: 16px 18px; }
         .audience-card strong { display: block; margin-bottom: 6px; color: #e8ecf5; }
         .audience-card p, .audience-card a { font-size: 13.5px; color: #a9b5cc; }
+
+        .confidential-overlay {
+            position: fixed;
+            inset: 0;
+            height: 100vh;
+            height: 100dvh;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-y: auto;
+            padding: 24px;
+            background: #0b1020;
+            transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .confidential-overlay.is-dismissed {
+            transform: translateY(-100%);
+            pointer-events: none;
+        }
+        .confidential-overlay-card {
+            max-width: 520px;
+            text-align: center;
+            border: 1px solid #2a3550;
+            border-radius: 12px;
+            background: #1a2240;
+            padding: 36px 32px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+        .confidential-overlay-icon { font-size: 34px; margin-bottom: 14px; }
+        .confidential-overlay-card h2 { color: #ff6b6b; font-size: 20px; margin-bottom: 12px; }
+        .confidential-overlay-card p { color: #a9b5cc; font-size: 14px; margin-bottom: 22px; }
+        .confidential-overlay-accept {
+            font: inherit;
+            font-weight: 700;
+            font-size: 14px;
+            color: #0b1020;
+            background: #4fa3f5;
+            border: none;
+            border-radius: 6px;
+            padding: 12px 28px;
+            cursor: pointer;
+        }
+        .confidential-overlay-accept:hover { background: #6fb5f7; }
+        body.confidential-locked { overflow: hidden; }
+
+        @media (max-width: 480px) {
+            .confidential-overlay { padding: 16px; }
+            .confidential-overlay-card { padding: 26px 20px; border-radius: 10px; }
+            .confidential-overlay-icon { font-size: 28px; margin-bottom: 10px; }
+            .confidential-overlay-card h2 { font-size: 17px; margin-bottom: 10px; }
+            .confidential-overlay-card p { font-size: 13px; margin-bottom: 18px; }
+            .confidential-overlay-accept { width: 100%; padding: 13px 20px; }
+        }
     </style>
 </head>
-<body data-page="home">
+<body data-page="home" class="confidential-locked">
+
+    <div class="confidential-overlay" id="confidentialOverlay" role="dialog" aria-modal="true" aria-labelledby="confidentialOverlayTitle">
+        <div class="confidential-overlay-card">
+            <div class="confidential-overlay-icon">🔒</div>
+            <h2 id="confidentialOverlayTitle">Confidential Research Material</h2>
+            <p>This report contains sensitive threat-intelligence findings, including live attacker wallet addresses and payload analysis, published for defensive and educational purposes only. By continuing, you acknowledge this content is independent research and not affiliated with tronify.rent.</p>
+            <button type="button" class="confidential-overlay-accept" id="confidentialOverlayAccept">Acknowledge &amp; Continue</button>
+        </div>
+    </div>
 
     <header class="site-header">
         <div class="site-header-inner">

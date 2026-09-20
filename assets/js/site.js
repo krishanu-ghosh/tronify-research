@@ -43,4 +43,18 @@
     block.style.position = block.style.position || "relative";
     block.appendChild(btn);
   });
+
+  // Confidential-info overlay (index page only): accept dismisses it upward.
+  var overlay = document.getElementById("confidentialOverlay");
+  var acceptBtn = document.getElementById("confidentialOverlayAccept");
+  if (overlay && acceptBtn) {
+    acceptBtn.addEventListener("click", function () {
+      overlay.classList.add("is-dismissed");
+      document.body.classList.remove("confidential-locked");
+      overlay.addEventListener("transitionend", function handler() {
+        overlay.removeEventListener("transitionend", handler);
+        overlay.remove();
+      });
+    });
+  }
 })();
