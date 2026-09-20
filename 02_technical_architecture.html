@@ -5,24 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Technical Architecture — Independent tronify.rent Report</title>
     <link rel="stylesheet" href="assets/css/site.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
-        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
-        h2 { color: #1976d2; margin: 20px 0 10px; }
-        h3 { color: #555; margin: 15px 0 8px; }
-        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 12px; border-left: 4px solid #007acc; }
-        .diagram { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; line-height: 1.4; }
-        .component { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .alert { background: #fff3cd; border-left: 4px solid #ff9800; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #f5f5f5; font-weight: bold; }
-        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
-        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
-        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
-    </style>
 </head>
 <body data-page="02">
     <header class="site-header">
@@ -137,6 +119,7 @@
 
         <h3>1. Frontend Deception Layer (tronify.rent)</h3>
         <p>The website presents a professional energy rental service interface to establish trust:</p>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Element</th>
@@ -174,6 +157,7 @@
                 <td>Appears as normal DeFi interaction</td>
             </tr>
         </table>
+</div>
         <p style="margin-top: 10px;"><strong>Key Insight:</strong> The legitimacy signals are what make this attack effective. Users have no reason to suspect a Florida-registered business with a phone number.</p>
 
         <h3>2. Malicious Payload (greenbid.js)</h3>
@@ -403,6 +387,7 @@ Backend Endpoints:
         <h2>Threat Model Analysis</h2>
 
         <h3>Attack Surface</h3>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Vector</th>
@@ -435,10 +420,11 @@ Backend Endpoints:
                 <td>MEDIUM - Likely uses bulletproof hosting</td>
             </tr>
         </table>
+</div>
 
         <h3>Why Token Approvals Are the Vulnerability</h3>
         <p>The TRON and Ethereum ecosystems use a two-stage token transfer pattern:</p>
-        <div class="alert">
+        <div class="warning">
             <strong>Stage 1: Approval (Allowance)</strong><br>
             User signs a transaction that says: "Contract X is allowed to transfer up to Y tokens from my wallet on my behalf"<br><br>
             <strong>Stage 2: Transfer (Transferfrom)</strong><br>
@@ -501,6 +487,7 @@ if (!config.tronSpender) {
 
         <h2>Operational Security (OPSEC)</h2>
         <p>The attackers use several techniques to avoid detection:</p>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>OPSEC Technique</th>
@@ -531,6 +518,7 @@ if (!config.tronSpender) {
                 <td>Minified JavaScript, packed encoding, anti-analysis</td>
             </tr>
         </table>
+</div>
 
         <h2>Scalability Factors</h2>
         <p>The attack is designed to operate at scale:</p>

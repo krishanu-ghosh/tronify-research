@@ -6,27 +6,10 @@
     <title>Indicators of Compromise — Independent tronify.rent Report</title>
     <link rel="stylesheet" href="assets/css/site.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
-        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
-        h2 { color: #1976d2; margin: 20px 0 10px; }
-        h3 { color: #555; margin: 15px 0 8px; }
-        .ioc { background: #fff3cd; border-left: 4px solid #ff9800; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; word-break: break-all; }
-        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 11px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #f5f5f5; font-weight: bold; }
-        .copy-button { background: #1976d2; color: white; border: none; padding: 5px 10px; border-radius: 3px; cursor: pointer; font-size: 12px; }
-        .copy-button:hover { background: #1565c0; }
-        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
-        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
-        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
-        .detection-query { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .severity { display: inline-block; padding: 4px 10px; border-radius: 3px; font-weight: bold; font-size: 12px; color: white; }
-        .severity-critical { background: #d32f2f; }
-        .severity-high { background: #f57c00; }
-        .severity-medium { background: #fbc02d; color: #333; }
+        .severity { display: inline-block; padding: 4px 11px; border-radius: 999px; font-weight: 700; font-size: 11.5px; letter-spacing: 0.2px; color: #fff; }
+        .severity-critical { background: var(--red-600); }
+        .severity-high { background: #c2650c; }
+        .severity-medium { background: var(--amber-600); }
     </style>
 </head>
 <body data-page="05">
@@ -59,6 +42,7 @@
         <h2>Network IoCs</h2>
 
         <h3>Malicious Domains</h3>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Domain</th>
@@ -79,6 +63,7 @@
                 <td>Active — resolves via Cloudflare anycast (104.21.94.164 / 172.67.138.20), payload last modified 2026-08-30, <code>/tron/config</code> actively serving live attacker addresses</td>
             </tr>
         </table>
+</div>
         <p style="font-size: 13px; color: #666;">Note the two tiers of infrastructure use two <em>different</em> reverse-proxy providers — DDoS-Guard for the phishing frontend, Cloudflare for the payload/C&C host — which obscures both true origin servers and means a single provider takedown request won't remove both.</p>
 
         <h3>Malicious URLs</h3>
@@ -161,6 +146,7 @@ alert http $HOME_NET any -> $EXTERNAL_NET any
         <h2>File IoCs</h2>
 
         <h3>JavaScript Payload</h3>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Attribute</th>
@@ -193,6 +179,7 @@ alert http $HOME_NET any -> $EXTERNAL_NET any
                 <td><span class="severity severity-critical">CRITICAL</span></td>
             </tr>
         </table>
+</div>
         <p style="font-size: 13px; color: #666;">The SHA-256 hash is the single most reliable file IoC here — unlike string signatures, it can't be evaded by attacker string obfuscation, but it also breaks the instant the attacker changes even one byte of the file. Use both.</p>
 
         <h3>String Signatures</h3>
@@ -285,7 +272,6 @@ Y("connectTronLink candidates:", JSON.stringify(w))
 
 // These messages appear in console if user opens DevTools
 // Search for "drain" in console to detect attack
-            </code>
             </div>
         </div>
 
@@ -310,6 +296,7 @@ if (localStorage.getItem("tron-drainer:visitor-id")) {
 
         <h3>TRON Wallet Addresses (Attacker Destinations)</h3>
         <p>The attacker's destination addresses are <strong>not hardcoded</strong> in greenbid.js — they're loaded dynamically from <code>/tron/config</code>. That endpoint is live and unauthenticated, so we queried it directly on 2026-09-20 and got real values, then verified them on-chain via TronGrid/TronScan (raw responses in <code>evidence/onchain/</code>).</p>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Address Type</th>
@@ -337,6 +324,7 @@ if (localStorage.getItem("tron-drainer:visitor-id")) {
                 <td>Not yet traced further — good next pivot points for law enforcement / chain analysts, since they represent where funds go <em>after</em> theft rather than the (more easily rotated) collection point</td>
             </tr>
         </table>
+</div>
         <p style="margin-top: 15px;"><strong>Caveat:</strong> because the C&C config is fetched fresh on every visit, the attacker can change these addresses at any time without redeploying greenbid.js. Treat the specific addresses above as a dated snapshot for pivoting/tracing, not a permanent blocklist entry — re-query <code>/tron/config</code> periodically if operationalizing this.</p>
 
         <h3>Smart Contract Interaction Pattern</h3>
@@ -369,7 +357,6 @@ SELECT
     GROUP BY to_address
     HAVING COUNT(DISTINCT from_address) > 5
     WITHIN 24 hours;
-            </code>
             </div>
         </div>
 
@@ -483,6 +470,7 @@ Add to "Malware" category
         <h2>Temporal IoCs</h2>
 
         <h3>Campaign Timeline</h3>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Date</th>
@@ -533,11 +521,13 @@ Add to "Malware" category
                 <td><strong>Unverified — do not cite as campaign-launch evidence</strong></td>
             </tr>
         </table>
+</div>
 
         <h2>False Positive Prevention</h2>
 
         <h3>The Real "Tronify" Brand — and Why This Isn't a Simple Typosquat</h3>
         <p><strong>Correction:</strong> an earlier draft of this document asserted that <code>tronify.app</code>, <code>tronify.llc</code>, <code>tronrental.com</code>, and <code>tronified.com</code> were confirmed-legitimate alternatives, without checking them. We checked. Results below are from direct DNS resolution and HTTP requests on 2026-09-20 (raw output in <code>evidence/dns/resolution_snapshot.txt</code> and <code>evidence/site_legit/</code>) — <strong>do not point users at any of these as a "safe alternative" without re-verifying first</strong>, since domain status changes and an expired domain can be re-registered by anyone, including a threat actor:</p>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Domain</th>
@@ -570,6 +560,7 @@ Add to "Malware" category
                 <td>The only Tronify-branded domain in this set we found to be genuinely live and serving a product as of this check</td>
             </tr>
         </table>
+</div>
         <p><strong>Why this matters more than a typosquat table:</strong> a third-party crypto news article reports that Trust Wallet integrated a service called "Tronify" for automatic energy rental — meaning the brand "Tronify" carries real, independently-earned trust in this space. <code>tronify.rent</code> is not a misspelling of one specific competitor; it's occupying the same brand name under a different, unusual TLD (<code>.rent</code>) in a space where several legitimate-sounding "Tronify" domains are already dead or abandoned. A user who searches "is Tronify legit" will find genuinely positive results that say nothing about which TLD they apply to. We could not confirm whether the "Tronify Energy Solutions LLC, EIN 87-2945163" registration displayed on tronify.rent belongs to a real filed entity, was copied from a real one, or was invented — none of the other Tronify-branded sites we checked displayed that specific EIN for comparison, so this remains an open question rather than a settled one.</p>
 
         <h2>Reporting IoCs</h2>

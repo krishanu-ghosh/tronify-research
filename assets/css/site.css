@@ -39,9 +39,21 @@
   --font-mono: "SF Mono", "Menlo", "Consolas", "Courier New", monospace;
 }
 
-/* ---------- Reset-ish base (layers on top of each page's own <style>) ---------- */
-html { scroll-behavior: smooth; }
-body { background: var(--page-bg); }
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; width: 100%; }
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  overflow-x: hidden;
+  width: 100%;
+}
+img, svg { max-width: 100%; }
+::selection { background: var(--blue-50); color: var(--blue-700); }
+:focus-visible { outline: 2px solid var(--blue-700); outline-offset: 2px; }
 
 .site-shell {
   max-width: 1180px;
@@ -320,7 +332,152 @@ body { background: var(--page-bg); }
   padding: 12px 14px;
   border-radius: var(--radius-sm);
   overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+.hash-line::-webkit-scrollbar { height: 8px; }
+.hash-line::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.18); border-radius: 4px; }
+
+/* ==========================================================================
+   Report content system — shared by 01–06 (each page keeps only the
+   handful of classes that are genuinely unique to it)
+   ========================================================================== */
+
+.container {
+  max-width: 1180px;
+  margin: 28px auto 40px;
+  padding: 40px 48px 48px;
+  background: var(--surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  font-size: 15.5px;
+  line-height: 1.7;
+}
+
+.container h1 {
+  font-size: clamp(24px, 4vw, 32px);
+  font-weight: 800;
+  letter-spacing: -0.4px;
+  margin: 4px 0 14px;
+  padding-bottom: 14px;
+  border-bottom: 3px solid var(--red-600);
+  color: var(--red-700);
+}
+.container h1 + h2 { margin-top: 0; }
+.container h2 {
+  font-size: clamp(18px, 2.4vw, 21px);
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  margin: 32px 0 12px;
+  color: var(--blue-700);
+}
+.container h3 { font-size: 16px; font-weight: 700; margin: 20px 0 10px; color: var(--ink); }
+.container h4 { font-size: 14.5px; font-weight: 700; margin: 14px 0 8px; color: var(--ink); }
+.container p { margin: 10px 0; color: var(--ink-soft); overflow-wrap: break-word; }
+.container ul, .container ol { margin: 8px 0 8px 22px; }
+.container li { margin: 7px 0; color: var(--ink-soft); overflow-wrap: break-word; }
+.container td { overflow-wrap: break-word; }
+.container li strong, .container p strong, .container td strong { color: var(--ink); }
+.container code { background: var(--navy-100); padding: 2px 6px; border-radius: 4px; font-family: var(--font-mono); font-size: 0.9em; color: var(--ink); }
+
+/* Tables */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+.table-scroll::-webkit-scrollbar { height: 8px; }
+.table-scroll::-webkit-scrollbar-thumb { background: rgba(15,23,41,0.15); border-radius: 4px; }
+.container table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.table-scroll table { margin: 0; }
+.container th, .container td {
+  padding: 11px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.container th {
+  background: var(--page-bg);
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+}
+.container tr:last-child td { border-bottom: none; }
+.container tbody tr:hover td { background: #fbfcfe; }
+
+/* Code / diagram / evidence blocks */
+.code-block, .evidence, .ioc {
+  background: var(--navy-950);
+  color: #d4dced;
+  padding: 16px 18px;
+  margin: 16px 0;
+  border-radius: var(--radius-sm);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border-left: 3px solid var(--blue-700);
+}
+.code-block::-webkit-scrollbar, .evidence::-webkit-scrollbar, .ioc::-webkit-scrollbar, .diagram::-webkit-scrollbar { height: 8px; }
+.code-block::-webkit-scrollbar-thumb, .evidence::-webkit-scrollbar-thumb, .ioc::-webkit-scrollbar-thumb, .diagram::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.16); border-radius: 4px; }
+.evidence { border-left-color: var(--purple-700); }
+.ioc { border-left-color: var(--amber-600); word-break: break-all; }
+
+/* Diagrams (ASCII architecture art) — kept unwrapped so box-drawing stays aligned */
+.diagram {
+  background: var(--navy-950);
+  color: #c9d6f0;
+  padding: 18px 20px;
+  margin: 16px 0;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
   white-space: pre;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-left: 3px solid var(--navy-700);
+}
+
+/* Callout boxes — grouped by semantic color, reused across pages under
+   whichever class name that page already uses for it */
+.alert, .alert-box, .danger,
+.flow, .step, .step-box,
+.evidence, .component, .system-action, .detection-query,
+.function, .success,
+.warning, .user-action, .ioc {
+  padding: 16px 18px;
+  margin: 16px 0;
+  border-radius: var(--radius-sm);
+  border-left: 4px solid;
+}
+.alert, .alert-box, .danger { border-color: var(--red-600); background: var(--red-50); }
+.alert strong, .alert-box strong, .danger strong { color: var(--red-700); }
+.flow, .step, .step-box { border-color: var(--blue-700); background: var(--blue-50); }
+.evidence, .component, .system-action, .detection-query { border-color: var(--purple-700); background: var(--purple-50); }
+.function, .success { border-color: var(--green-700); background: var(--green-50); }
+.warning, .user-action, .ioc { border-color: var(--amber-600); background: var(--amber-50); }
+.user-action { font-weight: 700; }
+
+.file-link { color: var(--blue-700); text-decoration: none; font-weight: 700; }
+.file-link:hover { text-decoration: underline; }
+
+@media (max-width: 720px) {
+  .container { margin: 0; padding: 28px 20px 36px; border-radius: 0; box-shadow: none; }
+}
+@media (max-width: 480px) {
+  .container { padding: 22px 16px 32px; font-size: 15px; }
+  .container th, .container td { padding: 9px 11px; font-size: 12.5px; }
+  .table-scroll table { min-width: 540px; }
+  .code-block, .evidence, .ioc, .diagram { font-size: 11.5px; padding: 13px 14px; }
 }
 
 /* ---------- Homepage hero ---------- */
@@ -378,4 +535,26 @@ body { background: var(--page-bg); }
 .report-card.evidence-card {
   border-color: #f3c6c6;
   background: linear-gradient(180deg, #fff, #fff8f8);
+}
+
+/* ---------- Cross-page mobile refinements ---------- */
+@media (max-width: 600px) {
+  .site-pager { grid-template-columns: 1fr; gap: 10px; }
+  .site-pager .pager-next { text-align: left; }
+  .site-pager .pager-spacer { display: none; }
+  .hero { padding: 40px 0 36px; }
+  .hero-stats { gap: 18px 24px; }
+  .hero-stat .num { font-size: 20px; }
+  .home-section { padding: 36px 20px; }
+  .home-section h2 { font-size: 19px; }
+  .ev-section { padding: 20px 18px; }
+}
+@media (max-width: 480px) {
+  .site-header-inner, .site-shell, .breadcrumb, .site-pager, .site-footer-inner, .hero-inner, .home-section {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .brand-text span { display: none; }
+  .status-strip { font-size: 11px; padding: 6px 12px; }
+  .status-strip br { display: none; }
 }

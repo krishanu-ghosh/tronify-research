@@ -6,29 +6,15 @@
     <title>Attack Chain — Independent tronify.rent Report</title>
     <link rel="stylesheet" href="assets/css/site.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
-        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
-        h2 { color: #1976d2; margin: 20px 0 10px; }
-        h3 { color: #555; margin: 15px 0 8px; }
-        .step { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .step-num { display: inline-block; background: #1976d2; color: white; width: 32px; height: 32px; border-radius: 50%; text-align: center; line-height: 32px; margin-right: 10px; font-weight: bold; }
-        .timeline { position: relative; padding-left: 40px; }
-        .timeline::before { content: ''; position: absolute; left: 12px; top: 0; bottom: 0; width: 2px; background: #1976d2; }
+        .timeline { position: relative; padding-left: 28px; margin: 16px 0; }
+        .timeline::before { content: ''; position: absolute; left: 5px; top: 4px; bottom: 4px; width: 2px; background: var(--blue-50); }
         .timeline-item { position: relative; margin-bottom: 20px; }
-        .timeline-item::before { content: ''; position: absolute; left: -30px; top: 5px; width: 12px; height: 12px; background: #1976d2; border-radius: 50%; border: 2px solid white; }
-        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 12px; border-left: 4px solid #007acc; }
-        .diagram { background: #f5f5f5; border: 2px solid #ddd; padding: 15px; margin: 15px 0; border-radius: 4px; font-family: 'Courier New', monospace; line-height: 1.4; overflow-x: auto; }
-        .user-action { background: #fff9c4; border-left: 4px solid #fbc02d; padding: 10px 15px; margin: 10px 0; border-radius: 4px; font-weight: bold; }
-        .system-action { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 10px 15px; margin: 10px 0; border-radius: 4px; }
-        .warning { background: #ffebee; border-left: 4px solid #d32f2f; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #f5f5f5; font-weight: bold; }
-        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
-        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
-        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
+        .timeline-item:last-child { margin-bottom: 0; }
+        .timeline-item::before { content: ''; position: absolute; left: -28px; top: 6px; width: 11px; height: 11px; background: var(--blue-700); border-radius: 50%; border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--blue-50); }
+        @media (max-width: 480px) {
+            .timeline { padding-left: 22px; }
+            .timeline-item::before { left: -22px; }
+        }
     </style>
 </head>
 <body data-page="03">
@@ -351,7 +337,6 @@ POST /tron/approve/notify
   balance: "1000000000",
   txHash: "ab3c4d5e6f7g8h9i0j"
 }
-                </code>
                 </div>
             </div>
         </div>
@@ -433,6 +418,7 @@ if (BigInt(trxBalance) > (minThreshold + gasBuffer)) {
                 <h3>T+26min: Final State</h3>
                 <div class="warning">
                     <strong>Victim's Wallet After Attack:</strong>
+                    <div class="table-scroll">
                     <table>
                         <tr>
                             <th>Asset</th>
@@ -471,6 +457,7 @@ if (BigInt(trxBalance) > (minThreshold + gasBuffer)) {
                             <td><strong>99.99% loss</strong></td>
                         </tr>
                     </table>
+</div>
                 </div>
             </div>
 
@@ -536,7 +523,6 @@ Results show:
 - High USD value victims → Route through premium mixing
 - Low USD value → Batch convert
 - Geographic clustering analysis → Plan next campaign
-                </code>
                 </div>
             </div>
 
@@ -556,6 +542,7 @@ Results show:
         </div>
 
         <h2>Key Vulnerability Windows</h2>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Stage</th>
@@ -594,16 +581,17 @@ Results show:
                 <td>Approval revocation, smaller approvals</td>
             </tr>
         </table>
+</div>
 
         <h2>Why Users Approve the Theft</h2>
-        <p style="background: #f3e5f5; padding: 15px; border-radius: 4px; border-left: 4px solid #7b1fa2;">
+        <div class="system-action">
             <strong>The Approval Problem:</strong><br><br>
             When a wallet shows "USDT is asking for access to your tokens," the user doesn't see:<br>
             • What the spender contract address is (it's an attacker's address)<br>
             • What "unlimited" means (can transfer 100% of your USDT forever)<br>
             • That this is irreversible (can't be undone without revoking)<br><br>
             The user only sees that they're on what looks like a legitimate site requesting a standard DeFi operation. They approve because they trust the site and the action appears normal.
-        </p>
+        </div>
 
     </div>
 

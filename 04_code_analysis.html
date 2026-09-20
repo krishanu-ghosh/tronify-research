@@ -6,23 +6,7 @@
     <title>Code Analysis — Independent tronify.rent Report</title>
     <link rel="stylesheet" href="assets/css/site.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background: #f5f5f5; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; background: white; }
-        h1 { color: #d32f2f; margin: 20px 0 10px; border-bottom: 3px solid #d32f2f; padding-bottom: 10px; }
-        h2 { color: #1976d2; margin: 20px 0 10px; }
-        h3 { color: #555; margin: 15px 0 8px; }
-        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 15px; margin: 15px 0; border-radius: 4px; overflow-x: auto; font-family: 'Courier New', monospace; font-size: 11px; border-left: 4px solid #007acc; }
-        .component { background: #f3e5f5; border-left: 4px solid #7b1fa2; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .function { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        .warning { background: #ffebee; border-left: 4px solid #d32f2f; padding: 15px; margin: 15px 0; border-radius: 4px; }
-        table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
-        th { background: #f5f5f5; font-weight: bold; }
-        .file-link { color: #1976d2; text-decoration: none; font-weight: bold; }
-        .nav { margin-bottom: 30px; padding: 15px; background: #f0f0f0; border-radius: 4px; }
-        .nav a { display: inline-block; margin-right: 15px; color: #1976d2; text-decoration: none; font-weight: bold; }
-        .stat { display: inline-block; background: #e3f2fd; padding: 10px 15px; margin: 5px; border-radius: 4px; border-left: 3px solid #1976d2; }
+        .stat { display: inline-block; background: var(--blue-50); color: var(--blue-700); font-weight: 600; font-size: 13px; padding: 8px 14px; margin: 4px; border-radius: var(--radius-sm); border-left: 3px solid var(--blue-700); }
     </style>
 </head>
 <body data-page="04">
@@ -53,6 +37,7 @@
         <h2>Greenbid.js Payload Breakdown</h2>
 
         <h2>File Fingerprint</h2>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Attribute</th>
@@ -87,6 +72,7 @@
                 <td>Self-executing anonymous function (IIFE) — confirmed opening bytes: <code>(function(){"use strict";const z=function(o,l){...</code></td>
             </tr>
         </table>
+</div>
 
         <h2>Execution Flow</h2>
         <div class="code-block">
@@ -296,6 +282,7 @@ async function sweepTRX(walletAddress, config) {
         <div class="function">
             <strong>Function Purpose:</strong> Exfiltrate victim data to attacker infrastructure<br><br>
             <strong>Endpoints Found:</strong>
+            <div class="table-scroll">
             <table>
                 <tr>
                     <th>Endpoint</th>
@@ -363,6 +350,7 @@ async function sweepTRX(walletAddress, config) {
                     <td>Proxies WalletConnect session setup through the attacker's backend</td>
                 </tr>
             </table>
+</div>
             <strong>Code Pattern (reconstructed):</strong>
             <div class="code-block">
 function T(path, options = {}) {
@@ -497,7 +485,6 @@ const Y = function(level, msg) { ... };  // Logging function
 const T = function(path, opts) { ... };  // HTTP fetch wrapper
 const X = function() { ... };             // Visitor ID getter
 const FA = function(addr) { ... };        // Token enumeration
-            </code>
             </div>
         </div>
 
@@ -540,6 +527,7 @@ setTimeout(() => { /* Attack executes after delay */ }, 0);
         </div>
 
         <h2>Critical Functions Summary</h2>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Reconstructed Function</th>
@@ -587,6 +575,7 @@ setTimeout(() => { /* Attack executes after delay */ }, 0);
                 <td>High (localStorage)</td>
             </tr>
         </table>
+</div>
         <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this table cited specific line numbers (e.g. "~Line 7500-8000") for these functions. The live file is only 140 physical lines long, so those line numbers were impossible and have been removed rather than re-guessed.</p>
 
         <h2>Configuration Injection Points</h2>
@@ -607,6 +596,7 @@ setTimeout(() => { /* Attack executes after delay */ }, 0);
         </div>
 
         <h2>Resource Consumption</h2>
+        <div class="table-scroll">
         <table>
             <tr>
                 <th>Resource</th>
@@ -633,6 +623,7 @@ setTimeout(() => { /* Attack executes after delay */ }, 0);
                 <td>Paid by victim (~100 TRX per transaction)</td>
             </tr>
         </table>
+</div>
 
     </div>
 
