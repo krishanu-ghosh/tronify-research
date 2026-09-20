@@ -264,7 +264,7 @@ img, svg { max-width: 100%; }
 .badge-live { background: var(--red-50); color: var(--red-700); }
 
 /* ---------- Copy-to-clipboard buttons for IoC/code blocks ---------- */
-.copyable { position: relative; }
+.copyable { position: relative; overflow-wrap: break-word; word-break: break-all; }
 .copy-btn {
   position: absolute;
   top: 8px; right: 8px;
@@ -466,6 +466,7 @@ img, svg { max-width: 100%; }
   margin: 16px 0;
   border-radius: var(--radius-sm);
   border-left: 4px solid;
+  overflow-wrap: break-word;
 }
 .alert, .alert-box, .danger { border-color: var(--red-600); background: var(--red-50); color: #ff8080; }
 .alert strong, .alert-box strong, .danger strong { color: var(--red-700); }

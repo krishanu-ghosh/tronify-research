@@ -18,11 +18,13 @@
         .danger-note {
             border-left: 4px solid #ff5252; background: #2a1515; padding: 16px 18px;
             border-radius: 6px; margin: 20px 0; font-size: 13.5px; color: #ff8080;
+            overflow-wrap: break-word;
         }
         .danger-note strong { color: #ff6b6b; }
         .method-note {
             border-left: 4px solid #4fa3f5; background: #0a1428; padding: 16px 18px;
             border-radius: 6px; margin: 20px 0; font-size: 13.5px; color: #7ab8ff;
+            overflow-wrap: break-word;
         }
         .chain-list { font-size: 13.5px; color: #a9b5cc; margin: 8px 0 0 18px; }
         .chain-list li { margin: 4px 0; }
@@ -39,12 +41,12 @@
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <nav class="site-nav" id="siteNav">
                 <a href="../index.html" data-page="home">Home</a>
-                <a href="../01_executive_summary.html" data-page="01">Executive Summary</a>
-                <a href="../02_technical_architecture.html" data-page="02">Technical Architecture</a>
-                <a href="../03_attack_chain.html" data-page="03">Attack Chain</a>
-                <a href="../04_code_analysis.html" data-page="04">Code Analysis</a>
-                <a href="../05_indicators_of_compromise.html" data-page="05">IoCs</a>
-                <a href="../06_defense_remediation.html" data-page="06">Defense</a>
+                <a href="../executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="../technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="../attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="../code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="../indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="../defense_remediation.html" data-page="06">Defense</a>
                 <a href="index.html" class="nav-evidence" data-page="evidence">Evidence</a>
             </nav>
         </div>
@@ -69,7 +71,7 @@
         <!-- PAYLOAD -->
         <div class="ev-section">
             <h2>🧬 The Drainer Payload <span class="badge badge-critical">Malware sample</span></h2>
-            <p class="ev-desc">The actual greenbid.js file served by the attacker's C&amp;C at fetch time. This is the file analyzed in <a href="../04_code_analysis.html">Code Analysis</a>.</p>
+            <p class="ev-desc">The actual greenbid.js file served by the attacker's C&amp;C at fetch time. This is the file analyzed in <a href="../code_analysis.html">Code Analysis</a>.</p>
             <div class="ev-files">
                 <div class="ev-file">
                     <div>
@@ -273,7 +275,7 @@ c15e8e0bd915a6f0be039dc90ffa040e6ad4523e2c6d2ad2e2117223c7673c8b  onchain/trc20_
     </div>
 
     <div class="site-pager">
-        <a href="../06_defense_remediation.html"><div class="pager-label">← Previous</div><div class="pager-title">Defense &amp; Remediation</div></a>
+        <a href="../defense_remediation.html"><div class="pager-label">← Previous</div><div class="pager-title">Defense &amp; Remediation</div></a>
         <a href="../index.html" class="pager-next"><div class="pager-label">Back to →</div><div class="pager-title">Home</div></a>
     </div>
 
@@ -285,15 +287,15 @@ c15e8e0bd915a6f0be039dc90ffa040e6ad4523e2c6d2ad2e2117223c7673c8b  onchain/trc20_
             </div>
             <div class="site-footer-col">
                 <h4>Reports</h4>
-                <p><a href="../01_executive_summary.html">Executive Summary</a><br>
-                <a href="../02_technical_architecture.html">Technical Architecture</a><br>
-                <a href="../03_attack_chain.html">Attack Chain</a><br>
-                <a href="../04_code_analysis.html">Code Analysis</a></p>
+                <p><a href="../executive_summary.html">Executive Summary</a><br>
+                <a href="../technical_architecture.html">Technical Architecture</a><br>
+                <a href="../attack_chain.html">Attack Chain</a><br>
+                <a href="../code_analysis.html">Code Analysis</a></p>
             </div>
             <div class="site-footer-col">
                 <h4>More</h4>
-                <p><a href="../05_indicators_of_compromise.html">Indicators of Compromise</a><br>
-                <a href="../06_defense_remediation.html">Defense &amp; Remediation</a><br>
+                <p><a href="../indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="../defense_remediation.html">Defense &amp; Remediation</a><br>
                 <a href="index.html">Raw Evidence</a><br>
                 <a href="../FACT_CHECK_CORRECTIONS.md">Fact-Check Log</a></p>
             </div>

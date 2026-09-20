@@ -137,6 +137,13 @@
         .weakness-box strong {
             color: #ff6b6b;
         }
+        .cost-grid-2 { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 20px; }
+        .cost-grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 16px; margin-bottom: 16px; }
+        .cost-figure { overflow-wrap: anywhere; }
+        @media (max-width: 480px) {
+            .indicator-check { grid-template-columns: 1fr; }
+            .cost-grid-2, .cost-grid-3 { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body data-page="07">
@@ -149,13 +156,13 @@
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
             <nav class="site-nav" id="siteNav">
                 <a href="index.html" data-page="home">Home</a>
-                <a href="01_executive_summary.html" data-page="01">Executive Summary</a>
-                <a href="02_technical_architecture.html" data-page="02">Technical Architecture</a>
-                <a href="03_attack_chain.html" data-page="03">Attack Chain</a>
-                <a href="04_code_analysis.html" data-page="04">Code Analysis</a>
-                <a href="05_indicators_of_compromise.html" data-page="05">IoCs</a>
-                <a href="06_defense_remediation.html" data-page="06">Defense</a>
-                <a href="07_threat_actor_profile.html" data-page="07">Cost & Skills</a>
+                <a href="executive_summary.html" data-page="01">Executive Summary</a>
+                <a href="technical_architecture.html" data-page="02">Technical Architecture</a>
+                <a href="attack_chain.html" data-page="03">Attack Chain</a>
+                <a href="code_analysis.html" data-page="04">Code Analysis</a>
+                <a href="indicators_of_compromise.html" data-page="05">IoCs</a>
+                <a href="defense_remediation.html" data-page="06">Defense</a>
+                <a href="threat_actor_profile.html" data-page="07">Cost & Skills</a>
                 <a href="evidence/index.html" class="nav-evidence" data-page="evidence">Evidence</a>
             </nav>
         </div>
@@ -344,6 +351,7 @@
         <h2>Development Cost Analysis</h2>
         <div class="cost-box">
             <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 12px 0;"><strong style="color: #e8ecf5;">One-Time Development Cost (Professional Market Rates):</strong></p>
+            <div class="table-scroll">
             <table class="timeline-table">
                 <tr>
                     <th>Role</th>
@@ -382,6 +390,7 @@
                     <td>$2,000–$3,200</td>
                 </tr>
             </table>
+            </div>
         </div>
 
         <h2>Total Development Cost</h2>
@@ -444,6 +453,7 @@
         </div>
 
         <h2>Development Timeline (Estimated)</h2>
+        <div class="table-scroll">
         <table class="timeline-table">
             <tr>
                 <th>Phase</th>
@@ -494,11 +504,13 @@
                 <td>Week 6</td>
             </tr>
         </table>
+        </div>
 
         <h2>Infrastructure Cost Analysis</h2>
         <p style="font-size: 13.5px; color: #a9b5cc; margin-bottom: 16px;"><strong style="color: #e8ecf5;">Tronify.rent's infrastructure spans multiple providers and jurisdictions to resist takedown and maintain operational resilience. Below is a detailed cost breakdown based on market rates for each component.</strong></p>
 
         <h3>One-Time Setup Costs</h3>
+        <div class="table-scroll">
         <table class="timeline-table">
             <tr>
                 <th>Component</th>
@@ -554,8 +566,10 @@
                 <td><strong style="color: #ff6b6b;">₹62,361–₹1,67,895</strong></td>
             </tr>
         </table>
+        </div>
 
         <h3>Monthly Operational Costs</h3>
+        <div class="table-scroll">
         <table class="timeline-table">
             <tr>
                 <th>Component</th>
@@ -623,9 +637,11 @@
                 <td><strong style="color: #ff6b6b;">₹32,140–₹1,04,575</strong></td>
             </tr>
         </table>
+        </div>
 
         <h3>Money Laundering & Financial Infrastructure</h3>
         <p style="font-size: 13px; color: #a9b5cc; margin: 12px 0;"><strong style="color: #e8ecf5;">Critical operational cost often overlooked — converting stolen crypto to usable currency requires infrastructure.</strong></p>
+        <div class="table-scroll">
         <table class="timeline-table">
             <tr>
                 <th>Component</th>
@@ -669,9 +685,11 @@
                 <td><strong style="color: #ff6b6b;">₹1,24,722–₹5,47,278</strong></td>
             </tr>
         </table>
+        </div>
 
         <h3>Talent & Operational Maintenance</h3>
         <p style="font-size: 13px; color: #a9b5cc; margin: 12px 0;"><strong style="color: #e8ecf5;">Ongoing developer hours, content updates, and victim support (social engineering).</strong></p>
+        <div class="table-scroll">
         <table class="timeline-table">
             <tr>
                 <th>Component</th>
@@ -715,20 +733,21 @@
                 <td><strong style="color: #ff6b6b;">₹1,53,504–₹3,45,384</strong></td>
             </tr>
         </table>
+        </div>
 
         <h2 style="margin-top: 30px;">Complete Cost Summary</h2>
 
         <div style="background: #1a3a1a; border-left: 4px solid #4caf50; padding: 20px; margin: 16px 0; border-radius: 6px;">
             <h3 style="color: #4caf50; margin-top: 0;">💰 Initial Build (One-Time)</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="cost-grid-2">
                 <div>
                     <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">Development & Engineering</strong></p>
-                    <div style="font-size: 20px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$17,900–$28,100</div>
+                    <div class="cost-figure" style="font-size: 20px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$17,900–$28,100</div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0;">₹17,17,326–₹26,96,934</p>
                 </div>
                 <div>
                     <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">Infrastructure Setup</strong></p>
-                    <div style="font-size: 20px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$650–$1,750</div>
+                    <div class="cost-figure" style="font-size: 20px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$650–$1,750</div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0;">₹62,361–₹1,67,895</p>
                 </div>
             </div>
@@ -737,20 +756,20 @@
 
         <div style="background: #2a1a1a; border-left: 4px solid #ff9100; padding: 20px; margin: 16px 0; border-radius: 6px;">
             <h3 style="color: #ff9100; margin-top: 0;">🔄 Monthly Operating Costs (Ongoing)</h3>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px;">
+            <div class="cost-grid-3">
                 <div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 6px 0;"><strong style="color: #e8ecf5;">Infrastructure</strong></p>
-                    <div style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$335–$1,090</div>
+                    <div class="cost-figure" style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$335–$1,090</div>
                     <p style="font-size: 11px; color: #a9b5cc; margin: 0;">₹32,140–₹1,04,575</p>
                 </div>
                 <div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 6px 0;"><strong style="color: #e8ecf5;">Money Laundering</strong></p>
-                    <div style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$1,300–$5,700</div>
+                    <div class="cost-figure" style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$1,300–$5,700</div>
                     <p style="font-size: 11px; color: #a9b5cc; margin: 0;">₹1,24,722–₹5,47,278</p>
                 </div>
                 <div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 6px 0;"><strong style="color: #e8ecf5;">Talent & Ops</strong></p>
-                    <div style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$1,600–$3,600</div>
+                    <div class="cost-figure" style="font-size: 18px; font-weight: 700; color: #ff6b6b; font-family: 'SF Mono', monospace;">$1,600–$3,600</div>
                     <p style="font-size: 11px; color: #a9b5cc; margin: 0;">₹1,53,504–₹3,45,384</p>
                 </div>
             </div>
@@ -760,14 +779,14 @@
         <div style="background: #1a3a3a; border-left: 4px solid #4dd0e1; padding: 20px; margin: 16px 0; border-radius: 6px;">
             <h3 style="color: #4dd0e1; margin-top: 0;">📊 Annual Operating Cost (12 Months)</h3>
             <p style="font-size: 13px; color: #a9b5cc; margin: 0 0 12px 0;"><strong style="color: #e8ecf5;">Infrastructure + Money Laundering + Talent & Maintenance:</strong></p>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div class="cost-grid-2">
                 <div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">USD (Annual)</strong></p>
-                    <div style="font-size: 24px; font-weight: 700; color: #4dd0e1; font-family: 'SF Mono', monospace;">$38,820–$124,680</div>
+                    <div class="cost-figure" style="font-size: 24px; font-weight: 700; color: #4dd0e1; font-family: 'SF Mono', monospace;">$38,820–$124,680</div>
                 </div>
                 <div>
                     <p style="font-size: 12px; color: #a9b5cc; margin: 0 0 8px 0;"><strong style="color: #e8ecf5;">INR (Annual)</strong></p>
-                    <div style="font-size: 24px; font-weight: 700; color: #4dd0e1; font-family: 'SF Mono', monospace;">₹37,24,388–₹1,19,54,851</div>
+                    <div class="cost-figure" style="font-size: 24px; font-weight: 700; color: #4dd0e1; font-family: 'SF Mono', monospace;">₹37,24,388–₹1,19,54,851</div>
                 </div>
             </div>
         </div>
@@ -796,7 +815,7 @@
     </div>
 
     <div class="site-pager">
-        <a href="06_defense_remediation.html"><div class="pager-label">← Previous</div><div class="pager-title">Defense & Remediation</div></a>
+        <a href="defense_remediation.html"><div class="pager-label">← Previous</div><div class="pager-title">Defense & Remediation</div></a>
         <a href="evidence/index.html" class="pager-next"><div class="pager-label">Next →</div><div class="pager-title">Evidence</div></a>
     </div>
 
@@ -808,16 +827,16 @@
             </div>
             <div class="site-footer-col">
                 <h4>Reports</h4>
-                <p><a href="01_executive_summary.html">Executive Summary</a><br>
-                <a href="02_technical_architecture.html">Technical Architecture</a><br>
-                <a href="03_attack_chain.html">Attack Chain</a><br>
-                <a href="04_code_analysis.html">Code Analysis</a></p>
+                <p><a href="executive_summary.html">Executive Summary</a><br>
+                <a href="technical_architecture.html">Technical Architecture</a><br>
+                <a href="attack_chain.html">Attack Chain</a><br>
+                <a href="code_analysis.html">Code Analysis</a></p>
             </div>
             <div class="site-footer-col">
                 <h4>More</h4>
-                <p><a href="05_indicators_of_compromise.html">Indicators of Compromise</a><br>
-                <a href="06_defense_remediation.html">Defense & Remediation</a><br>
-                <a href="07_threat_actor_profile.html">Threat Actor Profile</a><br>
+                <p><a href="indicators_of_compromise.html">Indicators of Compromise</a><br>
+                <a href="defense_remediation.html">Defense & Remediation</a><br>
+                <a href="threat_actor_profile.html">Threat Actor Profile</a><br>
                 <a href="evidence/index.html">Raw Evidence</a><br>
                 </p>
             </div>
