@@ -119,7 +119,7 @@ Y("drain",`TRX sweep result: ${JSON.stringify(v)`)
 Y("drain",`TRX sweep error: ${E==null?void 0:E.message}`)
 Y("drain","TRX sweep timed out — skipping")
         </div>
-        <p style="font-size: 13px; color: #666;">Note the approval mechanism specifically calls the TRC-20 <code>increaseApproval(spender, amount)</code> method (not the more commonly documented <code>approve()</code>) — confirmed directly in the payload as <code>B.increaseApproval(e.tronSpender,"11579208923...639935")</code>.</p>
+        <p style="font-size: 13px; color: #a9b5cc;">Note the approval mechanism specifically calls the TRC-20 <code>increaseApproval(spender, amount)</code> method (not the more commonly documented <code>approve()</code>) — confirmed directly in the payload as <code>B.increaseApproval(e.tronSpender,"11579208923...639935")</code>.</p>
 
         <h3>2. Backend Command & Control Infrastructure</h3>
         <p>The script communicates with attacker-controlled servers via <strong>12 distinct endpoints</strong> (all extracted directly from the live payload — 4 more than an earlier draft of this report found):</p>
@@ -187,7 +187,7 @@ Y("drain","TRX sweep timed out — skipping")
             </tr>
         </table>
 </div>
-        <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this report listed "MetaMask (TRON chain)" as a target, attributing the <code>window.ethereum.isTrust</code> check to it. That check is actually part of Trust Wallet's detection (Trust Wallet's injected provider sets <code>isTrust=true</code>). MetaMask does not appear anywhere in the live payload (0 matches).</p>
+        <p style="font-size: 13px; color: #a9b5cc;"><strong>Correction:</strong> an earlier draft of this report listed "MetaMask (TRON chain)" as a target, attributing the <code>window.ethereum.isTrust</code> check to it. That check is actually part of Trust Wallet's detection (Trust Wallet's injected provider sets <code>isTrust=true</code>). MetaMask does not appear anywhere in the live payload (0 matches).</p>
 
         <h2>Attack Timeline</h2>
         <ol>

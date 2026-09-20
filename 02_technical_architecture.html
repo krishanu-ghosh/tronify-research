@@ -190,7 +190,7 @@ const wallets = [
 const available = wallets.filter(w => w.detect());
 const target = available[0]; // Use first available wallet
         </div>
-        <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this document listed "MetaMask" with detector <code>window.ethereum?.isTrust</code>. That detector actually belongs to Trust Wallet (its injected provider sets <code>isTrust=true</code>); MetaMask does not appear anywhere in the payload (0 matches on direct string search).</p>
+        <p style="font-size: 13px; color: #a9b5cc;"><strong>Correction:</strong> an earlier draft of this document listed "MetaMask" with detector <code>window.ethereum?.isTrust</code>. That detector actually belongs to Trust Wallet (its injected provider sets <code>isTrust=true</code>); MetaMask does not appear anywhere in the payload (0 matches on direct string search).</p>
 
         <h3>4. Asset Enumeration Process</h3>
         <p>Once wallet is connected, the drainer systematically discovers and catalogs all assets:</p>
@@ -473,7 +473,7 @@ if (!config.tronSpender) {
 // (still not persisted to disk anywhere in the payload — re-fetched fresh each visit,
 // which is exactly why the attacker can rotate addresses without redeploying the file)
         </div>
-        <p style="font-size: 13px; color: #666;">These specific addresses are a snapshot, not permanent — but as of this fetch they are demonstrably real and actively used: both addresses were created within 39 seconds of each other on 2026-07-23, and on-chain history shows them receiving stolen USDT as recently as the day before this report. See the IoCs document and <code>evidence/onchain/</code> for the full on-chain analysis.</p>
+        <p style="font-size: 13px; color: #a9b5cc;">These specific addresses are a snapshot, not permanent — but as of this fetch they are demonstrably real and actively used: both addresses were created within 39 seconds of each other on 2026-07-23, and on-chain history shows them receiving stolen USDT as recently as the day before this report. See the IoCs document and <code>evidence/onchain/</code> for the full on-chain analysis.</p>
 
         <h2>Obfuscation & Anti-Analysis</h2>
         <p>The greenbid.js file uses several obfuscation techniques:</p>

@@ -8,33 +8,33 @@
   --navy-800: #16213a;
   --navy-700: #1e2d4d;
   --navy-100: #eef1f8;
-  --ink: #1a2033;
-  --ink-soft: #4a5268;
-  --muted: #6b7385;
-  --border: #e2e5ed;
-  --surface: #ffffff;
-  --page-bg: #f4f6fb;
+  --ink: #e8ecf5;
+  --ink-soft: #a9b5cc;
+  --muted: #7a8398;
+  --border: #2a3550;
+  --surface: #1a2240;
+  --page-bg: #0f1728;
 
-  --red-700: #b91c1c;
-  --red-600: #dc2626;
-  --red-50: #fdecec;
+  --red-700: #ff6b6b;
+  --red-600: #ff5252;
+  --red-50: #1f0a0a;
 
-  --amber-600: #b45309;
-  --amber-50: #fff6e5;
+  --amber-600: #ffa500;
+  --amber-50: #1a1500;
 
-  --green-700: #15803d;
-  --green-50: #edfbf2;
+  --green-700: #51cf66;
+  --green-50: #0a1a0a;
 
-  --blue-700: #1d4ed8;
-  --blue-50: #eef3ff;
+  --blue-700: #4fa3f5;
+  --blue-50: #0a1428;
 
-  --purple-700: #6d28d9;
-  --purple-50: #f4f0fe;
+  --purple-700: #9775fa;
+  --purple-50: #1a0f33;
 
   --radius: 10px;
   --radius-sm: 6px;
-  --shadow-sm: 0 1px 2px rgba(15, 23, 41, 0.06), 0 1px 1px rgba(15, 23, 41, 0.04);
-  --shadow-md: 0 6px 20px rgba(15, 23, 41, 0.08);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 1px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.4);
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-mono: "SF Mono", "Menlo", "Consolas", "Courier New", monospace;
 }
@@ -274,7 +274,7 @@ img, svg { max-width: 100%; }
 
 /* ---------- Evidence browser (evidence/index.html) ---------- */
 .ev-section {
-  background: var(--surface);
+  background: #252d3f;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
@@ -298,11 +298,11 @@ img, svg { max-width: 100%; }
   padding: 12px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
-  background: #fbfcfe;
+  background: #232d40;
 }
 .ev-file-name { font-family: var(--font-mono); font-size: 13px; font-weight: 700; color: var(--ink); word-break: break-all; }
 .ev-file-meta { font-size: 12.5px; color: var(--muted); }
-.ev-file-meta code { font-size: 11px; background: #eef0f6; padding: 1px 5px; border-radius: 4px; }
+.ev-file-meta code { font-size: 11px; background: #2a3550; padding: 1px 5px; border-radius: 4px; }
 .ev-file-actions { display: flex; gap: 8px; white-space: nowrap; }
 .ev-btn {
   display: inline-block;
@@ -313,9 +313,9 @@ img, svg { max-width: 100%; }
   text-decoration: none;
   border: 1px solid var(--border);
   color: var(--ink);
-  background: #fff;
+  background: #2a3550;
 }
-.ev-btn:hover { background: var(--navy-100); }
+.ev-btn:hover { background: #3a4560; }
 .ev-btn.primary { background: var(--navy-900); color: #fff; border-color: var(--navy-900); }
 .ev-btn.primary:hover { background: var(--navy-800); }
 
@@ -408,7 +408,7 @@ img, svg { max-width: 100%; }
   white-space: nowrap;
 }
 .container tr:last-child td { border-bottom: none; }
-.container tbody tr:hover td { background: #fbfcfe; }
+.container tbody tr:hover td { background: #252d3f; }
 
 /* Code / diagram / evidence blocks */
 .code-block, .evidence, .ioc {
@@ -533,8 +533,8 @@ img, svg { max-width: 100%; }
 .report-card .rc-meta { margin-top: auto; font-size: 12px; color: var(--muted); display: flex; gap: 12px; }
 
 .report-card.evidence-card {
-  border-color: #f3c6c6;
-  background: linear-gradient(180deg, #fff, #fff8f8);
+  border-color: #4a2a2a;
+  background: linear-gradient(180deg, #2a1818, #1a1010);
 }
 
 /* ---------- Cross-page mobile refinements ---------- */

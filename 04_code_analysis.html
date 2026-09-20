@@ -124,7 +124,7 @@ function dA() {  // Wallet detection function (also seen as DA() in reconstructe
   return tA.filter(w => w.detect && w.detect());
 }
             </div>
-            <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this section listed TronLink, WalletConnect, Trust Wallet, SafePal, and MetaMask. MetaMask does not appear in the payload at all (0 matches); the real list has 7 entries and includes OKX Wallet, TokenPocket, and Bitget, which were missing entirely.</p>
+            <p style="font-size: 13px; color: #a9b5cc;"><strong>Correction:</strong> an earlier draft of this section listed TronLink, WalletConnect, Trust Wallet, SafePal, and MetaMask. MetaMask does not appear in the payload at all (0 matches); the real list has 7 entries and includes OKX Wallet, TokenPocket, and Bitget, which were missing entirely.</p>
         </div>
 
         <h3>2. Asset Enumeration Module</h3>
@@ -576,7 +576,7 @@ setTimeout(() => { /* Attack executes after delay */ }, 0);
             </tr>
         </table>
 </div>
-        <p style="font-size: 13px; color: #666;"><strong>Correction:</strong> an earlier draft of this table cited specific line numbers (e.g. "~Line 7500-8000") for these functions. The live file is only 140 physical lines long, so those line numbers were impossible and have been removed rather than re-guessed.</p>
+        <p style="font-size: 13px; color: #a9b5cc;"><strong>Correction:</strong> an earlier draft of this table cited specific line numbers (e.g. "~Line 7500-8000") for these functions. The live file is only 140 physical lines long, so those line numbers were impossible and have been removed rather than re-guessed.</p>
 
         <h2>Configuration Injection Points</h2>
         <p>The payload must obtain configuration from C&C. Vulnerability points:</p>
@@ -592,7 +592,7 @@ setTimeout(() => { /* Attack executes after delay */ }, 0);
   "tronExchangeContract": "TDE7vfjJuYqEzzKw6hfdSB3dfLQyXDYPux"
 }
             </div>
-            <p style="margin-top: 10px; font-size: 12px; color: #666;"><strong>Note:</strong> These addresses are dynamically loaded from the C&C server and are <strong>NOT hardcoded</strong> in greenbid.js. We obtained the values above by querying the live endpoint directly (raw response in <code>evidence/cnc/tron_config.json</code>) and then confirmed on TronGrid/TronScan that both addresses currently hold real stolen USDT/TRX and were created together on 2026-07-23. Attackers can rotate these addresses at any time — treat them as a dated snapshot, not a permanent IoC. An earlier draft of this document guessed <code>tronSweepMinTrx: 5</code>; the real, live value is 100.</p>
+            <p style="margin-top: 10px; font-size: 12px; color: #a9b5cc;"><strong>Note:</strong> These addresses are dynamically loaded from the C&C server and are <strong>NOT hardcoded</strong> in greenbid.js. We obtained the values above by querying the live endpoint directly (raw response in <code>evidence/cnc/tron_config.json</code>) and then confirmed on TronGrid/TronScan that both addresses currently hold real stolen USDT/TRX and were created together on 2026-07-23. Attackers can rotate these addresses at any time — treat them as a dated snapshot, not a permanent IoC. An earlier draft of this document guessed <code>tronSweepMinTrx: 5</code>; the real, live value is 100.</p>
         </div>
 
         <h2>Resource Consumption</h2>

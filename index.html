@@ -8,22 +8,22 @@
     <link rel="stylesheet" href="assets/css/site.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a2033; }
-        code { background: #eef0f6; padding: 2px 6px; border-radius: 3px; font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.92em; }
-        .card { background: #fff; padding: 26px; border-radius: 10px; box-shadow: 0 1px 2px rgba(15,23,41,0.06); }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #e8ecf5; }
+        code { background: #2a3550; padding: 2px 6px; border-radius: 3px; font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 0.92em; color: #4fa3f5; }
+        .card { background: #1a2240; padding: 26px; border-radius: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.3); border: 1px solid #2a3550; }
         .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
-        .alert-box { border-left: 4px solid #dc2626; background: #fdecec; padding: 16px 18px; border-radius: 6px; margin-bottom: 18px; }
-        .alert-box strong { color: #b91c1c; }
+        .alert-box { border-left: 4px solid #ff5252; background: #2a1515; padding: 16px 18px; border-radius: 6px; margin-bottom: 18px; }
+        .alert-box strong { color: #ff6b6b; }
         table.ix-table { width: 100%; border-collapse: collapse; }
-        table.ix-table th, table.ix-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #e2e5ed; font-size: 13.5px; }
-        table.ix-table th { background: #f4f6fb; font-weight: 700; }
-        .timeline-item { padding: 14px 0; border-bottom: 1px solid #eee; font-size: 14.5px; }
+        table.ix-table th, table.ix-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a3550; font-size: 13.5px; }
+        table.ix-table th { background: #1a2240; font-weight: 700; color: #e8ecf5; }
+        .timeline-item { padding: 14px 0; border-bottom: 1px solid #2a3550; font-size: 14.5px; color: #a9b5cc; }
         .timeline-item:last-child { border-bottom: none; }
-        .timeline-item strong { color: #b91c1c; }
+        .timeline-item strong { color: #ff6b6b; }
         .audience-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
-        .audience-card { background: #fff; border: 1px solid #e2e5ed; border-radius: 10px; padding: 16px 18px; }
-        .audience-card strong { display: block; margin-bottom: 6px; }
-        .audience-card p, .audience-card a { font-size: 13.5px; }
+        .audience-card { background: #1a2240; border: 1px solid #2a3550; border-radius: 10px; padding: 16px 18px; }
+        .audience-card strong { display: block; margin-bottom: 6px; color: #e8ecf5; }
+        .audience-card p, .audience-card a { font-size: 13.5px; color: #a9b5cc; }
     </style>
 </head>
 <body data-page="home">
@@ -53,7 +53,7 @@
         <div class="hero-inner">
             <span class="kicker">🚨 Critical — Actively Exploited</span>
             <h1>tronify.rent is a live TRON wallet drainer impersonating a real energy-rental brand</h1>
-            <p style="font-size:13.5px; color:#93a1c2; margin-bottom:14px;">Independent research by <strong style="color:#fff;">Krishanu</strong> · Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service</p>
+            <p style="font-size:13.5px; color:#7a8398; margin-bottom:14px;">Independent research by <strong style="color:#e8ecf5;">Krishanu</strong> · Not affiliated with tronify.rent, Tronify Energy Solutions LLC, or any Tronify-branded service</p>
             <p class="lede">Independent technical analysis of greenbid.js, a 150KB drainer payload that requests unlimited TRC-20 approvals and sweeps TRX to attacker-controlled addresses. Every claim below is backed by a live payload download, a live C&amp;C query, and on-chain blockchain data — not assumptions. Raw files and checksums are published alongside the reports.</p>
             <div class="hero-stats">
                 <div class="hero-stat"><div class="num">150,274B</div><div class="lbl">Payload size, SHA-256 verified</div></div>
@@ -112,7 +112,7 @@
                 <div class="rc-meta"><span>Victims, security teams</span></div>
             </a>
             <a class="report-card evidence-card" href="evidence/index.html">
-                <div class="rc-num" style="color:#b91c1c;">RAW EVIDENCE</div>
+                <div class="rc-num" style="color:#ff6b6b;">RAW EVIDENCE</div>
                 <h3>🗂️ Evidence Locker</h3>
                 <p>The actual payload, live C&amp;C responses, and on-chain data this analysis is built on — with SHA-256 checksums for every file.</p>
                 <div class="rc-meta"><span>Verify it yourself</span></div>
@@ -122,7 +122,7 @@
 
     <section class="home-section" style="padding-top:0;">
         <div class="card">
-            <h3 style="color:#1d4ed8; margin-bottom:16px;">📊 Key Findings Summary</h3>
+            <h3 style="color:#4fa3f5; margin-bottom:16px;">📊 Key Findings Summary</h3>
             <div class="timeline-item"><strong>1. Brand squatting, not a typo-squat:</strong> "Tronify" is a real TRON energy-rental brand reportedly integrated with Trust Wallet. tronify.rent borrows that brand's trust via an unusual <code>.rent</code> TLD rather than misspelling anything.</div>
             <div class="timeline-item"><strong>2. Malicious payload:</strong> tronify.rent injects greenbid.js (150,274 bytes) from lending.fhogu.pw, which automatically drains connected wallets.</div>
             <div class="timeline-item"><strong>3. Token approval exploitation:</strong> Calls TRC-20 <code>increaseApproval()</code> for an unlimited amount, then transfers 100% of approved balances to an attacker address loaded live from C&amp;C.</div>
@@ -158,18 +158,18 @@
 
     <section class="home-section" style="padding-top:0;">
         <div class="card">
-            <h3 style="color:#b91c1c; margin-bottom:16px;">⚠️ Critical Indicators (copy into your security tools)</h3>
+            <h3 style="color:#ff6b6b; margin-bottom:16px;">⚠️ Critical Indicators (copy into your security tools)</h3>
             <div class="grid-2">
                 <div>
                     <strong style="font-size:13px;">Domains to block</strong>
-                    <div class="copyable" style="font-family:'SF Mono',Menlo,Consolas,monospace; margin-top:8px; background:#fdecec; color:#b91c1c; padding:12px 14px; border-radius:6px; font-size:13px;">tronify.rent<br>lending.fhogu.pw</div>
+                    <div class="copyable" style="font-family:'SF Mono',Menlo,Consolas,monospace; margin-top:8px; background:#2a1515; color:#ff6b6b; padding:12px 14px; border-radius:6px; font-size:13px;">tronify.rent<br>lending.fhogu.pw</div>
                 </div>
                 <div>
                     <strong style="font-size:13px;">Payload signature</strong>
-                    <div class="copyable" style="font-family:'SF Mono',Menlo,Consolas,monospace; margin-top:8px; background:#fdecec; color:#b91c1c; padding:12px 14px; border-radius:6px; font-size:12.5px;">greenbid.js — 150,274 bytes<br>SHA-256: 0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416</div>
+                    <div class="copyable" style="font-family:'SF Mono',Menlo,Consolas,monospace; margin-top:8px; background:#2a1515; color:#ff6b6b; padding:12px 14px; border-radius:6px; font-size:12.5px;">greenbid.js — 150,274 bytes<br>SHA-256: 0f6d64472d6369a098f403db117b1285e79b0fdac79caaa639fc0e50e5bf4416</div>
                 </div>
             </div>
-            <p style="margin-top:14px; font-size:13px; color:#4a5268;"><strong>Live attacker addresses (dated 2026-09-20 — will rotate, see <a href="05_indicators_of_compromise.html">IoCs</a> for the durable on-chain pattern):</strong> tronSpender <code>TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv</code> · tronSweepAddress <code>TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ</code></p>
+            <p style="margin-top:14px; font-size:13px; color:#a9b5cc;"><strong>Live attacker addresses (dated 2026-09-20 — will rotate, see <a href="05_indicators_of_compromise.html">IoCs</a> for the durable on-chain pattern):</strong> tronSpender <code>TV6n8cCLmX5mRCMMNvcE1K1i87Yo9Ys5rv</code> · tronSweepAddress <code>TLv3iSnZxWghEmadLDzuAK2p5GkAwg7tpJ</code></p>
         </div>
     </section>
 
